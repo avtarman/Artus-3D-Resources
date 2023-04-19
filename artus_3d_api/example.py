@@ -5,11 +5,11 @@ import os
 current_directory = os.getcwd()
 import sys
 sys.path.append(current_directory)
-from hand_robot_api import HandRobotAPI
+from hand_robot_api import Artus3DAPI
 
 def main():
     # create a hand_robot_api object
-    hand_robot_api = HandRobotAPI()
+    hand_robot_api = Artus3DAPI()
 
     # 1. Set Commands
     # 1.1 Set Joint Angles

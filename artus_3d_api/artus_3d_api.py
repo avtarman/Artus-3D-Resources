@@ -10,7 +10,7 @@ sys.path.append(current_directory)
 from src.python_server import PythonServer
 from src.esp32_commands import ESP32Commands
 
-class HandRobotAPI:
+class Artus3DAPI:
 
     def __init__(self, robot_id="1234567", robot_password="abcd"):
         self.robot_id = robot_id
