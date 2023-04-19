@@ -10,3 +10,7 @@ This repository contains setup and operation information for the Artus 3D dexter
 │   ├── src # Dependencies for the API
 │   │   ├── python_server.py # Python server for the API
 │   │   └── exp32_commands.py # Commands for the API
+```
+
+
+

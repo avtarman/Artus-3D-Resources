@@ -10,3 +10,4 @@ API for controlling the Artus 3D dexterous robotic hand.
 │   ├── src # Dependencies for the API
 │   │   ├── python_server.py # Python server for the API
 │   │   └── exp32_commands.py # Commands for the API
+```
