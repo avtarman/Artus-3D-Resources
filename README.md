@@ -5,6 +5,7 @@ This repository contains setup and operation information for the Artus 3D dexter
 ```bash
 ├── README.md
 ├── artus_3d_api 
+│   ├── artus_3d_api_doc.md
 │   ├── artus_3d_api.py # Python API for Artus 3D
 │   ├── example.py # Example usage of the API
 │   ├── src # Dependencies for the API
