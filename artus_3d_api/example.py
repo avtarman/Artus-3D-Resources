@@ -5,7 +5,7 @@ import os
 current_directory = os.getcwd()
 import sys
 sys.path.append(current_directory)
-from hand_robot_api import Artus3DAPI
+from artus_3d_api import Artus3DAPI
 
 def main():
     # create a hand_robot_api object
