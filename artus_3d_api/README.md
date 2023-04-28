@@ -23,7 +23,7 @@ class Artus3DAPI(communication_method: str = 'wifi')
 Provides an API for controlling the Artus 3D dexterous robotic hand.
 
 **Parameters**:
-- **communication_method**: Communication method to use. Can be either 'WiFi' or 'UART'. Defaults to 'wifi'.
+- **communication_method**: Communication method to use. Can be either 'WiFi' or 'UART'. Defaults to 'WiFi'.
 
 **Methods**:
 - **calibrate()**: send calibration command to the hand.
