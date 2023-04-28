@@ -7,8 +7,8 @@ API for controlling the Artus 3D dexterous robotic hand.
 ├── artus_3d_api.py # Python API for Artus 3D
 ├── example.py # Example usage of the API
 ├── src # Dependencies for the API
-│   ├── python_server.py # Python server for the API
-│   └── python_uart.py # Commands for the API
+│   ├── python_server.py # for WiFi communication
+│   └── python_uart.py # for UART communication
 ```
 
 
