@@ -28,14 +28,8 @@ class PythonServer:
 
         # bind server
         self.server.bind(self.esp)
-        # flags
-        self.reqReturnFlag = reqReturnFlag
-        # msg
-        self.twosend = [0] * 16
-        self.msg = 'hello'
-        self.DONECOMMAND = DONECOMMAND
-
-
+        self.conn = None
+        self.addr = None
 
     """ Start server and listen for connections """
     def start(self):
@@ -44,30 +38,15 @@ class PythonServer:
         print(f"[LISTENING] Server is listening on {self.server}")
         # Accept the connection
         self.conn, self.addr = self.server.accept()
+        print(f"[NEW CONNECTION] {self.addr} connected.")
+        time.sleep(1)
 
-
-
-    """ 
-        Receive integer from client
-        @returns -> whether or not the command is complete or not
-    """
-    def recvInt(self):
-        # receive message of 4 bytes (or an int)
-        msg = self.conn.recv(4).decode(self.FORMAT)
-        if '\r\n' in msg:
-            msg = msg.strip('\r\n')
-        if msg != '':
-            msg = int(msg)
-        time.sleep(0.1)
-        if msg == self.DONECOMMAND:
-            print('=====\n\n[STAT] Message Received!!\n\n=====')
-            return True
-        else:
-            return False
-
-    """
-        send array to client
-    """
+        
+    def recieve(self):
+         # receive message of 1024 bytes (or an int)
+        msg = self.conn.recv(1024).decode(self.FORMAT)
+        return msg
+    
     def send(self, command):
         # list to str
         # command = ','.join([str(x) for x in command])
@@ -77,14 +56,3 @@ class PythonServer:
         # send encoded data
         print(command)
         self.conn.send(command.encode(self.FORMAT))
-
-
-def main():
-    server = PythonServer()
-    server.start()
-    while True:
-        server.send([0] * 16)
-
-
-if __name__ == '__main__':
-    main()
