@@ -18,7 +18,7 @@ API for controlling the Artus 3D dexterous robotic hand.
 
 
 ```python
-class Artus3DAPI(communication_method: str = 'wifi')
+class Artus3DAPI(communication_method: str = 'WiFi')
 ```
 Provides an API for controlling the Artus 3D dexterous robotic hand.
 
