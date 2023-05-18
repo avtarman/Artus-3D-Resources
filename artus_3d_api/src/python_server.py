@@ -21,31 +21,36 @@ class PythonServer:
         self.port = port
         # TCP tuple
         self.esp = (self.server,self.port)
-        # create server
-        self.server = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-        
-        # self.server.setblocking(0)
-
-        # bind server
-        self.server.bind(self.esp)
+        self.server_socket = None
         self.conn = None
         self.addr = None
 
+        self.msg = ""
+
     """ Start server and listen for connections """
     def start(self):
+        # create server socket
+        self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.server_socket.bind(self.esp)
+
         # listen for connections
-        self.server.listen()
-        print(f"[LISTENING] Server is listening on {self.server}")
+        self.server_socket.listen()
+        print(f"[LISTENING] Server is listening on  {self.server}:{self.port}")
         # Accept the connection
-        self.conn, self.addr = self.server.accept()
+        self.conn, self.addr = self.server_socket.accept()
         print(f"[NEW CONNECTION] {self.addr} connected.")
         time.sleep(1)
 
         
-    def recieve(self):
+    def receive(self):
          # receive message of 1024 bytes (or an int)
+        
         msg = self.conn.recv(1024).decode(self.FORMAT)
-        return msg
+        ## TODO: make sure the packet is complete
+        if msg != self.msg:
+            self.msg = msg
+            return msg
+        return ""
     
     def send(self, command):
         # list to str
@@ -56,3 +61,12 @@ class PythonServer:
         # send encoded data
         print(command)
         self.conn.send(command.encode(self.FORMAT))
+    
+    def close(self):
+        if self.conn:
+            self.conn.close()
+        if self.server_socket:
+            self.server_socket.close()
+        self.conn = None
+        self.addr = None
+        print("[SERVER CLOSED]")

@@ -1,9 +1,12 @@
 
 import time
 import numpy as np
+import ast
 
 import os
 current_directory = os.getcwd()
+# print(current_directory)
+# src_directory = os.path.join(current_directory, "src")
 import sys
 sys.path.append(current_directory)
 from src.python_server import PythonServer
@@ -29,16 +32,21 @@ class Artus3DAPI:
         self.grasp_patterns = None
         
         self.python_server = PythonServer(reqReturnFlag = False)
+        self.python_serial = PythonEsp32Serial()
 
         if self.communication_method == "WiFi":
             self.python_server.start()
 
         if self.communication_method == "UART":
             try:
-                self.python_serial = PythonEsp32Serial()
                 self.python_serial.start()
-            except:
+
+                ## clear buffer
+                for i in range(10):
+                    self.python_serial.receive()
+            except Exception as e:
                 print("UART not connected")
+                print(e)
                 pass
 
     def set_joint_angles(self, joint_angles):
@@ -50,46 +58,19 @@ class Artus3DAPI:
     def set_joint_accelerations(self, joint_acceleration):
         self.joint_accelerations = joint_acceleration
 
-    def send(self, robot_command = None):
-        """
-        Send Command to Robot
-
-        Format:
-        self.robot_command = {
-                                'joint_angles': self.joint_angles, 
-                                'joint_velocities': self.joint_velocities,
-                                'joint_accelerations': self.joint_accelerations
-                             }
-        """
-        self.robot_command = self._parse_command()
-
-        # Send Command to Robot based on communication method
-        if self.communication_method == "WiFi": # wifi
-            self.python_server.send(self.robot_command)
-
-        elif self.communication_method == "UART": # uart
-            self.python_serial.send(self.robot_command)
-
-    def recieve(self):
-        """
-        Recieve Command from Robot
-        """
-        if self.communication_method == "WiFi": # wifi
-            message  = self.python_server.recieve()
-
-        elif self.communication_method == "UART": # uart
-            message  = self.python_serial.recieve()
-
-        return message
-
     def get_robot_states(self):
         """
         Get Robot States
         """
 
         # Get Robot States based on communication method
-        states  = self.recieve()
-
+        states = ""
+        states  = self.receive()
+        # try:
+        #     states = ast.literal_eval(receive_message) # convert string to dictionary
+        # except:
+        #     states["ack"] = "0"
+        #     pass
         # states = {'Position': position, 'Force': force, 'Temperature': temperature}
         return states
     
@@ -98,14 +79,14 @@ class Artus3DAPI:
         """
         Shut down the robot
         """
-        self.command = 255 # command for shut down the robot
-        self.positions = [0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-        self.velocities = [0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-        self.accelerations = [0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-
+        # self.command = 255 # command for shut down the robot
+        # self.positions = [0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+        # self.velocities = [0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+        # self.accelerations = [0,0,0,0,0,0,0,0,0,0,0,0,0,0]
         # parse command
-        self.robot_command = self._parse_command()
+        # self.robot_command = self._parse_command()
 
+        self.robot_command = "c255p[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]a[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n"
         # send command
         self.send(self.robot_command)
 
@@ -116,20 +97,21 @@ class Artus3DAPI:
         callibrate command: "calibrate"
         """
         # make calibrate command
-        self.command = 55 # command for calibrate mode on the robot
-        self.positions = [0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-        self.velocities = [0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-        self.accelerations = [0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-
+        # self.command = 55 # command for calibrate mode on the robot
+        # self.positions = [0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+        # self.velocities = [0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+        # self.accelerations = [0,0,0,0,0,0,0,0,0,0,0,0,0,0]
         # parse command
-        self.robot_command = self._parse_command()
+        # self.robot_command = self._parse_command()
 
+        self.robot_command = "c55p[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]a[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n"
         # send command
         self.send(self.robot_command)
 
         while True:
             states = self.get_robot_states()
-            if states['Command'][0] == 1:
+            print(states)
+            if "1" in states:
                 print("Robot Calibrated")
                 time.sleep(2)
                 return
@@ -137,17 +119,11 @@ class Artus3DAPI:
                 print("Calibrating Robot...")
                 time.sleep(2)
 
-    def save_grasp_patter(self):
+    def save_grasp_pattern(self):
         """
         Save Grasp Pattern
         save grasp pattern command: "save_grasp_pattern"
         """
-        # make save grasp pattern command
-        self.command = 176 # command for targetting mode on the robot
-        self.positions = [0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-        self.velocities = [0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-        self.accelerations = [0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-
         # parse command
         self.robot_command = self._parse_command()
 
@@ -175,6 +151,44 @@ class Artus3DAPI:
             self.grasp_patterns[grasp_patterns[i]] = np.load("grasp_patterns/" + grasp_patterns[i])
 
         return self.grasp_patterns
+
+
+    def change_communication_method(self, communication_method):
+        ## parse to appropriate communication method command format
+
+        if self.communication_method == "WiFi" and communication_method == "UART":
+            self.send("UART") ## send command to robot to change communication method on its side
+            self.python_server.close() ## close wifi connection
+            self.python_serial.start() ## open uart connection
+            self.communication_method = "UART" ## update communication method
+
+        elif self.communication_method == "UART" and communication_method == "WiFi":
+            self.send("WiFi") ## send command to robot to change communication method on its side
+            self.python_serial.close() ## close uart connection
+            self.python_server.start() ## open wifi connection
+            self.communication_method = "WiFi" ## update communication method
+
+        else:
+            print("Communication Method is already ", communication_method)
+
+    def send(self, message):
+        # Send Command to Robot based on communication method
+        if self.communication_method == "WiFi": # wifi
+            self.python_server.send(message)
+        elif self.communication_method == "UART": # uart
+            self.python_serial.send(message)
+
+    def receive(self):
+        """
+        Recieve Command from Robot
+        """
+        if self.communication_method == "WiFi": # wifi
+            message  = self.python_server.receive()
+
+        elif self.communication_method == "UART": # uart
+            message  = self.python_serial.receive()
+
+        return message
 
 
     def _parse_command(self):
