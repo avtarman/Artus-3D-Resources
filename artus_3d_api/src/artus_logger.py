@@ -21,13 +21,27 @@ class ArtusLogger:
     grasp saved (i)
     '''
 
-    def configLogFile(self,filename,filedir):
+    def configLogFile(self,filename:str,filedir:str,debuglevel:int):
+        levels = [logging.INFO,logging.WARNING]
         logging.basicConfig(
-            level=logging.INFO,
+            level=levels[debuglevel],
             format='%(asctime)s - %(levelname)s:%(message)s',datefmt='%m/%d/%Y %I:%M:%S %p',
             filename=filedir+filename,
             filemode='a'
         )
+    def logSTMWarning(self,debugmessage:str) :
+        listdebug = debugmessage.split(' ') # split string with spaces
+        if listdebug[1] == "O": 
+            i=2
+            while i < len(listdebug):
+                sublist = [*listdebug[i]]
+                if sublist[1].isnumeric(): #second number
+                    newdebug = 'Actuator #'+''.join(sublist[:2])+' - motor #'+sublist[-1]
+                else:
+                    newdebug = 'Actuator #'+sublist[0]+' - motor #'+sublist[-1]
+                newdebug += ' is obstructed'
+                logging.warning(newdebug)
+                i+=1
  
     def logSTMerror(self,debugmessage:str):
         i=2
@@ -47,19 +61,20 @@ class ArtusLogger:
 
             # add stm # to string log
             if sublist[1].isnumeric():
-                newdebug+='STM'+''.join(sublist[:2])
+                newdebug+='Actuator #'+''.join(sublist[:2])
             else: 
-                newdebug+='STM'+sublist[0]
+                newdebug+='Actuator #'+sublist[0]
 
             # log error
             logging.error(newdebug)
+            i+=1
     
     def rmbrackets(self,message:str):
         message = message.replace('[','').replace(']','')
         return message
 
     def logFeedbackMessage(self,message:str):
-        feedbackobj = ['feedback joint positions (degrees): ','current draw of actuators (mA): ','temperatures of actuators (*C): ']
+        feedbackobj = ['feedback joint positions (degree): ','current draw of actuators (mA): ','temperatures of actuators (*C): ']
         
         # check for ACK
         substring = message[message.index(':')]
