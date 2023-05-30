@@ -31,6 +31,11 @@ def application_demo():
 
     hand_robot_api = Artus3DAPI() # WiFi
     
+    time.sleep(5)
+
+     # 1. Callibrate Robot
+    hand_robot_api.calibrate()
+    
 
     # read command from the text file
     while True:
