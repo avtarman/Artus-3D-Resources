@@ -20,9 +20,10 @@ class Artus3DAPI:
         self.command_filename = "command.txt"
         self.communication_method = communication_method
 
-        self.command = 0
+        self.command = 0 # command for robot for calibration, target control, etc.
+        self.default_velocity = 70 # default velocity for velocity control
         self.joint_angles = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-        self.joint_velocities = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+        self.joint_velocities = [70,70,70,70,70,70,70,70,70,70,70,70,70,70,70,70]
         self.joint_accelerations = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 
         self.robot_command = {'joint_angles': self.joint_angles,
@@ -40,7 +41,6 @@ class Artus3DAPI:
         if self.communication_method == "UART":
             try:
                 self.python_serial.start()
-
                 ## clear buffer
                 for i in range(10):
                     self.python_serial.receive()
@@ -62,30 +62,41 @@ class Artus3DAPI:
         """
         Get Robot States
         """
-
         # Get Robot States based on communication method
         states = ""
+        
         states  = self.receive()
+        
         # try:
         #     states = ast.literal_eval(receive_message) # convert string to dictionary
         # except:
         #     states["ack"] = "0"
         #     pass
         # states = {'Position': position, 'Force': force, 'Temperature': temperature}
+        while "position" not in states:
+            states  = self.receive()
+        
         return states
+    
+    def get_debug_message(self):
+        """
+        Get Debug Message
+        """
+        # Get Debug Message based on communication method
+        debug_message = ""
+        
+        debug_message  = self.receive()
+
+        while "position" in debug_message:
+            debug_message  = self.receive()
+
+        return debug_message
     
 
     def shut_down(self):
         """
         Shut down the robot
         """
-        # self.command = 255 # command for shut down the robot
-        # self.positions = [0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-        # self.velocities = [0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-        # self.accelerations = [0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-        # parse command
-        # self.robot_command = self._parse_command()
-
         self.robot_command = "c255p[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]a[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n"
         # send command
         self.send(self.robot_command)
@@ -96,14 +107,6 @@ class Artus3DAPI:
         Calibrate Robot
         callibrate command: "calibrate"
         """
-        # make calibrate command
-        # self.command = 55 # command for calibrate mode on the robot
-        # self.positions = [0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-        # self.velocities = [0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-        # self.accelerations = [0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-        # parse command
-        # self.robot_command = self._parse_command()
-
         self.robot_command = "c55p[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]a[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n"
         # send command
         self.send(self.robot_command)
@@ -208,3 +211,4 @@ class Artus3DAPI:
                                                        self.joint_accelerations)
         
         return self.robot_command
+        

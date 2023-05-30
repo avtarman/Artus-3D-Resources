@@ -36,6 +36,12 @@ Provides an API for controlling the Artus 3D dexterous robotic hand.
 - **save_grasp_pattern(command_name: str)**: Saves the current joint configuration as a grasp pattern.
 - **load_grasp_patterns()**: Loads the grasp patterns as a dictionary.
 
+## Procedure
+
+1. Power on the hand.
+2. Connect to the ESP32 WiFi network on your computer.
+3. Run the API.
+
 
 ## Usage
 
@@ -74,6 +80,11 @@ api.send_command()
 api.get_robot_states()
 ```
 
+- Get Debug Info from the hand
+```python
+api.get_debug_messages()
+```
+
 - Shutdown the hand
 ```python
 api.shutdown()
@@ -104,6 +115,8 @@ api.set_joint_angles([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 api.send_command()
 
 states = api.get_robot_states()
+
+debug_messages = api.get_debug_messages()
 
 api.shutdown()
 
