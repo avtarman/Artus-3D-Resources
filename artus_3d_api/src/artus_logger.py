@@ -1,8 +1,10 @@
 import logging
 
 class ArtusLogger:
-    def __init__(self):
-        pass
+    def __init__(self,filedir,filename,debuglevel):
+        self.filedir = filedir
+        self.filename = filename
+        self.debuglevel = debuglevel
 
     '''
     message list
@@ -20,13 +22,27 @@ class ArtusLogger:
     ack received (i)
     grasp saved (i)
     '''
+    def setDebugLevel(self,debuglvl:int):
+        self.debuglevel = debuglvl
 
-    def configLogFile(self,filename:str,filedir:str,debuglevel:int):
+    def setPath(self,dir:str,filename:str):
+        self.filedir = dir
+        self.filename = filename
+
+    def newFileHandler(self):
+        # remove all old handlers
+        for handler in logging.root.handlers[:]:
+            logging.root.removeHandler(handler)
+
+        # config again
+        self.configLogFile()
+
+    def configLogFile(self):
         levels = [logging.INFO,logging.WARNING]
         logging.basicConfig(
-            level=levels[debuglevel],
+            level=levels[self.debuglevel],
             format='%(asctime)s - %(levelname)s:%(message)s',datefmt='%m/%d/%Y %I:%M:%S %p',
-            filename=filedir+filename,
+            filename=self.filedir+self.filename,
             filemode='a'
         )
     def logSTMWarning(self,debugmessage:str) :
@@ -36,10 +52,11 @@ class ArtusLogger:
             while i < len(listdebug):
                 sublist = [*listdebug[i]]
                 if sublist[1].isnumeric(): #second number
-                    newdebug = 'Actuator #'+''.join(sublist[:2])+' - motor #'+sublist[-1]
+                    newdebug = 'Actuator #'+''.join(sublist[:2])
                 else:
-                    newdebug = 'Actuator #'+sublist[0]+' - motor #'+sublist[-1]
-                newdebug += ' is obstructed'
+                    newdebug = 'Actuator #'+sublist[0]
+                
+                newdebug += ' - motor #'+sublist[-1]+' is obstructed'
                 logging.warning(newdebug)
                 i+=1
  
@@ -101,7 +118,7 @@ class ArtusLogger:
                 substring = self.rmbrackets(substring)
                 substring = substring.split(',')
                 for i in range(16):
-                    if int(substring[i]) > 60: # 1A
+                    if int(substring[i]) > 60: # 60 *C
                         logging.warning('actuator #'+str(i)+' HIGH temperature - '+substring[i])
 
         return
