@@ -33,18 +33,35 @@ def application_demo():
     hand_robot_api = Artus3DAPI()
     time.sleep(5)
 
-    # calibrate robot
-    # hand_robot_api.calibrate()
-    # time.sleep(5)
-    
-    while True:
-        with open("joint_angles.txt", "r") as f:
-            command = f.read()
-    #     # send command to robot
-        hand_robot_api.send(command)
+    # User Interface, 1 for callibrate, 2 for start, 3 for target
 
-    #     # wait for 1 second
-        time.sleep(0.1)
+    while True:
+
+        user_input = input("Select one of the following options:\n" \
+                            "1. Calibrate Robot\n" \
+                            "2. Start\n" \
+                            "3. Target\n" \
+                            "4. Exit\n" \
+                            "Enter your choice: ")
+        if user_input == "1":
+            # calibrate robot
+            hand_robot_api.calibrate()
+            time.sleep(5)
+
+        elif user_input == "2":
+            # start
+            hand_robot_api.start()
+            time.sleep(5)
+
+        elif user_input == "3":
+            while True:
+                with open("joint_angles.txt", "r") as f:
+                    command = f.read()
+            #     # send command to robot
+                hand_robot_api.send(command)
+
+            #     # wait for 1 second
+                time.sleep(0.1)
 
 
 if __name__ == '__main__':
