@@ -5,8 +5,7 @@ import ast
 
 import os
 current_directory = os.getcwd()
-# print(current_directory)
-# src_directory = os.path.join(current_directory, "src")
+
 import sys
 sys.path.append(current_directory)
 from src.python_server import PythonServer
