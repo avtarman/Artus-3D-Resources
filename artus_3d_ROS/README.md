@@ -1,3 +1,3 @@
 # Artus 3D - ROS Interface
 
-Interface for controlling the Artus 3D dexterous robotic hand using ROS using UARt over USB.
+Interface for controlling the Artus 3D dexterous robotic hand from ROS using UART over USB.
