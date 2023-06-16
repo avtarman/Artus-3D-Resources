@@ -111,16 +111,16 @@ class Artus3DAPI:
         # send command
         self.send(self.robot_command)
 
-        while True:
-            states = self.get_robot_states()
-            print(states)
-            if "1" in states:
-                print("Robot Calibrated")
-                time.sleep(2)
-                return
-            else:
-                print("Calibrating Robot...")
-                time.sleep(2)
+        # while True:
+        #     states = self.get_robot_states()
+        #     print(states)
+        #     if "1" in states:
+        #         print("Robot Calibrated")
+        #         time.sleep(2)
+        #         return
+        #     else:
+        #         print("Calibrating Robot...")
+        #         time.sleep(2)
 
     def save_grasp_pattern(self):
         """

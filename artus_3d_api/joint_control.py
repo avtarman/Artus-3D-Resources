@@ -36,7 +36,7 @@ def application_demo():
 
     # hand_robot_api = Artus3DAPI()
     # serial communication
-    hand_robot_api = Artus3DAPI(communication_method = "UART")
+    hand_robot_api = Artus3DAPI() #communication_method = "UART"
     time.sleep(5)
 
     # User Interface, 1 for callibrate, 2 for start, 3 for target
@@ -53,10 +53,12 @@ def application_demo():
             # calibrate robot
             hand_robot_api.calibrate()
             time.sleep(5)
+            # hand_robot_api.receive()
 
         elif user_input == "2":
             # start
             hand_robot_api.start()
+            # hand_robot_api.receive()
             time.sleep(5)
 
         elif user_input == "3":
@@ -65,9 +67,13 @@ def application_demo():
                     command = f.read()
             #     # send command to robot
                 hand_robot_api.send(command)
+                # print(hand_robot_api.receive())
+            
 
             #     # wait for 1 second
-                time.sleep(0.5)
+                time.sleep(0.2)
+
+        
 
 
 if __name__ == '__main__':
