@@ -5,7 +5,8 @@ import ast
 
 import os
 current_directory = os.getcwd()
-
+# print(current_directory)
+# src_directory = os.path.join(current_directory, "src")
 import sys
 sys.path.append(current_directory)
 from src.python_server import PythonServer
@@ -92,11 +93,11 @@ class Artus3DAPI:
         return debug_message
     
 
-    def shut_down(self):
+    def start(self):
         """
         Shut down the robot
         """
-        self.robot_command = "c255p[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]a[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n"
+        self.robot_command = "c88p[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]a[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n"
         # send command
         self.send(self.robot_command)
 
@@ -210,4 +211,3 @@ class Artus3DAPI:
                                                        self.joint_accelerations)
         
         return self.robot_command
-        

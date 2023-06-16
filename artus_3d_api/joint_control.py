@@ -12,6 +12,10 @@ def main():
     # create a hand_robot_api object
     hand_robot_api = Artus3DAPI()
 
+ 
+
+
+
     # 1. Callibrate Robot
     hand_robot_api.calibrate()
     # 2. Set Commands
@@ -30,7 +34,9 @@ def main():
 
 def application_demo():
 
-    hand_robot_api = Artus3DAPI()
+    # hand_robot_api = Artus3DAPI()
+    # serial communication
+    hand_robot_api = Artus3DAPI(communication_method = "UART")
     time.sleep(5)
 
     # User Interface, 1 for callibrate, 2 for start, 3 for target
@@ -61,7 +67,7 @@ def application_demo():
                 hand_robot_api.send(command)
 
             #     # wait for 1 second
-                time.sleep(0.1)
+                time.sleep(0.5)
 
 
 if __name__ == '__main__':
