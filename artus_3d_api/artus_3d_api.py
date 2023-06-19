@@ -177,6 +177,7 @@ class Artus3DAPI:
     def send(self, message):
         # Send Command to Robot based on communication method
         if self.communication_method == "WiFi": # wifi
+            message = self._check_command_string(message)
             self.python_server.send(message)
         elif self.communication_method == "UART": # uart
             self.python_serial.send(message)
@@ -211,3 +212,46 @@ class Artus3DAPI:
                                                        self.joint_accelerations)
         
         return self.robot_command
+
+
+
+    def _check_command_string(self, command_string):
+
+        if "c176" in command_string:
+
+            # replace unnesserary 
+            command_string = command_string.replace("c176", "")
+            command_string = command_string.replace("p", "")
+            command_string = command_string.replace("[", "")
+            command_string = command_string.replace("]", "")
+            command_string = command_string.replace("end\n", "")
+
+            # seperate the two lists of joint angles and joint velocities
+            command_string_position, command_string_velocity = command_string.split("v")
+            # convert to list
+            command_string_position = command_string_position.split(",")
+            command_string_velocity = command_string_velocity.split(",")
+
+            # check the len of each element in the list
+            for i in range(len(command_string_position)):
+                if len(command_string_position[i]) == 1:
+                    command_string_position[i] = "+0" + command_string_position[i]
+                elif len(command_string_position[i]) == 2 and command_string_position[i][0] != "-":
+                    command_string_position[i] = "+" + command_string_position[i]
+                elif len(command_string_position[i]) == 2:
+                    command_string_position[i] = "-0" + command_string_position[i][1:]
+
+            for i in range(len(command_string_velocity)):
+                if len(command_string_velocity[i]) == 1:
+                    command_string_velocity[i] = "00" + command_string_velocity[i]
+                elif len(command_string_velocity[i]) == 2:
+                    command_string_velocity[i] = "0" + command_string_velocity[i]
+
+            # convert back to original format
+            command_string_position = "[" + ",".join(command_string_position) + "]"
+            command_string_velocity = "[" + ",".join(command_string_velocity) + "]"
+
+            # combine the two lists
+            command_string = "c176p"+command_string_position + "v" + command_string_velocity + "end\n"
+
+        return command_string
