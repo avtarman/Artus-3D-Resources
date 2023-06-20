@@ -27,10 +27,6 @@ Provides an API for controlling the Artus 3D dexterous robotic hand.
 
 **Methods**:
 - **calibrate()**: send calibration command to the hand.
-- **shutdown()**: send shutdown command to the hand.
-- **set_joint_angles(joint_angles: List[float])**: Sets the joint angles to be sent to the hand.
-- **set_joint_velocities(joint_velocities: List[float])**: Sets the joint velocities to be sent to the hand.
-- **set_joint_accelerations(joint_accelerations: List[float])**: Sets the joint accelerations to be sent to the hand.
 - **send_command()**: Sends the command to the hand.
 - **get_robot_states()**: Gets the robot states from the hand.
 - **save_grasp_pattern(command_name: str)**: Saves the current joint configuration as a grasp pattern.
