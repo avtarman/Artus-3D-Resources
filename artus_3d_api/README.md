@@ -106,23 +106,29 @@ grab_patterns = api.load_grasp_patterns() # grab_patterns is a dictionary
 ```python
 from artus_3d_api import Artus3DAPI
 
-api = Artus3DAPI()
+hand_api = Artus3DAPI()
 
-api.calibrate()
+# 1. Always calibrate on startup
+hand_api.calibrate()
 
-api.set_joint_angles([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+# 2. Send Joint Control Command (wait for the calibration to complete)
+## formate the command
+joint_positions = "[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]" # 16 joint positions (in degrees)
+joint_velocities = "[70,70,70,70,70,70,70,100,70,70,70,70,70,70,70,70]" # 16 joint velocities
+joint_control_command = "c176p"+joint_positions+"v"+joint_velocities+"end\n"
+hand_api.send(joint_control_command) # send the command to the hand
 
-api.send_command()
+# 3. Saving and Loading Grasp Patterns
+## save grasp pattern
+open_grasp_pattern = "c176p[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]v[70,70,70,70,70,70,70,100,70,70,70,70,70,70,70,70]end\n"
+hand_api.save_grasp_pattern(name='open', command=open_grasp_pattern)
+## load grasp pattern
+grab_patterns = hand_api.load_grasp_patterns()
+command = grab_patterns['open']
+## send the command to the hand
+hand_api.send(command)
 
-states = api.get_robot_states()
 
-debug_messages = api.get_debug_messages()
-
-api.shutdown()
-
-api.save_grasp_pattern('open')
-
-grab_patterns = api.load_grasp_patterns()
 ```
 
 
