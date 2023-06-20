@@ -1,13 +1,13 @@
-# Artus <b>3D</b> Hand API
+# Artus 3D Hand API
 
 API for controlling the Artus 3D dexterous robotic hand.
 
-API for controlling the Artus 3D dexterous robotic hand.
 
 ## Directory Structure
 ```bash
 ├── artus_3d_api.py # Python API for Artus 3D
 ├── example.py # Example usage of the API
+├── joint_control_command.txt # Example joint control command
 ├── src # Dependencies for the API
 │   ├── python_server.py # for WiFi communication
 │   └── python_uart.py # for UART communication

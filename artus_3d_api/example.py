@@ -34,7 +34,7 @@ def example():
         elif user_input == "2":
             hand_robot_api.calibrate()
         elif user_input == "3":
-            with open("./joint_angles.txt", "r") as f: #C:/Users/bajwa/Desktop/Robot_API/joint_angles.txt
+            with open("./joint_control_command.txt", "r") as f: #C:/Users/bajwa/Desktop/Robot_API/joint_angles.txt
                 command = f.read()
         #     # send command to robot   
             if command != "":
