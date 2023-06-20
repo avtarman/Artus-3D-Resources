@@ -1,8 +1,12 @@
-# Artus 3D API
+<div style="background-color: black; padding: 10px;">
+    <h1 style="color: white; text-align: center;">Artus <span style="color: red;">3D</span> Hand API</h1>
+</div>
 
 API for controlling the Artus 3D dexterous robotic hand.
 
-# Directory Structure
+API for controlling the Artus 3D dexterous robotic hand.
+
+## Directory Structure
 ```bash
 ├── artus_3d_api.py # Python API for Artus 3D
 ├── example.py # Example usage of the API
@@ -12,9 +16,9 @@ API for controlling the Artus 3D dexterous robotic hand.
 ```
 
 
-# API Core
+## API Core
 
-## Artus3DAPI
+### Artus3DAPI
 
 
 ```python
@@ -38,7 +42,7 @@ Provides an API for controlling the Artus 3D dexterous robotic hand.
 2. Connect to the ESP32 WiFi network on your computer.
 3. Use the API to send commands to the hand.
 
-# Example Usage
+## Example Usage
 ```python
 from artus_3d_api import Artus3DAPI
 
