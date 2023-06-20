@@ -3,9 +3,11 @@ import time
 
 class PythonEsp32Serial:
 
-    def __init__(self, port='COM3',
-                 baudrate=230400, #115200, 
+    def __init__(self, port='COM9',
+                 baudrate=115200, #115200, 
                  timeout=5):
+        
+        # automatically connect to the first available port
         self.port = port
         self.baudrate = baudrate
         self.timeout = timeout
@@ -19,13 +21,14 @@ class PythonEsp32Serial:
 
     def send(self, data):
         self.esp32.write(data.encode())
+        print(data.encode())
 
     def receive(self):
         ## check if something is available to read
         if self.esp32.in_waiting > 0: # receive the message and decode it to utf-8
-            data = self.esp32.readline().decode('utf-8').rstrip()
-        
-            return data
+            data = self.esp32.readline()
+            print(data)
+            return str(data)
         return ""
         
     def close(self):

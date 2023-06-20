@@ -15,10 +15,13 @@ from src.python_uart import PythonEsp32Serial
 class Artus3DAPI:
 
     def __init__(self,
-                 communication_method = "WiFi"): # wifi or uart (default: wifi)
+                communication_method = "WiFi", # wifi or uart (default: wifi)
+                port='COM9'):
+
 
         self.command_filename = "command.txt"
         self.communication_method = communication_method
+        self.port = port
 
         self.command = 0 # command for robot for calibration, target control, etc.
         self.default_velocity = 70 # default velocity for velocity control
@@ -33,7 +36,8 @@ class Artus3DAPI:
         self.grasp_patterns = None
         
         self.python_server = PythonServer(reqReturnFlag = False)
-        self.python_serial = PythonEsp32Serial()
+      
+        self.python_serial = PythonEsp32Serial(port=self.port)
 
         if self.communication_method == "WiFi":
             self.python_server.start()
@@ -111,6 +115,17 @@ class Artus3DAPI:
         # send command
         self.send(self.robot_command)
 
+        # while True:
+        #     states = self.get_robot_states()
+        #     print(states)
+        #     if "1" in states:
+        #         print("Robot Calibrated")
+        #         time.sleep(2)
+        #         return
+        #     else:
+        #         print("Calibrating Robot...")
+        #         time.sleep(2)
+
     def save_grasp_pattern(self, 
                            name=None, 
                            grasp_pattern=None):
@@ -161,7 +176,7 @@ class Artus3DAPI:
         return self.grasp_patterns
 
 
-    def change_communication_method(self, communication_method):
+    def change_communication_method(self, communication_method, port=None):
         ## parse to appropriate communication method command format
 
         if self.communication_method == "WiFi" and communication_method == "UART":
@@ -173,6 +188,8 @@ class Artus3DAPI:
         elif self.communication_method == "UART" and communication_method == "WiFi":
             self.send("WiFi") ## send command to robot to change communication method on its side
             self.python_serial.close() ## close uart connection
+            if port is not None:
+                self.python_server.port = port
             self.python_server.start() ## open wifi connection
             self.communication_method = "WiFi" ## update communication method
 
@@ -208,7 +225,7 @@ class Artus3DAPI:
         """
         Parse Robot Command
 
-        format of command:
+        formate of command:
         "c0p[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]v[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]a[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]end"
         """
 
