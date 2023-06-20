@@ -118,15 +118,14 @@ joint_velocities = "[70,70,70,70,70,70,70,100,70,70,70,70,70,70,70,70]" # 16 joi
 joint_control_command = "c176p"+joint_positions+"v"+joint_velocities+"end\n"
 hand_api.send(joint_control_command) # send the command to the hand
 
-# 3. Saving and Loading Grasp Patterns
+# 3. save and use grasp patterns
 ## save grasp pattern
 open_grasp_pattern = "c176p[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]v[70,70,70,70,70,70,70,100,70,70,70,70,70,70,70,70]end\n"
 hand_api.save_grasp_pattern(name='open', command=open_grasp_pattern)
-## load grasp pattern
-grab_patterns = hand_api.load_grasp_patterns()
-command = grab_patterns['open']
+## use grasp pattern
+grab_pattern = hand_api.get_grasp_pattern(name="open")
 ## send the command to the hand
-hand_api.send(command)
+hand_api.send(grasp_pattern)
 
 
 ```
