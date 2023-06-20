@@ -32,10 +32,10 @@ Provides an API for controlling the Artus 3D dexterous robotic hand.
 - **calibrate()**: Sends calibration command to the hand.
 - **send_command(joint_control_command: str)**: Sends the command to the hand.
     - **"joint_control_command" structure**: "c176p"+joint_positions_list_str+"v"+joint_velocities_list_str+"end\n"
-- **get_robot_states()**: Gets the robot states from the hand.
 - **save_grasp_pattern(name: str)**: Saves the current joint configuration as a grasp pattern.
 - **get_grasp_pattern(name: str)**: Returns the joint control command of a saved grasp pattern.
-
+- **get_robot_states()**: Gets the robot states from the hand.
+- **get_debug_message()**: Gets the debug message from the hand.
 ## Procedure
 1. Power on the hand.
 2. Connect to the ESP32 WiFi network on your computer.
