@@ -31,7 +31,7 @@ Provides an API for controlling the Artus 3D dexterous robotic hand.
 - **start()**: Starts the API.
 - **calibrate()**: Sends calibration command to the hand.
 - **send_command(joint_control_command: str)**: Sends the command to the hand.
-    - **"joint_control_command" structure**: "c176p"+joint_positions+"v"+joint_velocities+"end\n"
+    - **"joint_control_command" structure**: "c176p"+joint_positions_list_str+"v"+joint_velocities_list_str+"end\n"
 - **get_robot_states()**: Gets the robot states from the hand.
 - **save_grasp_pattern(name: str)**: Saves the current joint configuration as a grasp pattern.
 - **get_grasp_pattern(name: str)**: Returns the joint control command of a saved grasp pattern.
