@@ -7,58 +7,48 @@ import sys
 sys.path.append(current_directory)
 from artus_3d_api import Artus3DAPI
 
-def main():
-    # create a hand_robot_api object
+
+def user_input_function():
+
+    print("Enter command to send:\n"
+        "1. start\n"
+        "2. calibrate\n"
+        "3. send command\n"
+        "4. save grasp pattern\n"
+        "5. use saved grasps")
+
+    return input("Enter command to send: ")
+
+
+def example():
+
+
     hand_robot_api = Artus3DAPI()
 
-    # 1. Callibrate Robot
-    hand_robot_api.calibrate()
-    # 2. Set Commands
-    ## 2.1 Set Joint Angles
-    hand_robot_api.joint_angles = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] # position control
-    ## 2.2 Set Joint Velocities
-    hand_robot_api.joint_velocities = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] # 0 for constant velocity control
-    ## 2.3 Set Joint Accelerations
-    hand_robot_api.joint_acceleration = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] # 0 for no effort control
-    ## 2.4 Send Command to Robot
-    hand_robot_api.send_command() # send command to robot
-    # 3. Get Robot States
-    robot_states = hand_robot_api.get_robot_states()
+    time.sleep(2)
 
-
-
-def application_demo():
-
-    hand_robot_api = Artus3DAPI() # WiFi
-    
-    time.sleep(5)
-
-     # 1. Callibrate Robot
-    hand_robot_api.calibrate()
-    
-
-    # read command from the text file
     while True:
-        with open("command.txt", "r") as f:
-            command = f.read()
-    #     # send command to robot
-        hand_robot_api.send(command)
-        # hand_robot_api.send("UART")
-    #     # receive robot states
-        # time.sleep(5)
-        print(hand_robot_api.receive())
-        # robot_states = hand_robot_api.get_robot_states()
-        # print(robot_states)
+        user_input = user_input_function()
+        if user_input == "1":
+            hand_robot_api.start()
+        elif user_input == "2":
+            hand_robot_api.calibrate()
+        elif user_input == "3":
+            with open("C:/Users/bajwa/Desktop/Robot_API/joint_angles.txt", "r") as f:
+                command = f.read()
+        #     # send command to robot   
+            if command != "":
+                hand_robot_api.send(command)
+        elif user_input == "4":
+            hand_robot_api.save_grasp_pattern(grasp_pattern= command)
+        elif user_input == "5":
+            grasp_pattern = hand_robot_api.get_grasp_command()
+            print(grasp_pattern)
+            hand_robot_api.send(grasp_pattern)
 
-        # debug_message = hand_robot_api.get_debug_message()
-        # print(debug_message)
-
- 
-
-        # wait for 1 second
+    #     # wait for 1 second
         time.sleep(1)
 
-
-
 if __name__ == '__main__':
-    application_demo()
+    # main()
+    example()
