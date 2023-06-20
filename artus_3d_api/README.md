@@ -1,6 +1,4 @@
-<div style="background-color: black; padding: 10px;">
-    <h1 style="color: white; text-align: center;">Artus <span style="color: red;">3D</span> Hand API</h1>
-</div>
+# Artus <b>3D</b> Hand API
 
 API for controlling the Artus 3D dexterous robotic hand.
 
