@@ -18,7 +18,7 @@ API for controlling the Artus 3D dexterous robotic hand.
 
 
 ```python
-class Artus3DAPI(communication_method: str = 'WiFi')
+class Artus3DAPI()
 ```
 Provides an API for controlling the Artus 3D dexterous robotic hand.
 
@@ -48,7 +48,15 @@ hand_api = Artus3DAPI()
 hand_api.calibrate()
 
 # 2. Send Joint Control Command (wait for the calibration to complete)
-## formate the command
+## format the command
+#### joint array format:
+# [thumbflex, thumbabduct, thumbd2, thumbd1, 
+# indexflex, indexabduct, indexd2, 
+# middleflex, middleabduct, middled2, 
+# ringflex, ringabduct, ringd2, 
+# pinkyflex, pinkyabduct, pinkyd2]
+#### Range of motion:  (abduction range --> -35 to 35 (thumb), -20 to 20 (other fingers) || all other angles --> 0 to 90)
+#### Velocity: 50 to 100
 joint_positions = "[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]" # 16 joint positions (in degrees)
 joint_velocities = "[70,70,70,70,70,70,70,100,70,70,70,70,70,70,70,70]" # 16 joint velocities
 joint_control_command = "c176p"+joint_positions+"v"+joint_velocities+"end\n"
