@@ -26,79 +26,19 @@ Provides an API for controlling the Artus 3D dexterous robotic hand.
 - **communication_method**: Communication method to use. Can be either 'WiFi' or 'UART'. Defaults to 'WiFi'.
 
 **Methods**:
-- **calibrate()**: send calibration command to the hand.
-- **send_command()**: Sends the command to the hand.
+- **start()**: Starts the API.
+- **calibrate()**: Sends calibration command to the hand.
+- **send_command(joint_control_command: str)**: Sends the command to the hand.
 - **get_robot_states()**: Gets the robot states from the hand.
-- **save_grasp_pattern(command_name: str)**: Saves the current joint configuration as a grasp pattern.
-- **load_grasp_patterns()**: Loads the grasp patterns as a dictionary.
+- **save_grasp_pattern(name: str)**: Saves the current joint configuration as a grasp pattern.
+- **get_grasp_pattern(name: str)**: Returns the joint control command of a saved grasp pattern.
 
 ## Procedure
-
 1. Power on the hand.
 2. Connect to the ESP32 WiFi network on your computer.
-3. Run the API.
+3. Use the API to send commands to the hand.
 
-
-## Usage
-
-- Import the API
-```python
-from artus_3d_api import Artus3DAPI
-```
-
-- Create an instance of the API
-```python
-
-# for WiFi communication
-api = Artus3DAPI()  # defaults to WiFi communication
-
-# for UART communication
-api = Artus3DAPI(communication_method='UART')
-```
-
-- Calibrate the hand
-```python
-api.calibrate()
-```
-
-- Set the joint angles
-```python
-api.set_joint_angles([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-```
-
-- Send the command to the hand
-```python
-api.send_command()
-```
-
-- Get the robot states from the hand
-```python
-api.get_robot_states()
-```
-
-- Get Debug Info from the hand
-```python
-api.get_debug_messages()
-```
-
-- Shutdown the hand
-```python
-api.shutdown()
-```
-
-- Save the current joint configuration as a grasp pattern
-```python
-api.save_grasp_pattern('open') # 'open' is the name of the grasp pattern
-```
-
-- Load the grasp patterns as a dictionary
-```python
-grab_patterns = api.load_grasp_patterns() # grab_patterns is a dictionary
-```
-
-
-# Example
-
+# Example Usage
 ```python
 from artus_3d_api import Artus3DAPI
 
@@ -117,13 +57,11 @@ hand_api.send(joint_control_command) # send the command to the hand
 # 3. save and use grasp patterns
 ## save grasp pattern
 open_grasp_pattern = "c176p[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]v[70,70,70,70,70,70,70,100,70,70,70,70,70,70,70,70]end\n"
-hand_api.save_grasp_pattern(name='open', command=open_grasp_pattern)
+hand_api.save_grasp_pattern(name='open', grasp_pattern=open_grasp_pattern)
 ## use grasp pattern
 grab_pattern = hand_api.get_grasp_pattern(name="open")
 ## send the command to the hand
 hand_api.send(grasp_pattern)
-
-
 ```
 
 
