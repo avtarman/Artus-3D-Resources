@@ -97,7 +97,7 @@ class Artus3DAPI:
         """
         Shut down the robot
         """
-        self.robot_command = "c88p[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]a[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n"
+        self.robot_command = "c88p[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n"
         # send command
         self.send(self.robot_command)
 
@@ -107,40 +107,45 @@ class Artus3DAPI:
         Calibrate Robot
         callibrate command: "calibrate"
         """
-        self.robot_command = "c55p[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]a[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n"
+        self.robot_command = "c55p[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n"
         # send command
         self.send(self.robot_command)
 
-        # while True:
-        #     states = self.get_robot_states()
-        #     print(states)
-        #     if "1" in states:
-        #         print("Robot Calibrated")
-        #         time.sleep(2)
-        #         return
-        #     else:
-        #         print("Calibrating Robot...")
-        #         time.sleep(2)
-
-    def save_grasp_pattern(self):
+    def save_grasp_pattern(self, 
+                           name=None, 
+                           grasp_pattern=None):
         """
         Save Grasp Pattern
         save grasp pattern command: "save_grasp_pattern"
         """
-        # parse command
-        self.robot_command = self._parse_command()
-
-        # name of grasp pattern
-        self.grasp_pattern_name = input("Enter Grasp Pattern Name: ")
+        if grasp_pattern is None:
+            print("No Grasp Pattern")
+            return  
+        if name is None:
+            name = input("Enter Grasp Pattern Name: ")
 
         # make a directory for saving grasp patterns
         if not os.path.exists("grasp_patterns"):
             os.makedirs("grasp_patterns")
-
         # save grasp pattern
-        np.save("grasp_patterns/" + self.grasp_pattern_name, self.robot_command)
+        np.save("grasp_patterns/" + name, grasp_pattern)
+
+        self.grasp_patterns = self._load_grasp_patterns()
+
+    def get_grasp_command(self,
+                            name=None):
+        
+        if name is None:
+            name = input("Enter Grasp Pattern Name: ")
+
+        if self.grasp_patterns is None:
+            self.grasp_patterns = self._load_grasp_patterns()
+        
+        # get grasp pattern
+        grasp_pattern = self.grasp_patterns[name+".npy"]
+        return grasp_pattern
     
-    def load_grasp_patterns(self):
+    def _load_grasp_patterns(self):
         """
         Load Grasp Patterns as Dictionary
         """
@@ -177,7 +182,10 @@ class Artus3DAPI:
     def send(self, message):
         # Send Command to Robot based on communication method
         if self.communication_method == "WiFi": # wifi
+
             message = self._check_command_string(message)
+            print(message)
+            # return
             self.python_server.send(message)
         elif self.communication_method == "UART": # uart
             self.python_serial.send(message)
@@ -200,11 +208,12 @@ class Artus3DAPI:
         """
         Parse Robot Command
 
-        formate of command:
+        format of command:
         "c0p[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]v[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]a[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]end"
         """
 
         # parse command
+
 
         self.robot_command = "c{0}p{1}v{2}a{3}end\n".format(self.command,
                                                        self.joint_angles,
@@ -212,8 +221,7 @@ class Artus3DAPI:
                                                        self.joint_accelerations)
         
         return self.robot_command
-
-
+    
 
     def _check_command_string(self, command_string):
 
