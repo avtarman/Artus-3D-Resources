@@ -23,7 +23,8 @@ def user_input_function():
 def example():
 
 
-    hand_robot_api = Artus3DAPI()
+    hand_robot_api = Artus3DAPI() # default is WiFi connection
+    # hand_robot_api = Artus3DAPI(communication_type="UART", port="COM9") # UART connection
 
     time.sleep(2)
 
