@@ -105,6 +105,15 @@ class Artus3DAPI:
         # send command
         self.send(self.robot_command)
 
+    def reset_low(self,joint:str,act:str):
+        """
+        send joint back to 0
+        """
+        if int(joint) < 10:
+            joint = '0'+joint
+        self.robot_command = "c12p["+joint+",0"+act+",00,00,00,00,00,00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n"
+        # send command
+        self.send(self.robot_command)
     
     def calibrate(self):
         """
@@ -243,19 +252,25 @@ class Artus3DAPI:
     def _check_command_string(self, command_string):
 
         if "c176" in command_string:
-
+            print(command_string)
             # replace unnesserary 
+            command_string = command_string.replace("end\\n\n", "")
             command_string = command_string.replace("c176", "")
             command_string = command_string.replace("p", "")
             command_string = command_string.replace("[", "")
             command_string = command_string.replace("]", "")
-            command_string = command_string.replace("end\n", "")
+
+            #debugging
+            print(command_string)
 
             # seperate the two lists of joint angles and joint velocities
             command_string_position, command_string_velocity = command_string.split("v")
             # convert to list
             command_string_position = command_string_position.split(",")
             command_string_velocity = command_string_velocity.split(",")
+
+            # debugging
+            print(command_string_velocity)
 
             # check the len of each element in the list
             for i in range(len(command_string_position)):

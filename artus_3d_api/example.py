@@ -19,6 +19,9 @@ def user_input_function():
 
     return input("Enter command to send: ")
 
+def user_input_choose_joint():
+    return input("Enter joint number to control: \n")
+
 
 def example():
 
@@ -46,6 +49,11 @@ def example():
             grasp_pattern = hand_robot_api.get_grasp_command()
             print(grasp_pattern)
             hand_robot_api.send(grasp_pattern)
+        elif user_input == "6":
+            user_input = user_input_choose_joint()
+            user_act = input("choose actuator:\n0:both\n1:act1\n2:act2")
+            hand_robot_api.reset_low(user_input,user_act)
+
 
     #     # wait for 1 second
         time.sleep(1)
