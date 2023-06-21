@@ -21,13 +21,13 @@ class PythonEsp32Serial:
 
     def send(self, data):
         self.esp32.write(data.encode())
-        print(data.encode())
+        #print(data.encode())
 
     def receive(self):
         ## check if something is available to read
         if self.esp32.in_waiting > 0: # receive the message and decode it to utf-8
             data = self.esp32.readline()
-            print(data)
+            #print(data)
             return str(data)
         return ""
         

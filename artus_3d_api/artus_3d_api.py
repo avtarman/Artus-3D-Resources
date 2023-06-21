@@ -68,18 +68,13 @@ class Artus3DAPI:
         """
         # Get Robot States based on communication method
         states = ""
-        
-        states  = self.receive()
-        
-        # try:
-        #     states = ast.literal_eval(receive_message) # convert string to dictionary
-        # except:
-        #     states["ack"] = "0"
-        #     pass
-        # states = {'Position': position, 'Force': force, 'Temperature': temperature}
+
+        robot_states_command = "c10p[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n"
+
+        self.send (robot_states_command)
+        states  = ""
         while "position" not in states:
             states  = self.receive()
-        
         return states
     
     def get_debug_message(self):
@@ -87,13 +82,11 @@ class Artus3DAPI:
         Get Debug Message
         """
         # Get Debug Message based on communication method
+        debug_command = "c11p[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n"
+        self.send(debug_command)
         debug_message = ""
-        
-        debug_message  = self.receive()
-
-        while "position" in debug_message:
+        while "debug" not in debug_message:
             debug_message  = self.receive()
-
         return debug_message
     
 
