@@ -7,8 +7,6 @@ sys.path.append(current_directory)
 from artus_3d_api import Artus3DAPI
 
 
-
-
 def example():
 
     # array holder
@@ -46,12 +44,8 @@ def example():
         if i > 1:
             i=0
 
-        if i == 1:
-            if j >= 2: # after this many cycles ask to close program
-                input("stop now? close program")
-                j = 0
-
-
+        # wait for input 
+        input("continue?")
 
 
 if __name__ == '__main__':

@@ -13,6 +13,15 @@ API for controlling the Artus 3D dexterous robotic hand.
 │   └── python_uart.py # for UART communication
 ```
 
+## example.py procedure
+1. Power on the Artus 3D
+2. Connect to the Artus3DMkX wifi network and enter password
+3. run the example.py python script
+4. when prompted, enter "1" to start the hand and wait a couple seconds
+5. If the hand _NEEDS_ to be calibrated, enter "2"
+6. wait for the hand to finish calibrating all of it's joints before entering a new command
+7. modify the joint_control_command.txt file with desired joint position (0-90) degrees and joint speed (0-100) percent
+8. press "3" to move the fingers to their respective joint positions
 
 ## API Core
 
@@ -36,6 +45,11 @@ Provides an API for controlling the Artus 3D dexterous robotic hand.
 - **get_grasp_pattern(name: str)**: Returns the joint control command of a saved grasp pattern.
 - **get_robot_states()**: Gets the robot states from the hand.
 - **get_debug_message()**: Gets the debug message from the hand.
+
+## Joint Array Map
+numbered from thumb to pinky, base to tip.
+![hand joint array image](/public/Hand_Joint_Map.png)
+
 ## Procedure
 1. Power on the hand.
 2. Connect to the ESP32 WiFi network on your computer.
