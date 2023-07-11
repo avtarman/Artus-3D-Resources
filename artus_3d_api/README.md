@@ -87,6 +87,12 @@ hand_api.save_grasp_pattern(name='open', grasp_pattern=open_grasp_pattern)
 grab_pattern = hand_api.get_grasp_pattern(name="open")
 ## send the command to the hand
 hand_api.send(grasp_pattern)
+
+# 4. get robot states
+## get positional and force data from the hand
+### 1st array is joint angles 
+### 2nd array is current draw
+
 ```
 
 
