@@ -89,6 +89,22 @@ class Artus3DAPI:
             debug_message  = self.receive()
         return debug_message
     
+    def save_current_positions(self):
+        # get states back
+        states = self.get_robot_states()
+        states = self.get_robot_states()
+
+        # find substring
+        startInd = states.find("[")
+        endInd = states.find("]",startInd)
+
+        lastpositions = states[startInd:endInd]
+
+        # make a directory for saving positions
+        if not os.path.exists("pos"):
+            os.makedirs("pos")
+        # save last positions before shutdown
+        np.save("pos/lastpositions",lastpositions)
 
     def start(self):
         """

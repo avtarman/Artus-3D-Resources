@@ -14,25 +14,26 @@ def auto_example():
 
     input("ready to start demo?")
 
-    # while True:
+    while True:
     # start
     # hand_robot_api.start()
 
-    # wait
-    time.sleep(1)
+        # wait
+        time.sleep(1)
 
-    # move commands
-    with open('joint_commands_auto.txt',"r") as f:
-        line = "start"
-        while line:
-            if line == "\n": 
-                time.sleep(5)
-                print("waiting...")
-            line = f.readline()
-            hand_robot_api.send(line)
-            time.sleep(1)
+        # move commands
+        with open('joint_commands_auto.txt',"r") as f:
+            line = "start"
+            while line:
+                if line == "\n": 
+                    time.sleep(5)
+                    print("waiting...")
+                line = f.readline()
+                hand_robot_api.send(line)
+                time.sleep(10)
 
-    input("end demo")
+        # time.sleep(5)
+        # input("end demo")
         
 
 if __name__ == '__main__':
