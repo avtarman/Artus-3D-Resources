@@ -17,7 +17,9 @@ def user_input_function():
         "4. save grasp pattern\n"
         "5. use saved grasps\n"
         "6. to get robot states\n"
-        "7. to get debug messages")
+        "7. to get debug messages\n"
+        "8. to open hand\n"
+        "9. to perform grasp")
 
     return input("Enter command to send: ")
 
@@ -65,10 +67,22 @@ def example():
             debug_message = hand_robot_api.get_debug_message()
             print(debug_message)
         
-        elif user_input == '8':
-            user_input = user_input_choose_joint()
-            user_act = input("choose actuator:\n0:both\n1:act1\n2:act2")
-            hand_robot_api.reset_low(user_input,user_act)
+        # elif user_input == '8':
+        #     user_input = user_input_choose_joint()
+        #     user_act = input("choose actuator:\n0:both\n1:act1\n2:act2")
+        #     hand_robot_api.reset_low(user_input,user_act)
+        
+        elif user_input == "8":
+            with open("open.txt", "r") as f:
+                command = f.read()
+                if command != "":
+                    hand_robot_api.send(command)
+
+        elif user_input == "9":
+            with open("grasp.txt", "r") as f:
+                command = f.read()
+                if command != "":
+                    hand_robot_api.send(command)
 
     #     # wait for 1 second
         time.sleep(1)
