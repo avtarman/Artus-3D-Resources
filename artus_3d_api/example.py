@@ -19,7 +19,8 @@ def user_input_function():
         "6. to get robot states\n"
         "7. to get debug messages\n"
         "8. to open hand\n"
-        "9. to perform grasp")
+        "9. to perform grasp\n"
+        "10. firmware flash\n")
 
     return input("Enter command to send: ")
 
@@ -66,6 +67,7 @@ def example():
         elif user_input == "7":
             debug_message = hand_robot_api.get_debug_message()
             print(debug_message)
+            
         
         # elif user_input == '8':
         #     user_input = user_input_choose_joint()
@@ -83,6 +85,9 @@ def example():
                 command = f.read()
                 if command != "":
                     hand_robot_api.send(command)
+        
+        elif user_input == "10":
+            hand_robot_api.upload_bin()
 
     #     # wait for 1 second
         time.sleep(1)

@@ -61,6 +61,9 @@ class PythonServer:
         # send encoded data
         print(command)
         self.conn.send(command.encode(self.FORMAT))
+
+    def sendBytes(self,command):
+        self.conn.send(command)
     
     def close(self):
         if self.conn:

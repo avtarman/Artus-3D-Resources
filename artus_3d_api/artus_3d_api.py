@@ -225,6 +225,17 @@ class Artus3DAPI:
         elif self.communication_method == "UART": # uart
             self.python_serial.send(message)
 
+    def sendBytes(self, message):
+        # Send Command to Robot based on communication method
+        if self.communication_method == "WiFi": # wifi
+
+            # message = self._check_command_string(message)
+            # print(message)
+            # return
+            self.python_server.sendBytes(message)
+        elif self.communication_method == "UART": # uart
+            self.python_serial.send(message)
+
     def receive(self):
         """
         Recieve Command from Robot
@@ -304,3 +315,18 @@ class Artus3DAPI:
             command_string = "c176p"+command_string_position + "v" + command_string_velocity + "end\n"
 
         return command_string
+    
+    def upload_bin(self):
+        file = input("Enter file path: ")
+        self.robot_command = "c52p[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n"
+        # send command
+        self.send(self.robot_command)
+
+        # time.sleep(2)
+        with open(file, 'rb') as f:
+            data = f.read(128)
+            while(data):
+                self.sendBytes(data)
+                data = f.read(128)
+                time.sleep(0.2)
+
