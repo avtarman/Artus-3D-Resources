@@ -1,5 +1,6 @@
 import socket
 import time
+import os
 
 class PythonServer:
 
@@ -61,9 +62,6 @@ class PythonServer:
         # send encoded data
         print(command)
         self.conn.send(command.encode(self.FORMAT))
-
-    def sendBytes(self,command):
-        self.conn.send(command)
     
     def close(self):
         if self.conn:
@@ -73,3 +71,26 @@ class PythonServer:
         self.conn = None
         self.addr = None
         print("[SERVER CLOSED]")
+    
+    def upload_wifi(self): 
+        acknowledged = False
+
+        file_location = input("Enter file path: ")
+        file_size = os.path.getsize(file_location) 
+
+        self.conn.send("file ready\n".encode())
+        self.conn.send((str(file_size)+"\n").encode())
+        file = open(file_location, "rb")
+        file_data = file.read()
+        file.close
+        self.conn.sendall(file_data)
+
+        while not acknowledged:
+            message = self.conn.recv(1024).decode()
+            if message == "failed":
+                print("File upload failed\n")
+                acknowledged = True
+            elif message == "success":   
+                print("File upload successful\n")
+                acknowledged = True
+        

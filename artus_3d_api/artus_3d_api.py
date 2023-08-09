@@ -247,6 +247,14 @@ class Artus3DAPI:
             message  = self.python_serial.receive()
 
         return message
+    
+    def upload_file(self): # only WiFi is configured
+
+        if self.communication_method == "WiFi": # wifi
+            self.python_server.upload_file_wifi
+            
+        elif self.communication_method == "UART": # uart
+            self.python_serial.upload_file_serial
 
 
     def _parse_command(self):
@@ -316,17 +324,8 @@ class Artus3DAPI:
 
         return command_string
     
-    def upload_bin(self):
-        file = input("Enter file path: ")
-        self.robot_command = "c52p[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n"
-        # send command
-        self.send(self.robot_command)
 
-        # time.sleep(2)
-        with open(file, 'rb') as f:
-            data = f.read(128)
-            while(data):
-                self.sendBytes(data)
-                data = f.read(128)
-                time.sleep(0.2)
+
+            
+        
 

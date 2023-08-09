@@ -30,6 +30,10 @@ class PythonEsp32Serial:
             #print(data)
             return str(data)
         return ""
-        
+    
+    def upload_serial(self):
+        #implement later
+        return
+
     def close(self):
         self.esp32.close()

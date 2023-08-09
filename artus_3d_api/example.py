@@ -1,4 +1,3 @@
-
 import time
 
 import os
@@ -55,7 +54,7 @@ def example():
             if command != "":
                 hand_robot_api.send(command)
         elif user_input == "4":
-            hand_robot_api.save_grasp_pattern(grasp_pattern= command)
+            hand_robot_api.save_grasp_pattern(grasp_pattern = command)
         elif user_input == "5":
             grasp_pattern = hand_robot_api.get_grasp_command()
             #print(grasp_pattern)
@@ -63,7 +62,6 @@ def example():
         elif user_input == "6":
             robot_states  = hand_robot_api.get_robot_states()
             print(robot_states)
-
         elif user_input == "7":
             debug_message = hand_robot_api.get_debug_message()
             print(debug_message)
@@ -79,20 +77,22 @@ def example():
                 command = f.read()
                 if command != "":
                     hand_robot_api.send(command)
-
         elif user_input == "9":
             with open("grasp.txt", "r") as f:
                 command = f.read()
                 if command != "":
                     hand_robot_api.send(command)
-        
         elif user_input == "10":
-            hand_robot_api.upload_bin()
+            hand_robot_api.send("c52p[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n")
+            hand_robot_api.python_server.upload_wifi()
 
     #     # wait for 1 second
         time.sleep(1)
 
 
+
 if __name__ == '__main__':
     # main()
     example()
+
+
