@@ -110,9 +110,29 @@ class Artus3DAPI:
         """
         Shut down the robot
         """
-        self.robot_command = "c88p[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n"
+        # RTC
+        year = str(time.localtime().tm_year - 2000)
+        month = str(time.localtime().tm_mon)
+        day = str(time.localtime().tm_mday)
+        hour = str(time.localtime().tm_hour)
+        minute = str(time.localtime().tm_min)
+        second = str(time.localtime().tm_sec)
+
+        if int(month) < 10:
+            month = '0'+ month
+        if int(day) < 10:
+            day = '0'+ day
+        if int(hour) < 10:
+            hour = '0'+ hour
+        if int(minute) < 10:    
+            minute = '0'+ minute
+        if int(second) < 10:
+            second = '0'+ second
+
+        self.robot_command = "c88p[20,+"+year+",+"+month+",+"+day+",+"+hour+",+"+minute+",+"+second+",00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n"
         # send command
         self.send(self.robot_command)
+
 
     def reset_low(self,joint:str,act:str):
         """
