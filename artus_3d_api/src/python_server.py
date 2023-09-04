@@ -93,4 +93,11 @@ class PythonServer:
             elif message == "success":   
                 print("File upload successful\n")
                 acknowledged = True
+
+        print("Flashing...")
         
+        while True:
+            message = self.conn.recv(1024).decode()
+            if message == "FLASHED":
+                print("Firmware update complete")
+                break

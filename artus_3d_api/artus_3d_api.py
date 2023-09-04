@@ -271,7 +271,7 @@ class Artus3DAPI:
     def flash_file(self): # only WiFi is configured
         
         while True:
-            num = input("Enter STM num to flash or press enter to perform a full flash procedure: ")
+            num = input("Enter STM number (1-8) to flash or press enter to perform a full flash procedure: ")
             if num == '':
                 self.send("c52p[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n")
                 break
