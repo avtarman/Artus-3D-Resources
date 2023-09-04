@@ -268,13 +268,23 @@ class Artus3DAPI:
 
         return message
     
-    def upload_file(self): # only WiFi is configured
+    def flash_file(self): # only WiFi is configured
+        
+        while True:
+            num = input("Enter STM num to flash or press enter to perform a full flash procedure: ")
+            if num == '':
+                self.send("c52p[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n")
+                break
+            elif int(num) > 0 and int(num) <= 8:
+                self.send("c52p[+"+num+",00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n")
+                break
+            print("Invalid input. Please enter a number between 1 and 8 or press enter.")
 
         if self.communication_method == "WiFi": # wifi
-            self.python_server.upload_file_wifi
+            self.python_server.flash_wifi()
             
         elif self.communication_method == "UART": # uart
-            self.python_serial.upload_file_serial
+            self.python_serial.flash_serial()
 
 
     def _parse_command(self):

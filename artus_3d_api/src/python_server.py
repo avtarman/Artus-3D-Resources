@@ -72,7 +72,7 @@ class PythonServer:
         self.addr = None
         print("[SERVER CLOSED]")
     
-    def upload_wifi(self): 
+    def flash_wifi(self): 
         acknowledged = False
 
         file_location = input("Enter file path: ")

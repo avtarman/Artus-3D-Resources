@@ -31,7 +31,7 @@ class PythonEsp32Serial:
             return str(data)
         return ""
     
-    def upload_serial(self):
+    def flash_serial(self):
         #implement later
         return
 

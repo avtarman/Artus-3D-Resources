@@ -82,8 +82,7 @@ def example():
                 if command != "":
                     hand_robot_api.send(command)
         elif user_input == "10":
-            hand_robot_api.send("c52p[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n")
-            hand_robot_api.python_server.upload_wifi()
+            hand_robot_api.flash_file()
 
     #     # wait for 1 second
         time.sleep(1)
