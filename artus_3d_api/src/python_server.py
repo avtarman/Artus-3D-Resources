@@ -46,12 +46,12 @@ class PythonServer:
     def receive(self):
          # receive message of 1024 bytes (or an int)
         
-        msg = self.conn.recv(1024).decode(self.FORMAT)
+        msg = self.conn.recv(200).decode(self.FORMAT) # 193 is byte size of feedback string 
         ## TODO: make sure the packet is complete
         if msg != self.msg:
             self.msg = msg
-            return msg
-        return ""
+        return msg
+        # return "
     
     def send(self, command):
         # list to str
@@ -60,7 +60,7 @@ class PythonServer:
         command =  str(command)
         command += '\n'
         # send encoded data
-        print(command)
+        # print(command)
         self.conn.send(command.encode(self.FORMAT))
     
     def close(self):

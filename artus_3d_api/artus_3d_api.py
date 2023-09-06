@@ -1,7 +1,7 @@
 
 import time
 import numpy as np
-import ast
+import json
 
 import os
 current_directory = os.getcwd()
@@ -46,7 +46,7 @@ class Artus3DAPI:
             try:
                 self.python_serial.start()
                 ## clear buffer
-                for i in range(10):
+                for i in range(self.python_serial.esp32.in_waiting):
                     self.python_serial.receive()
             except Exception as e:
                 print("UART not connected")
@@ -67,15 +67,30 @@ class Artus3DAPI:
         Get Robot States
         """
         # Get Robot States based on communication method
-        states = ""
 
         robot_states_command = "c10p[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n"
 
-        self.send (robot_states_command)
-        states  = ""
-        while "position" not in states:
-            states  = self.receive()
-        return states
+        self.send(robot_states_command)
+        
+        # time.sleep(0.002)
+
+        states_str = ''
+
+        while states_str == '':
+            states_str = self.receive()
+
+        # if empty return
+        if "position" in states_str:
+            return None,None
+
+        # Create dict for easier access of data
+        valid_json_str = states_str.replace("'","\"")
+
+        # convert json string to dict
+        robot_states = json.loads(valid_json_str)
+        
+        # return both string and states dict
+        return states_str,robot_states
     
     def get_debug_message(self):
         """
@@ -195,7 +210,7 @@ class Artus3DAPI:
             self.grasp_patterns = self._load_grasp_patterns()
         
         # get grasp pattern
-        grasp_pattern = self.grasp_patterns[name+".npy"]
+        grasp_pattern = self.grasp_patterns[name+".npy"] # npy not working currently
         return grasp_pattern
     
     def _load_grasp_patterns(self):
@@ -239,7 +254,7 @@ class Artus3DAPI:
         if self.communication_method == "WiFi": # wifi
 
             message = self._check_command_string(message)
-            print(message)
+            # print(message)
             # return
             self.python_server.send(message)
         elif self.communication_method == "UART": # uart
@@ -310,7 +325,7 @@ class Artus3DAPI:
     def _check_command_string(self, command_string):
 
         if "c176" in command_string:
-            print(command_string)
+            # print(command_string)
             # replace unnesserary 
             command_string = command_string.replace("end\\n\n", "")
             command_string = command_string.replace("c176", "")
@@ -319,7 +334,7 @@ class Artus3DAPI:
             command_string = command_string.replace("]", "")
 
             #debugging
-            print(command_string)
+            # print(command_string)
 
             # seperate the two lists of joint angles and joint velocities
             command_string_position, command_string_velocity = command_string.split("v")
@@ -328,7 +343,7 @@ class Artus3DAPI:
             command_string_velocity = command_string_velocity.split(",")
 
             # debugging
-            print(command_string_velocity)
+            # print(command_string_velocity)
 
             # check the len of each element in the list
             for i in range(len(command_string_position)):

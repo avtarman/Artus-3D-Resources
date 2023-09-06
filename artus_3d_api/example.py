@@ -47,7 +47,7 @@ def example():
         elif user_input == "2":
             hand_robot_api.calibrate()
         elif user_input == "3":
-            with open("joint_control_command.txt", "r") as f:
+            with open("grasp_patterns\\joint_control_command.txt", "r") as f:
                 command = f.read()
         #     # send command to robot   
             if command != "":
@@ -59,7 +59,7 @@ def example():
             #print(grasp_pattern)
             hand_robot_api.send(grasp_pattern)
         elif user_input == "6":
-            robot_states  = hand_robot_api.get_robot_states()
+            robot_states_str,robot_states  = hand_robot_api.get_robot_states()
             print(robot_states)
         elif user_input == "7":
             debug_message = hand_robot_api.get_debug_message()
@@ -72,12 +72,12 @@ def example():
         #     hand_robot_api.reset_low(user_input,user_act)
         
         elif user_input == "8":
-            with open("open.txt", "r") as f:
+            with open("grasp_patterns/grasp_open.txt", "r") as f:
                 command = f.read()
                 if command != "":
                     hand_robot_api.send(command)
         elif user_input == "9":
-            with open("grasp.txt", "r") as f:
+            with open("grasp_patterns/grasp.txt", "r") as f:
                 command = f.read()
                 if command != "":
                     hand_robot_api.send(command)
