@@ -302,6 +302,23 @@ class Artus3DAPI:
             self.python_serial.flash_serial()
 
 
+    def upload_logs(self): # only wifi is configured
+        # self.send() -> send special command for retrieving files from SD card (63)
+        self.send("c63p[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n")
+        # setup directory on local machine if dir doesn't exist
+        if not os.path.exists('/Artus3D-Logs'):
+            os.mkdir('/Artus3D-Logs')
+
+        # retrieve files either over WiFi or UART
+        if self.communication_method == "WiFi": # wifi
+            self.python_server.upload_logs_wifi()
+            
+        elif self.communication_method == "UART": # uart
+            self.python_serial.upload_logs_serial()
+
+        # print success/error message
+        return
+
     def _parse_command(self):
                     
         """

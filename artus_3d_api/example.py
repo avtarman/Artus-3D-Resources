@@ -18,7 +18,8 @@ def user_input_function():
         "7. to get debug messages\n"
         "8. to open hand\n"
         "9. to perform grasp\n"
-        "10. firmware flash\n")
+        "10. firmware flash\n"
+        "11. retrieve logs\n")
 
     return input("Enter command to send: ")
 
@@ -83,6 +84,8 @@ def example():
                     hand_robot_api.send(command)
         elif user_input == "10":
             hand_robot_api.flash_file()
+        elif user_input == "11":
+            hand_robot_api.upload_logs()
 
     #     # wait for 1 second
         time.sleep(1)

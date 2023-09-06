@@ -32,7 +32,11 @@ class PythonEsp32Serial:
         return ""
     
     def flash_serial(self):
-        #implement later
+        # implement later
+        return
+    
+    def upload_logs_serial(self):
+        # receive files here
         return
 
     def close(self):

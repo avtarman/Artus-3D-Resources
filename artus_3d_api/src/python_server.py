@@ -101,3 +101,10 @@ class PythonServer:
             if message == "FLASHED":
                 print("Firmware update complete")
                 break
+    
+    def upload_logs_wifi():
+        while True:
+            # receive here
+            if """ finishing condition""":
+                break
+        return
