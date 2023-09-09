@@ -38,28 +38,11 @@ def example_control_loop():
     # start the hand
     hand_robot_api.start()
 
-    # test counter
-    
-    j = 0
+    hand_robot_api.command = 176
+    hand_robot_api.joint_angles = [20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20]
+    hand_robot_api.robot_command = hand_robot_api.parse_command()
+    print(hand_robot_api.robot_command)
 
-    while j < 10:
-        start = time.time()
-        i = 0
-        while i<100:
-            time.sleep(delay)
-            if i%2 == 1:
-                hand_robot_api.send(command_dict['open'])
-                time.sleep(delay)
-            else:
-                hand_robot_api.send(command_dict['close'])
-                time.sleep(delay)
-            # print("getting states")
-            # states_string,states = hand_robot_api.get_robot_states()
-            # print(states_string)
-            # if states['t'][2] == 26: print("yes") 
-            i+=1
-        end = time.time()
-        elapsed = end-start
-        print(f"Test {j} - Time elapsed: {elapsed} s")
-        j+=1
+    hand_robot_api.send(hand_robot_api.robot_command)
+
 example_control_loop()

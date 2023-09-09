@@ -254,7 +254,7 @@ class Artus3DAPI:
         if self.communication_method == "WiFi": # wifi
 
             message = self._check_command_string(message)
-            # print(message)
+            print(message)
             # return
             self.python_server.send(message)
         elif self.communication_method == "UART": # uart
@@ -319,7 +319,7 @@ class Artus3DAPI:
         # print success/error message
         return
 
-    def _parse_command(self):
+    def parse_command(self):
                     
         """
         Parse Robot Command
@@ -331,10 +331,9 @@ class Artus3DAPI:
         # parse command
 
 
-        self.robot_command = "c{0}p{1}v{2}a{3}end\n".format(self.command,
+        self.robot_command = "c{0}p{1}v{2}end\n".format(self.command,
                                                        self.joint_angles,
-                                                       self.joint_velocities,
-                                                       self.joint_accelerations)
+                                                       self.joint_velocities)
         
         return self.robot_command
     
@@ -344,7 +343,8 @@ class Artus3DAPI:
         if "c176" in command_string:
             # print(command_string)
             # replace unnesserary 
-            command_string = command_string.replace("end\\n\n", "")
+            command_string = command_string.replace("end\n", "")
+            command_string = command_string.replace("end", "")
             command_string = command_string.replace("c176", "")
             command_string = command_string.replace("p", "")
             command_string = command_string.replace("[", "")
@@ -367,7 +367,7 @@ class Artus3DAPI:
                 if len(command_string_position[i]) == 1:
                     command_string_position[i] = "+0" + command_string_position[i]
                 elif len(command_string_position[i]) == 2 and command_string_position[i][0] != "-":
-                    command_string_position[i] = "+" + command_string_position[i]
+                    command_string_position[i] = "0" + command_string_position[i]
                 elif len(command_string_position[i]) == 2:
                     command_string_position[i] = "-0" + command_string_position[i][1:]
 

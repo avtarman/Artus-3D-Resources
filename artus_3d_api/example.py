@@ -11,7 +11,7 @@ def user_input_function():
     print("Enter command to send:\n"
         "1. start\n"
         "2. calibrate\n"
-        "3. send command\n"
+        "3. xsend command\n"
         "4. save grasp pattern\n"
         "5. use saved grasps\n"
         "6. to get robot states\n"
@@ -67,10 +67,10 @@ def example():
             print(debug_message)
             
         
-        # elif user_input == '8':
-        #     user_input = user_input_choose_joint()
-        #     user_act = input("choose actuator:\n0:both\n1:act1\n2:act2")
-        #     hand_robot_api.reset_low(user_input,user_act)
+        elif user_input == '13':
+            user_input = user_input_choose_joint()
+            user_act = input("choose actuator:\n0:both\n1:act1\n2:act2")
+            hand_robot_api.reset_low(user_input,user_act)
         
         elif user_input == "8":
             with open("grasp_patterns/grasp_open.txt", "r") as f:
