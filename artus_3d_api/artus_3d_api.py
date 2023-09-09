@@ -24,9 +24,9 @@ class Artus3DAPI:
         self.port = port
 
         self.command = 0 # command for robot for calibration, target control, etc.
-        self.default_velocity = 70 # default velocity for velocity control
+        self.default_velocity = 85 # default velocity for velocity control
         self.joint_angles = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-        self.joint_velocities = [70,70,70,70,70,70,70,70,70,70,70,70,70,70,70,70]
+        self.joint_velocities = [85,85,85,85,85,85,85,85,85,85,85,85,85,85,85,85]
         self.joint_accelerations = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 
         self.robot_command = {'joint_angles': self.joint_angles,

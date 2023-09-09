@@ -23,7 +23,7 @@ delay = 0.01
 
 
 def example_control_loop():
-    hand_robot_api = Artus3DAPI('UART','COM5')
+    hand_robot_api = Artus3DAPI()
 
     time.sleep(1)
 
