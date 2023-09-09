@@ -37,12 +37,16 @@ def example_control_loop():
     
     # start the hand
     hand_robot_api.start()
+    
+    time.sleep(5)
 
     hand_robot_api.command = 176
-    hand_robot_api.joint_angles = [20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20]
+    hand_robot_api.joint_angles = [00,00,00,00,20,00,00,00,20,00,00,00,00,00,00,00]
     hand_robot_api.robot_command = hand_robot_api.parse_command()
     print(hand_robot_api.robot_command)
 
     hand_robot_api.send(hand_robot_api.robot_command)
+
+    time.sleep(1)
 
 example_control_loop()

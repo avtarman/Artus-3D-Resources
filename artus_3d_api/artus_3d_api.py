@@ -331,9 +331,7 @@ class Artus3DAPI:
         # parse command
 
 
-        self.robot_command = "c{0}p{1}v{2}end\n".format(self.command,
-                                                       self.joint_angles,
-                                                       self.joint_velocities)
+        self.robot_command = "c{0}p[{1}]v[{2}]end\n".format(self.command,','.join(map(str,self.joint_angles)),','.join(map(str,self.joint_velocities)))
         
         return self.robot_command
     
@@ -367,7 +365,7 @@ class Artus3DAPI:
                 if len(command_string_position[i]) == 1:
                     command_string_position[i] = "+0" + command_string_position[i]
                 elif len(command_string_position[i]) == 2 and command_string_position[i][0] != "-":
-                    command_string_position[i] = "0" + command_string_position[i]
+                    command_string_position[i] = "+" + command_string_position[i]
                 elif len(command_string_position[i]) == 2:
                     command_string_position[i] = "-0" + command_string_position[i][1:]
 
