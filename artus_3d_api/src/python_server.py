@@ -42,7 +42,10 @@ class PythonServer:
         print(f"[NEW CONNECTION] {self.addr} connected.")
         time.sleep(1)
 
-        
+    def close(self):
+        self.server_socket.close()
+        return 
+    
     def receive(self):
          # receive message of 1024 bytes (or an int)
         

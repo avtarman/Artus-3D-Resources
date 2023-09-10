@@ -341,7 +341,7 @@ class Artus3DAPI:
         if "c176" in command_string:
             # print(command_string)
             # replace unnesserary 
-            command_string = command_string.replace("end\n", "")
+            command_string = command_string.replace("\\n", "")
             command_string = command_string.replace("end", "")
             command_string = command_string.replace("c176", "")
             command_string = command_string.replace("p", "")
@@ -384,8 +384,10 @@ class Artus3DAPI:
 
         return command_string
     
-
-
+    def close(self):
+        # retrieve files either over WiFi or UART
+        if self.communication_method == "WiFi": # wifi
+            self.python_server.close()
             
-        
-
+        elif self.communication_method == "UART": # uart
+            self.python_serial.close()
