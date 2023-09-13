@@ -88,7 +88,7 @@ def example():
             hand_robot_api.upload_logs()
 
     #     # wait for 1 second
-        time.sleep(1)
+        time.sleep(0.1)
 
 
 
