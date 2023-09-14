@@ -79,6 +79,7 @@ class PythonServer:
         acknowledged = False
 
         file_location = input("Enter file path: ")
+        # file_location = "C:\\Users\\RyanLee\\Documents\\GitHub\\Artus-3D-actuators-fw\\Debug\\actuator_m0.bin"
         file_size = os.path.getsize(file_location) 
 
         self.conn.send("file ready\n".encode())
