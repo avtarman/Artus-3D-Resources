@@ -28,9 +28,11 @@ LHB = 'Artus3DTesterLHBLACK'
 LHW = 'Artus3DTesterLHWHITE'
 LHW = 'Artus3DTesterLHWHITE'
 RHW = 'Artus3DTesterRHWHITE'
+MK6LH = 'ArtusMK6LH'
+MK5LH = 'ArtusMk5LH'
 
 def example():
-    artus3d = Artus3DAPI(target_ssid=LHB,port='/dev/ttyUSB0',communication_method=UART)
+    artus3d = Artus3DAPI(target_ssid=MK5LH,port='/dev/ttyUSB0',communication_method=WIFI)
     while True:
         user_input = main_menu()
         match user_input:

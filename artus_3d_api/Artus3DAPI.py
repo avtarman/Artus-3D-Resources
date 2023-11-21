@@ -287,10 +287,10 @@ class Artus3DAPI:
         while True:
             num = input("Enter STM number (1-8) to flash or press enter to perform a full flash procedure: ")
             if num == '':
-                self._send("c052p[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n")
+                self._send("c099p[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n")
                 break
             elif int(num) > 0 and int(num) <= 8:
-                self._send("c052p[0"+num+",00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n")
+                self._send("c099p[0"+num+",00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n")
                 break
             logging.warning("Invalid input. Please enter a number between 1 and 8 or press enter.")
 
