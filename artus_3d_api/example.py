@@ -30,9 +30,10 @@ LHW = 'Artus3DTesterLHWHITE'
 RHW = 'Artus3DTesterRHWHITE'
 MK6LH = 'ArtusMK6LH'
 MK5LH = 'ArtusMk5LH'
+RW = 'Artus3DRW'
 
 def example():
-    artus3d = Artus3DAPI(target_ssid=MK5LH,port='/dev/ttyUSB0',communication_method=WIFI)
+    artus3d = Artus3DAPI(target_ssid='ArtusMK6LH',port='/dev/ttyUSB0',communication_method=WIFI)
     while True:
         user_input = main_menu()
         match user_input:
@@ -66,14 +67,13 @@ def example():
                 with open(os.path.join("grasp_patterns","grasp.txt"), "r") as f:
                     command = f.read()
                 if command != "":
-                    artus3d.robot_command = command
-                    artus3d.send_target_command()
+                    artus3d.send_target_command(command)
             case "11":
                 artus3d.flash_file() 
             case "12":
                 artus3d.sleep()
             case "13":
-                artus3d.close_connection()       
+                artus3d.close_connection()    
 
 if __name__ == '__main__':
     example()
