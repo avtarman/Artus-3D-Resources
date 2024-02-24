@@ -66,7 +66,7 @@ class PythonServer:
 
         # create server socket
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server_socket.settimeout(20)
+        self.server_socket.settimeout(10)
         self.server_socket.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
         self.server_socket.bind(self.esp)
 
@@ -147,7 +147,7 @@ class PythonServer:
     def receive(self):
          # receive message of 1024 bytes (or an int)
         
-        msg = self.conn.recv(200).decode(self.FORMAT) # 193 is byte size of feedback string 
+        msg = self.conn.recv(234).decode(self.FORMAT) # 193 is byte size of feedback string 
         ## TODO: make sure the packet is complete
         if msg != self.msg:
             self.msg = msg

@@ -22,6 +22,12 @@ Command options:
 11. firmware flash actuators
 12. save current hand state for power cycle
 13. close connection
+                 
+Fun Hand Signs:
+s : Spock
+p : Peace
+d : Devil Ears
+o : Number One
 Enter command: ''')
 
 LHB = 'Artus3DTesterLHBLACK'
@@ -74,6 +80,28 @@ def example():
                 artus3d.sleep()
             case "13":
                 artus3d.close_connection()    
+
+
+            case "s":
+                with open(os.path.join("grasp_patterns","spock.txt"), "r") as f:
+                    command = f.read()
+                if command != "":
+                    artus3d.send_target_command(command)
+            case "p":
+                with open(os.path.join("grasp_patterns","peace.txt"), "r") as f:
+                    command = f.read()
+                if command != "":
+                    artus3d.send_target_command(command)
+            case "d":
+                with open(os.path.join("grasp_patterns","devil_ears.txt"), "r") as f:
+                    command = f.read()
+                if command != "":
+                    artus3d.send_target_command(command)
+            case "o":
+                with open(os.path.join("grasp_patterns","one.txt"), "r") as f:
+                    command = f.read()
+                if command != "":
+                    artus3d.send_target_command(command)
 
 if __name__ == '__main__':
     example()

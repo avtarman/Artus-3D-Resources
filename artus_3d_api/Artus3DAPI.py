@@ -192,6 +192,11 @@ class Artus3DAPI:
 
         self._send("c010p"+self.empty_message)
 
+        start = time.perf_counter()
+
+        while time.perf_counter() - start < 0.0001:
+            pass  
+
         str_return = ''
         while str_return == '':
             str_return = self._receive()
