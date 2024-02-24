@@ -28,6 +28,7 @@ s : Spock
 p : Peace
 d : Devil Ears
 o : Number One
+l : pinch
 Enter command: ''')
 
 LHB = 'Artus3DTesterLHBLACK'
@@ -99,6 +100,16 @@ def example():
                     artus3d.send_target_command(command)
             case "o":
                 with open(os.path.join("grasp_patterns","one.txt"), "r") as f:
+                    command = f.read()
+                if command != "":
+                    artus3d.send_target_command(command)
+            case "h":
+                with open(os.path.join("grasp_patterns","scouts_honour.txt"), "r") as f:
+                    command = f.read()
+                if command != "":
+                    artus3d.send_target_command(command)
+            case "l":
+                with open(os.path.join("grasp_patterns","pinch.txt"), "r") as f:
                     command = f.read()
                 if command != "":
                     artus3d.send_target_command(command)
