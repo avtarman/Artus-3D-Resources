@@ -145,12 +145,31 @@ class Artus3DAPI:
     '''
     def send_target_command(self,cmd=None):
         if cmd:
-            self._send(cmd)
+            if self.hand == 'right':
+                # find position index
+                index = cmd.find('[')
+                # create list from string
+                string_list = list(cmd)
+                index+=1 # increment 1 index for start of position
+                # iterate through angles
+                for i in range(16):
+                    if i in [1,5,8,11,14]: # positions of spreads
+                        if abs(int(cmd[index:index+3])) > 0: # only change if absolute value is greater than 0
+                            if string_list[index] == '-':
+                                string_list[index] = '+'
+                            else:
+                                string_list[index] = '-'
+                    index += 4
+                cmd = ''.join(string_list)
+                self._send(cmd)
             return None
         self.command = self.target_cmd
 
         for joint_name,joint in self.joints.items():
             joint.check_input_constraints()
+            if self.hand == 'right':
+                if 'spread' in joint_name:
+                    joint.input_angle = -joint.input_angle
 
         # set the command
         self.robot_command = 'c{0}p[{1}]v[{2}]end\n'.format(

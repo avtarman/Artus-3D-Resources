@@ -40,7 +40,7 @@ MK5LH = 'ArtusMk5LH'
 RW = 'Artus3DRW'
 
 def example():
-    artus3d = Artus3DAPI(target_ssid='ArtusMK6LH',port='/dev/ttyUSB0',communication_method=WIFI)
+    artus3d = Artus3DAPI(target_ssid='ArtusMK6RH',port='/dev/ttyUSB0',communication_method=WIFI,hand='right')
     while True:
         user_input = main_menu()
         match user_input:
