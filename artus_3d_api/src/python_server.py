@@ -66,7 +66,7 @@ class PythonServer:
 
         # create server socket
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server_socket.settimeout(5)
+        self.server_socket.settimeout(10)
         self.server_socket.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
         self.server_socket.bind(self.esp)
 
@@ -147,7 +147,7 @@ class PythonServer:
     def receive(self):
          # receive message of 1024 bytes (or an int)
         
-        msg = self.conn.recv(200).decode(self.FORMAT) # 193 is byte size of feedback string 
+        msg = self.conn.recv(234).decode(self.FORMAT) # 193 is byte size of feedback string 
         ## TODO: make sure the packet is complete
         if msg != self.msg:
             self.msg = msg
@@ -159,7 +159,7 @@ class PythonServer:
         # command = ','.join([str(x) for x in command])
         # add a \n at the end of the str
         command =  str(command)
-        command += '\n'
+        # command += '\n'
         # send encoded data
         # print(command)
         self.conn.send(command.encode(self.FORMAT))
@@ -176,9 +176,11 @@ class PythonServer:
     def flash_wifi(self): 
         acknowledged = False
 
-        file_location = input("Enter file path: ")
-        # file_location = "C:\\Users\\RyanLee\\Documents\\GitHub\\Artus-3D-actuators-fw\\Debug\\actuator_m0.bin"
+        # file_location = input("Enter file path: ")
+        file_location = "/home/ryan/Documents/Artus-3D-actuators-fw/build/actuator_m0.bin"
         file_size = os.path.getsize(file_location) 
+
+        print("File size of upload = "+str(file_size))
 
         self.conn.send("file ready\n".encode())
         self.conn.send((str(file_size)+"\n").encode())

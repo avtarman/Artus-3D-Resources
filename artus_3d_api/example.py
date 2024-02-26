@@ -22,6 +22,13 @@ Command options:
 11. firmware flash actuators
 12. save current hand state for power cycle
 13. close connection
+                 
+Fun Hand Signs:
+s : Spock
+p : Peace
+d : Devil Ears
+o : Number One
+l : pinch
 Enter command: ''')
 
 LHB = 'Artus3DTesterLHBLACK'
@@ -30,9 +37,10 @@ LHW = 'Artus3DTesterLHWHITE'
 RHW = 'Artus3DTesterRHWHITE'
 MK6LH = 'ArtusMK6LH'
 MK5LH = 'ArtusMk5LH'
+RW = 'Artus3DRW'
 
 def example():
-    artus3d = Artus3DAPI(target_ssid=MK5LH,port='/dev/ttyUSB0',communication_method=WIFI)
+    artus3d = Artus3DAPI(target_ssid='ArtusMK6RH',port='/dev/ttyUSB0',communication_method=WIFI,hand='right')
     while True:
         user_input = main_menu()
         match user_input:
@@ -66,14 +74,45 @@ def example():
                 with open(os.path.join("grasp_patterns","grasp.txt"), "r") as f:
                     command = f.read()
                 if command != "":
-                    artus3d.robot_command = command
-                    artus3d.send_target_command()
+                    artus3d.send_target_command(command)
             case "11":
                 artus3d.flash_file() 
             case "12":
                 artus3d.sleep()
             case "13":
-                artus3d.close_connection()       
+                artus3d.close_connection()    
+
+
+            case "s":
+                with open(os.path.join("grasp_patterns","spock.txt"), "r") as f:
+                    command = f.read()
+                if command != "":
+                    artus3d.send_target_command(command)
+            case "p":
+                with open(os.path.join("grasp_patterns","peace.txt"), "r") as f:
+                    command = f.read()
+                if command != "":
+                    artus3d.send_target_command(command)
+            case "d":
+                with open(os.path.join("grasp_patterns","devil_ears.txt"), "r") as f:
+                    command = f.read()
+                if command != "":
+                    artus3d.send_target_command(command)
+            case "o":
+                with open(os.path.join("grasp_patterns","one.txt"), "r") as f:
+                    command = f.read()
+                if command != "":
+                    artus3d.send_target_command(command)
+            case "h":
+                with open(os.path.join("grasp_patterns","scouts_honour.txt"), "r") as f:
+                    command = f.read()
+                if command != "":
+                    artus3d.send_target_command(command)
+            case "l":
+                with open(os.path.join("grasp_patterns","pinch.txt"), "r") as f:
+                    command = f.read()
+                if command != "":
+                    artus3d.send_target_command(command)
 
 if __name__ == '__main__':
     example()
