@@ -159,9 +159,16 @@ class Artus3DAPI:
                                 string_list[index] = '+'
                             else:
                                 string_list[index] = '-'
+                    # thumb changes
+                    elif i == 2:
+                        temp = string_list[index:index+3]
+                    elif i == 3:
+                        string_list[index-4:index-1] = string_list[index:index+3]
+                        string_list [index:index+3] = temp 
                     index += 4
+                    
                 cmd = ''.join(string_list)
-                self._send(cmd)
+            self._send(cmd)
             return None
         self.command = self.target_cmd
 
