@@ -1,0 +1,1116 @@
+<robot name="Artus3D_RightHand">
+<link name="right_-forearm_and_palm_subassembly">
+<visual>
+<origin xyz="-0.025099999999999754452 0.013609999999999483622 -0.008062086112100940935" rpy="-1.570796326794896558 1.570796326794896558 0" />
+<geometry>
+<mesh filename="meshes/connector_2.stl"/>
+</geometry>
+<material name="connector_2_material">
+<color rgba="0.79215686274509800047 0.81960784313725487671 0.93333333333333334814 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.025099999999999754452 0.013609999999999483622 -0.008062086112100940935" rpy="-1.570796326794896558 1.570796326794896558 0" />
+<geometry>
+<mesh filename="meshes/connector_2.stl"/>
+</geometry>
+</collision>
+<visual>
+<origin xyz="0.0079999999999999047567 0.17138739999999838548 -0.01336487137623817642" rpy="-3.141592653589793116 5.4234187233944715765e-30 3.0327332911413961158e-16" />
+<geometry>
+<mesh filename="meshes/front_palm_l.stl"/>
+</geometry>
+<material name="front_palm_l_material">
+<color rgba="0.26274509803921569651 0.28235294117647058432 0.30196078431372547213 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0.0079999999999999047567 0.17138739999999838548 -0.01336487137623817642" rpy="-3.141592653589793116 5.4234187233944715765e-30 3.0327332911413961158e-16" />
+<geometry>
+<mesh filename="meshes/front_palm_l.stl"/>
+</geometry>
+</collision>
+<visual>
+<origin xyz="0.0079999999999999047567 0.17138739999999838548 -0.01336487137623817642" rpy="-3.141592653589793116 5.4234187233944715765e-30 3.0327332911413961158e-16" />
+<geometry>
+<mesh filename="meshes/r_forearm_back_cover.stl"/>
+</geometry>
+<material name="r_forearm_back_cover_material">
+<color rgba="0.26274509803921569651 0.28235294117647058432 0.30196078431372547213 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0.0079999999999999047567 0.17138739999999838548 -0.01336487137623817642" rpy="-3.141592653589793116 5.4234187233944715765e-30 3.0327332911413961158e-16" />
+<geometry>
+<mesh filename="meshes/r_forearm_back_cover.stl"/>
+</geometry>
+</collision>
+<visual>
+<origin xyz="0.0079999999999999047567 0.17138739999999838548 -0.01336487137623817642" rpy="-3.141592653589793116 5.4234187233944715765e-30 3.0327332911413961158e-16" />
+<geometry>
+<mesh filename="meshes/back_palm_l.stl"/>
+</geometry>
+<material name="back_palm_l_material">
+<color rgba="0.26274509803921569651 0.28235294117647058432 0.30196078431372547213 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0.0079999999999999047567 0.17138739999999838548 -0.01336487137623817642" rpy="-3.141592653589793116 5.4234187233944715765e-30 3.0327332911413961158e-16" />
+<geometry>
+<mesh filename="meshes/back_palm_l.stl"/>
+</geometry>
+</collision>
+<visual>
+<origin xyz="0.035046330548281989792 0.24589133671515578383 -0.0017148713762385069028" rpy="-3.141592653589793116 -2.5884172552799687698e-15 -1.6406094968746700591" />
+<geometry>
+<mesh filename="meshes/d5_-_lindex.stl"/>
+</geometry>
+<material name="d5_-_lindex_material">
+<color rgba="0.76862745098039220171 0.88627450980392152857 0.95294117647058818044 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0.035046330548281989792 0.24589133671515578383 -0.0017148713762385069028" rpy="-3.141592653589793116 -2.5884172552799687698e-15 -1.6406094968746700591" />
+<geometry>
+<mesh filename="meshes/d5_-_lindex.stl"/>
+</geometry>
+</collision>
+<visual>
+<origin xyz="-0.057699986999999640369 0.0062349999999995117661 -0.008062086112100940935" rpy="-1.570796326794896558 8.0686821653836969142e-17 -1.7347249794050797149e-16" />
+<geometry>
+<mesh filename="meshes/7138k48_nano_m8_connector_12.stl"/>
+</geometry>
+<material name="7138k48_nano_m8_connector_12_material">
+<color rgba="0.2313725490196078538 0.38039215686274507888 0.7058823529411765163 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.057699986999999640369 0.0062349999999995117661 -0.008062086112100940935" rpy="-1.570796326794896558 8.0686821653836969142e-17 -1.7347249794050797149e-16" />
+<geometry>
+<mesh filename="meshes/7138k48_nano_m8_connector_12.stl"/>
+</geometry>
+</collision>
+<visual>
+<origin xyz="-0.057699986999999640369 0.0062349999999995117661 -0.008062086112100940935" rpy="-1.570796326794896558 8.0686821653836969142e-17 -1.7347249794050797149e-16" />
+<geometry>
+<mesh filename="meshes/7138k48_nano_m8_connector_1.stl"/>
+</geometry>
+<material name="7138k48_nano_m8_connector_1_material">
+<color rgba="0.98039215686274505668 0.71372549019607844922 0.0039215686274509803377 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.057699986999999640369 0.0062349999999995117661 -0.008062086112100940935" rpy="-1.570796326794896558 8.0686821653836969142e-17 -1.7347249794050797149e-16" />
+<geometry>
+<mesh filename="meshes/7138k48_nano_m8_connector_1.stl"/>
+</geometry>
+</collision>
+<visual>
+<origin xyz="0.0080000000000000626166 0.24913739999999620633 -0.004714871376238372741" rpy="3.141592653589793116 -2.522287934070094894e-15 -1.57079632679489678" />
+<geometry>
+<mesh filename="meshes/d5_-_lmiddle.stl"/>
+</geometry>
+<material name="d5_-_lmiddle_material">
+<color rgba="0.76862745098039220171 0.88627450980392152857 0.95294117647058818044 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0.0080000000000000626166 0.24913739999999620633 -0.004714871376238372741" rpy="3.141592653589793116 -2.522287934070094894e-15 -1.57079632679489678" />
+<geometry>
+<mesh filename="meshes/d5_-_lmiddle.stl"/>
+</geometry>
+</collision>
+<visual>
+<origin xyz="-0.057699986999999640369 0.0062349999999995117661 -0.008062086112100940935" rpy="-1.570796326794896558 8.0686821653836969142e-17 -1.7347249794050797149e-16" />
+<geometry>
+<mesh filename="meshes/7138k48_nano_m8_connector_5.stl"/>
+</geometry>
+<material name="7138k48_nano_m8_connector_5_material">
+<color rgba="0.91764705882352937127 0.91764705882352937127 0.91764705882352937127 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.057699986999999640369 0.0062349999999995117661 -0.008062086112100940935" rpy="-1.570796326794896558 8.0686821653836969142e-17 -1.7347249794050797149e-16" />
+<geometry>
+<mesh filename="meshes/7138k48_nano_m8_connector_5.stl"/>
+</geometry>
+</collision>
+<visual>
+<origin xyz="-0.057699986999999640369 0.0062349999999995117661 -0.008062086112100940935" rpy="-1.570796326794896558 8.0686821653836969142e-17 -1.7347249794050797149e-16" />
+<geometry>
+<mesh filename="meshes/7138k48_nano_m8_connector_11.stl"/>
+</geometry>
+<material name="7138k48_nano_m8_connector_11_material">
+<color rgba="0.64705882352941179736 0.64705882352941179736 0.64705882352941179736 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.057699986999999640369 0.0062349999999995117661 -0.008062086112100940935" rpy="-1.570796326794896558 8.0686821653836969142e-17 -1.7347249794050797149e-16" />
+<geometry>
+<mesh filename="meshes/7138k48_nano_m8_connector_11.stl"/>
+</geometry>
+</collision>
+<visual>
+<origin xyz="0.0079999999999999047567 0.17138739999999838548 -0.01336487137623817642" rpy="-3.141592653589793116 5.4234187233944715765e-30 3.0327332911413961158e-16" />
+<geometry>
+<mesh filename="meshes/forearm_base_plate.stl"/>
+</geometry>
+<material name="forearm_base_plate_material">
+<color rgba="0.91764705882352937127 0.91764705882352937127 0.91764705882352937127 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0.0079999999999999047567 0.17138739999999838548 -0.01336487137623817642" rpy="-3.141592653589793116 5.4234187233944715765e-30 3.0327332911413961158e-16" />
+<geometry>
+<mesh filename="meshes/forearm_base_plate.stl"/>
+</geometry>
+</collision>
+<visual>
+<origin xyz="-0.057699986999999640369 0.0062349999999995117661 -0.008062086112100940935" rpy="-1.570796326794896558 8.0686821653836969142e-17 -1.7347249794050797149e-16" />
+<geometry>
+<mesh filename="meshes/7138k48_nano_m8_connector_4.stl"/>
+</geometry>
+<material name="7138k48_nano_m8_connector_4_material">
+<color rgba="0.2313725490196078538 0.38039215686274507888 0.7058823529411765163 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.057699986999999640369 0.0062349999999995117661 -0.008062086112100940935" rpy="-1.570796326794896558 8.0686821653836969142e-17 -1.7347249794050797149e-16" />
+<geometry>
+<mesh filename="meshes/7138k48_nano_m8_connector_4.stl"/>
+</geometry>
+</collision>
+<visual>
+<origin xyz="-0.018149999999999777422 0.013609999999999566889 0.020237913887898896503" rpy="1.57079632679489678 0.52359877559830048099 1.570796326794896558" />
+<geometry>
+<mesh filename="meshes/c-t4140l12041-000.stl"/>
+</geometry>
+<material name="c-t4140l12041-000_material">
+<color rgba="0.6941176470588235059 0.74117647058823532547 0.78823529411764703401 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.018149999999999777422 0.013609999999999566889 0.020237913887898896503" rpy="1.57079632679489678 0.52359877559830048099 1.570796326794896558" />
+<geometry>
+<mesh filename="meshes/c-t4140l12041-000.stl"/>
+</geometry>
+</collision>
+<visual>
+<origin xyz="0.063565230829046442951 0.11880288651812657974 0.083840252677282151028" rpy="-2.0752759914175729072 1.0057357117289735804 3.1415926535897926719" />
+<geometry>
+<mesh filename="meshes/t5.stl"/>
+</geometry>
+<material name="t5_material">
+<color rgba="0.76862745098039220171 0.88627450980392152857 0.95294117647058818044 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0.063565230829046442951 0.11880288651812657974 0.083840252677282151028" rpy="-2.0752759914175729072 1.0057357117289735804 3.1415926535897926719" />
+<geometry>
+<mesh filename="meshes/t5.stl"/>
+</geometry>
+</collision>
+<visual>
+<origin xyz="-0.057699986999999640369 0.0062349999999995117661 -0.008062086112100940935" rpy="-1.570796326794896558 8.0686821653836969142e-17 -1.7347249794050797149e-16" />
+<geometry>
+<mesh filename="meshes/7138k48_nano_m8_connector_6.stl"/>
+</geometry>
+<material name="7138k48_nano_m8_connector_6_material">
+<color rgba="0.76862745098039220171 0.88627450980392152857 0.95294117647058818044 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.057699986999999640369 0.0062349999999995117661 -0.008062086112100940935" rpy="-1.570796326794896558 8.0686821653836969142e-17 -1.7347249794050797149e-16" />
+<geometry>
+<mesh filename="meshes/7138k48_nano_m8_connector_6.stl"/>
+</geometry>
+</collision>
+<visual>
+<origin xyz="-0.039349999999999704658 0.014171490036537262927 0.019987922417117141155" rpy="-1.57079632679489678 -2.3314683517128326792e-15 -1.570796326794896558" />
+<geometry>
+<mesh filename="meshes/c-t41514c9l14-002.stl"/>
+</geometry>
+<material name="c-t41514c9l14-002_material">
+<color rgba="0.61568627450980395466 0.81176470588235294379 0.92941176470588238168 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.039349999999999704658 0.014171490036537262927 0.019987922417117141155" rpy="-1.57079632679489678 -2.3314683517128326792e-15 -1.570796326794896558" />
+<geometry>
+<mesh filename="meshes/c-t41514c9l14-002.stl"/>
+</geometry>
+</collision>
+<visual>
+<origin xyz="0.0079999999999999047567 0.17138739999999838548 -0.01336487137623817642" rpy="-3.141592653589793116 5.4234187233944715765e-30 3.0327332911413961158e-16" />
+<geometry>
+<mesh filename="meshes/r_pinky_side_forearm_cover.stl"/>
+</geometry>
+<material name="r_pinky_side_forearm_cover_material">
+<color rgba="0.91764705882352937127 0.91764705882352937127 0.91764705882352937127 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0.0079999999999999047567 0.17138739999999838548 -0.01336487137623817642" rpy="-3.141592653589793116 5.4234187233944715765e-30 3.0327332911413961158e-16" />
+<geometry>
+<mesh filename="meshes/r_pinky_side_forearm_cover.stl"/>
+</geometry>
+</collision>
+<visual>
+<origin xyz="0.0079999999999999047567 0.17138739999999838548 -0.01336487137623817642" rpy="-3.141592653589793116 5.4234187233944715765e-30 3.0327332911413961158e-16" />
+<geometry>
+<mesh filename="meshes/r_forearm_front_cover.stl"/>
+</geometry>
+<material name="r_forearm_front_cover_material">
+<color rgba="0.26274509803921569651 0.28235294117647058432 0.30196078431372547213 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0.0079999999999999047567 0.17138739999999838548 -0.01336487137623817642" rpy="-3.141592653589793116 5.4234187233944715765e-30 3.0327332911413961158e-16" />
+<geometry>
+<mesh filename="meshes/r_forearm_front_cover.stl"/>
+</geometry>
+</collision>
+<visual>
+<origin xyz="-0.057699986999999640369 0.0062349999999995117661 -0.008062086112100940935" rpy="-1.570796326794896558 8.0686821653836969142e-17 -1.7347249794050797149e-16" />
+<geometry>
+<mesh filename="meshes/7138k48_nano_m8_connector_9.stl"/>
+</geometry>
+<material name="7138k48_nano_m8_connector_9_material">
+<color rgba="0.98039215686274505668 0.71372549019607844922 0.0039215686274509803377 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.057699986999999640369 0.0062349999999995117661 -0.008062086112100940935" rpy="-1.570796326794896558 8.0686821653836969142e-17 -1.7347249794050797149e-16" />
+<geometry>
+<mesh filename="meshes/7138k48_nano_m8_connector_9.stl"/>
+</geometry>
+</collision>
+<visual>
+<origin xyz="-0.057699986999999640369 0.0062349999999995117661 -0.008062086112100940935" rpy="-1.570796326794896558 8.0686821653836969142e-17 -1.7347249794050797149e-16" />
+<geometry>
+<mesh filename="meshes/7138k48_nano_m8_connector_3.stl"/>
+</geometry>
+<material name="7138k48_nano_m8_connector_3_material">
+<color rgba="0.64705882352941179736 0.64705882352941179736 0.64705882352941179736 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.057699986999999640369 0.0062349999999995117661 -0.008062086112100940935" rpy="-1.570796326794896558 8.0686821653836969142e-17 -1.7347249794050797149e-16" />
+<geometry>
+<mesh filename="meshes/7138k48_nano_m8_connector_3.stl"/>
+</geometry>
+</collision>
+<visual>
+<origin xyz="0.0079999999999999047567 0.17138739999999838548 -0.01336487137623817642" rpy="-3.141592653589793116 5.4234187233944715765e-30 3.0327332911413961158e-16" />
+<geometry>
+<mesh filename="meshes/forearm_front_heat_sink.stl"/>
+</geometry>
+<material name="forearm_front_heat_sink_material">
+<color rgba="0.91764705882352937127 0.91764705882352937127 0.91764705882352937127 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0.0079999999999999047567 0.17138739999999838548 -0.01336487137623817642" rpy="-3.141592653589793116 5.4234187233944715765e-30 3.0327332911413961158e-16" />
+<geometry>
+<mesh filename="meshes/forearm_front_heat_sink.stl"/>
+</geometry>
+</collision>
+<visual>
+<origin xyz="0.0080000000000000626166 0.17138739999999766384 -0.013364871376237964784" rpy="-3.1415926535897913396 1.4313686678903757259e-16 -1.1112954754289874996e-16" />
+<geometry>
+<mesh filename="meshes/palm_back_r.stl"/>
+</geometry>
+<material name="palm_back_r_material">
+<color rgba="0.26274509803921569651 0.28235294117647058432 0.30196078431372547213 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0.0080000000000000626166 0.17138739999999766384 -0.013364871376237964784" rpy="-3.1415926535897913396 1.4313686678903757259e-16 -1.1112954754289874996e-16" />
+<geometry>
+<mesh filename="meshes/palm_back_r.stl"/>
+</geometry>
+</collision>
+<visual>
+<origin xyz="-0.043294010592354839617 0.23659652304098566233 0.0012851286237618407549" rpy="3.1415926535897926719 6.6319954883948787931e-16 -1.4486232791552933197" />
+<geometry>
+<mesh filename="meshes/d5_-_lpinky.stl"/>
+</geometry>
+<material name="d5_-_lpinky_material">
+<color rgba="0.76862745098039220171 0.88627450980392152857 0.95294117647058818044 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.043294010592354839617 0.23659652304098566233 0.0012851286237618407549" rpy="3.1415926535897926719 6.6319954883948787931e-16 -1.4486232791552933197" />
+<geometry>
+<mesh filename="meshes/d5_-_lpinky.stl"/>
+</geometry>
+</collision>
+<visual>
+<origin xyz="-0.057699986999999640369 0.0062349999999995117661 -0.008062086112100940935" rpy="-1.570796326794896558 8.0686821653836969142e-17 -1.7347249794050797149e-16" />
+<geometry>
+<mesh filename="meshes/7138k48_nano_m8_connector_10.stl"/>
+</geometry>
+<material name="7138k48_nano_m8_connector_10_material">
+<color rgba="0.61568627450980395466 0.81176470588235294379 0.92941176470588238168 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.057699986999999640369 0.0062349999999995117661 -0.008062086112100940935" rpy="-1.570796326794896558 8.0686821653836969142e-17 -1.7347249794050797149e-16" />
+<geometry>
+<mesh filename="meshes/7138k48_nano_m8_connector_10.stl"/>
+</geometry>
+</collision>
+<visual>
+<origin xyz="0.0078000000000005287326 0.17138739999999619279 -0.013364871376237884987" rpy="-3.1415926535897917837 8.0686821653871950193e-17 -1.688474150743110369e-16" />
+<geometry>
+<mesh filename="meshes/palm_front_r.stl"/>
+</geometry>
+<material name="palm_front_r_material">
+<color rgba="0.26274509803921569651 0.28235294117647058432 0.30196078431372547213 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0.0078000000000005287326 0.17138739999999619279 -0.013364871376237884987" rpy="-3.1415926535897917837 8.0686821653871950193e-17 -1.688474150743110369e-16" />
+<geometry>
+<mesh filename="meshes/palm_front_r.stl"/>
+</geometry>
+</collision>
+<visual>
+<origin xyz="-0.057699986999999640369 0.0062349999999995117661 -0.008062086112100940935" rpy="-1.570796326794896558 8.0686821653836969142e-17 -1.7347249794050797149e-16" />
+<geometry>
+<mesh filename="meshes/7138k48_nano_m8_connector_7.stl"/>
+</geometry>
+<material name="7138k48_nano_m8_connector_7_material">
+<color rgba="0.97254901960784312376 0.52941176470588235947 0.0039215686274509803377 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.057699986999999640369 0.0062349999999995117661 -0.008062086112100940935" rpy="-1.570796326794896558 8.0686821653836969142e-17 -1.7347249794050797149e-16" />
+<geometry>
+<mesh filename="meshes/7138k48_nano_m8_connector_7.stl"/>
+</geometry>
+</collision>
+<visual>
+<origin xyz="-0.057699986999999640369 0.0062349999999995117661 -0.008062086112100940935" rpy="-1.570796326794896558 8.0686821653836969142e-17 -1.7347249794050797149e-16" />
+<geometry>
+<mesh filename="meshes/7138k48_nano_m8_connector_8.stl"/>
+</geometry>
+<material name="7138k48_nano_m8_connector_8_material">
+<color rgba="0.49803921568627451677 0.49803921568627451677 0.49803921568627451677 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.057699986999999640369 0.0062349999999995117661 -0.008062086112100940935" rpy="-1.570796326794896558 8.0686821653836969142e-17 -1.7347249794050797149e-16" />
+<geometry>
+<mesh filename="meshes/7138k48_nano_m8_connector_8.stl"/>
+</geometry>
+</collision>
+<visual>
+<origin xyz="0.0079999999999999047567 0.17138739999999838548 -0.01336487137623817642" rpy="-3.141592653589793116 5.4234187233944715765e-30 3.0327332911413961158e-16" />
+<geometry>
+<mesh filename="meshes/r_thumb_side_forearm_cover.stl"/>
+</geometry>
+<material name="r_thumb_side_forearm_cover_material">
+<color rgba="0.91764705882352937127 0.91764705882352937127 0.91764705882352937127 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0.0079999999999999047567 0.17138739999999838548 -0.01336487137623817642" rpy="-3.141592653589793116 5.4234187233944715765e-30 3.0327332911413961158e-16" />
+<geometry>
+<mesh filename="meshes/r_thumb_side_forearm_cover.stl"/>
+</geometry>
+</collision>
+<visual>
+<origin xyz="0.0078000000000005287326 0.17138739999999630381 -0.01336487137623786764" rpy="-3.1415926535897904515 8.0686821653872048801e-17 -4.6259492041892851877e-16" />
+<geometry>
+<mesh filename="meshes/palm_grip.stl"/>
+</geometry>
+<material name="palm_grip_material">
+<color rgba="1 1 1 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0.0078000000000005287326 0.17138739999999630381 -0.01336487137623786764" rpy="-3.1415926535897904515 8.0686821653872048801e-17 -4.6259492041892851877e-16" />
+<geometry>
+<mesh filename="meshes/palm_grip.stl"/>
+</geometry>
+</collision>
+<visual>
+<origin xyz="-0.057699986999999640369 0.0062349999999995117661 -0.008062086112100940935" rpy="-1.570796326794896558 8.0686821653836969142e-17 -1.7347249794050797149e-16" />
+<geometry>
+<mesh filename="meshes/7138k48_nano_m8_connector_2.stl"/>
+</geometry>
+<material name="7138k48_nano_m8_connector_2_material">
+<color rgba="0.61568627450980395466 0.81176470588235294379 0.92941176470588238168 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.057699986999999640369 0.0062349999999995117661 -0.008062086112100940935" rpy="-1.570796326794896558 8.0686821653836969142e-17 -1.7347249794050797149e-16" />
+<geometry>
+<mesh filename="meshes/7138k48_nano_m8_connector_2.stl"/>
+</geometry>
+</collision>
+<visual>
+<origin xyz="-0.018788342132245831884 0.24450351508949383361 -0.0017148713762382148187" rpy="3.141592653589793116 5.9969295794072213994e-16 -1.500983156715123279" />
+<geometry>
+<mesh filename="meshes/d5-_lring.stl"/>
+</geometry>
+<material name="d5-_lring_material">
+<color rgba="0.76862745098039220171 0.88627450980392152857 0.95294117647058818044 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.018788342132245831884 0.24450351508949383361 -0.0017148713762382148187" rpy="3.141592653589793116 5.9969295794072213994e-16 -1.500983156715123279" />
+<geometry>
+<mesh filename="meshes/d5-_lring.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="-9.9999382089141890533e-05 0.064166608240781700112 0.0017225184058983781989" rpy="0 0 0"/>
+<mass value="0.25195305876702372982" />
+<inertia ixx="0.00086496244124082528014" ixy="7.3010115954321035711e-07"  ixz="1.8030521852168538022e-06" iyy="0.00020193692035790235641" iyz="-1.1068846188418243752e-06" izz="0.00090898002504705924937" />
+</inertial>
+</link>
+
+<link name="part_1_1">
+<visual>
+<origin xyz="-0.0049999999999999489297 1.2143064331837649661e-17 -0.018500000000000099698" rpy="-1.4485681946286612004e-16 8.5979375613828697011e-16 -1.3871124876468463117e-18" />
+<geometry>
+<mesh filename="meshes/part_1_1.stl"/>
+</geometry>
+<material name="part_1_1_material">
+<color rgba="0.64705882352941179736 0.64705882352941179736 0.64705882352941179736 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.0049999999999999489297 1.2143064331837649661e-17 -0.018500000000000099698" rpy="-1.4485681946286612004e-16 8.5979375613828697011e-16 -1.3871124876468463117e-18" />
+<geometry>
+<mesh filename="meshes/part_1_1.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0 0 0" rpy="0 0 0"/>
+<mass value="0" />
+<inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+</inertial>
+</link>
+
+<link name="part_1_6">
+<visual>
+<origin xyz="-0.028552407289709619276 -0.007858976793889109122 -0.0060000000000051314369" rpy="-1.570796326794896558 9.2087746988800280313e-16 -3.4737542986285525174e-21" />
+<geometry>
+<mesh filename="meshes/part_1_6.stl"/>
+</geometry>
+<material name="part_1_6_material">
+<color rgba="0.61568627450980395466 0.81176470588235294379 0.92941176470588238168 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.028552407289709619276 -0.007858976793889109122 -0.0060000000000051314369" rpy="-1.570796326794896558 9.2087746988800280313e-16 -3.4737542986285525174e-21" />
+<geometry>
+<mesh filename="meshes/part_1_6.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0 0 0" rpy="0 0 0"/>
+<mass value="0" />
+<inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+</inertial>
+</link>
+
+<link name="part_1_12">
+<visual>
+<origin xyz="-0.01752480301803874263 -0.0071295923980049134491 -0.0050000000000002091383" rpy="-1.5707963267948970021 3.7809615218215366599e-16 5.4045675959656930847e-20" />
+<geometry>
+<mesh filename="meshes/part_1_12.stl"/>
+</geometry>
+<material name="part_1_12_material">
+<color rgba="0.91764705882352937127 0.91764705882352937127 0.91764705882352937127 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.01752480301803874263 -0.0071295923980049134491 -0.0050000000000002091383" rpy="-1.5707963267948970021 3.7809615218215366599e-16 5.4045675959656930847e-20" />
+<geometry>
+<mesh filename="meshes/part_1_12.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0 0 0" rpy="0 0 0"/>
+<mass value="0" />
+<inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+</inertial>
+</link>
+
+<link name="d1_urdf_mk_5_1">
+<visual>
+<origin xyz="-0.0090000000000002022826 -0.0059999999999999636957 -0.0047499999999967203873" rpy="-1.5707963267948961139 7.5354498513863890534e-17 -1.4565185079904793187e-20" />
+<geometry>
+<mesh filename="meshes/d1_urdf_mk_5_1.stl"/>
+</geometry>
+<material name="d1_urdf_mk_5_1_material">
+<color rgba="0.2313725490196078538 0.38039215686274507888 0.7058823529411765163 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.0090000000000002022826 -0.0059999999999999636957 -0.0047499999999967203873" rpy="-1.5707963267948961139 7.5354498513863890534e-17 -1.4565185079904793187e-20" />
+<geometry>
+<mesh filename="meshes/d1_urdf_mk_5_1.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0 0 0" rpy="0 0 0"/>
+<mass value="0" />
+<inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+</inertial>
+</link>
+
+<joint name="Rpinky_34" type="revolute">
+<origin xyz="-0.024999999999999994449 -2.8839777788114417945e-17 -0.00025000000000002277345" rpy="5.8531950530088390355e-17 5.1950536919798949372e-15 -1.5054163260527307232e-16" />
+<parent link="part_1_12" />
+<child link="d1_urdf_mk_5_1" />
+<axis xyz="0 0 1"/>
+<limit effort="1" velocity="20" lower="0" upper="1.570796326794896558"/>
+<joint_properties friction="0.0"/>
+</joint>
+
+<joint name="Rpinky_23" type="revolute">
+<origin xyz="-0.038000000000001005196 0.00075000000000000435242 -0.00075000000000013423984" rpy="-5.1007064378828638753e-19 -7.4453180216764473775e-15 -4.1004953941860625937e-19" />
+<parent link="part_1_6" />
+<child link="part_1_12" />
+<axis xyz="0 0 1"/>
+<limit effort="1" velocity="20" lower="0" upper="1.570796326794896558"/>
+<joint_properties friction="0.0"/>
+</joint>
+
+<joint name="Rpinky_12" type="revolute">
+<origin xyz="-0.014749999999999929834 -0.0060000000000000018596 -0.0095000000000000431322" rpy="1.570796326794896558 -0.00021543111717824177799 6.0797937546296663372e-15" />
+<parent link="part_1_1" />
+<child link="part_1_6" />
+<axis xyz="0 0 1"/>
+<limit effort="1" velocity="20" lower="0" upper="1.570796326794896558"/>
+<joint_properties friction="0.0"/>
+</joint>
+
+<joint name="Rpinky_01" type="revolute">
+<origin xyz="-0.033818669142604805555 0.15942605975087462133 -0.007464871376238052525" rpy="3.1415926535897926719 1.0399088061438540206e-15 -1.4486232791552933197" />
+<parent link="right_-forearm_and_palm_subassembly" />
+<child link="part_1_1" />
+<axis xyz="0 0 1"/>
+<limit effort="1" velocity="20" lower="-0.29670597283903604735" upper="0.29670597283903604735"/>
+<joint_properties friction="0.0"/>
+</joint>
+
+<link name="part_1_2">
+<visual>
+<origin xyz="-0.0049999999999999489297 1.4528309111305759416e-17 -0.018500000000000103167" rpy="-1.4485681946286604609e-16 8.5979375613828716732e-16 7.2214627010546480255e-18" />
+<geometry>
+<mesh filename="meshes/part_1_2.stl"/>
+</geometry>
+<material name="part_1_2_material">
+<color rgba="0.64705882352941179736 0.64705882352941179736 0.64705882352941179736 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.0049999999999999489297 1.4528309111305759416e-17 -0.018500000000000103167" rpy="-1.4485681946286604609e-16 8.5979375613828716732e-16 7.2214627010546480255e-18" />
+<geometry>
+<mesh filename="meshes/part_1_2.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0 0 0" rpy="0 0 0"/>
+<mass value="0" />
+<inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+</inertial>
+</link>
+
+<link name="part_1_7">
+<visual>
+<origin xyz="-0.028552407289709647031 -0.0078589767938891923887 -0.0060000000000051149571" rpy="-1.570796326794896558 9.199491557559354721e-16 -2.1514047435132745453e-18" />
+<geometry>
+<mesh filename="meshes/part_1_7.stl"/>
+</geometry>
+<material name="part_1_7_material">
+<color rgba="0.61568627450980395466 0.81176470588235294379 0.92941176470588238168 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.028552407289709647031 -0.0078589767938891923887 -0.0060000000000051149571" rpy="-1.570796326794896558 9.199491557559354721e-16 -2.1514047435132745453e-18" />
+<geometry>
+<mesh filename="meshes/part_1_7.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0 0 0" rpy="0 0 0"/>
+<mass value="0" />
+<inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+</inertial>
+</link>
+
+<link name="part_1_11">
+<visual>
+<origin xyz="-0.017524803018038770386 -0.0071295923980055925934 -0.005250000000000198952" rpy="-1.5707963267948970021 5.1885812075602097821e-16 -8.0683530477004213447e-20" />
+<geometry>
+<mesh filename="meshes/part_1_11.stl"/>
+</geometry>
+<material name="part_1_11_material">
+<color rgba="0.91764705882352937127 0.91764705882352937127 0.91764705882352937127 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.017524803018038770386 -0.0071295923980055925934 -0.005250000000000198952" rpy="-1.5707963267948970021 5.1885812075602097821e-16 -8.0683530477004213447e-20" />
+<geometry>
+<mesh filename="meshes/part_1_11.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0 0 0" rpy="0 0 0"/>
+<mass value="0" />
+<inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+</inertial>
+</link>
+
+<link name="d1_urdf_mk_5_4">
+<visual>
+<origin xyz="-0.0090000000000002022826 -0.005999999999999961961 -0.004749999999996722122" rpy="-1.5707963267948961139 6.4848608194024491322e-17 1.3303801138012662543e-19" />
+<geometry>
+<mesh filename="meshes/d1_urdf_mk_5_4.stl"/>
+</geometry>
+<material name="d1_urdf_mk_5_4_material">
+<color rgba="0.2313725490196078538 0.38039215686274507888 0.7058823529411765163 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.0090000000000002022826 -0.005999999999999961961 -0.004749999999996722122" rpy="-1.5707963267948961139 6.4848608194024491322e-17 1.3303801138012662543e-19" />
+<geometry>
+<mesh filename="meshes/d1_urdf_mk_5_4.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0 0 0" rpy="0 0 0"/>
+<mass value="0" />
+<inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+</inertial>
+</link>
+
+<joint name="Rring_34" type="revolute">
+<origin xyz="-0.024999999999999744649 -6.8521577301083880229e-16 -0.00050000000000053734101" rpy="6.4013650830963731476e-15 2.5773728246414229148e-14 2.1439584744543947209e-15" />
+<parent link="part_1_11" />
+<child link="d1_urdf_mk_5_4" />
+<axis xyz="0 0 1"/>
+<limit effort="1" velocity="20" lower="0" upper="1.570796326794896558"/>
+<joint_properties friction="0.0"/>
+</joint>
+
+<joint name="Rring_23" type="revolute">
+<origin xyz="-0.038000000000001032952 0.00074999999999993821609 -0.00074999999999998418626" rpy="2.3096603897899667067e-17 3.0361297258279414137e-15 1.6929381801025689136e-17" />
+<parent link="part_1_7" />
+<child link="part_1_11" />
+<axis xyz="0 0 1"/>
+<limit effort="1" velocity="20" lower="0" upper="1.570796326794896558"/>
+<joint_properties friction="0.0"/>
+</joint>
+
+<joint name="Rring_12" type="revolute">
+<origin xyz="-0.014749999999999957589 -0.0060000000000000001249 -0.0095000000000000431322" rpy="1.570796326794896558 -0.0084320066648236064594 7.4164223107249760894e-15" />
+<parent link="part_1_2" />
+<child link="part_1_7" />
+<axis xyz="0 0 1"/>
+<limit effort="1" velocity="20" lower="0" upper="1.570796326794896558"/>
+<joint_properties friction="0.0"/>
+</joint>
+
+<joint name="Rring_01" type="revolute">
+<origin xyz="-0.013364776298640251503 0.16694291018179480135 -0.010464871376238049985" rpy="3.141592653589793116 1.4667508759564250791e-15 -1.5009831567151239451" />
+<parent link="right_-forearm_and_palm_subassembly" />
+<child link="part_1_2" />
+<axis xyz="0 0 1"/>
+<limit effort="1" velocity="20" lower="-0.29670597283903604735" upper="0.29670597283903604735"/>
+<joint_properties friction="0.0"/>
+</joint>
+
+<link name="part_1_4">
+<visual>
+<origin xyz="-0.0049999999999999489297 3.8163916471489756077e-17 -0.018500000000000106637" rpy="-1.4485681946286607074e-16 8.5979375613828706871e-16 8.89295694995237463e-33" />
+<geometry>
+<mesh filename="meshes/part_1_4.stl"/>
+</geometry>
+<material name="part_1_4_material">
+<color rgba="0.64705882352941179736 0.64705882352941179736 0.64705882352941179736 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.0049999999999999489297 3.8163916471489756077e-17 -0.018500000000000106637" rpy="-1.4485681946286607074e-16 8.5979375613828706871e-16 8.89295694995237463e-33" />
+<geometry>
+<mesh filename="meshes/part_1_4.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0 0 0" rpy="0 0 0"/>
+<mass value="0" />
+<inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+</inertial>
+</link>
+
+<link name="part_1_5">
+<visual>
+<origin xyz="-0.028552407289709619276 -0.0078589767938891108567 -0.0060000000000051279675" rpy="-1.570796326794896558 9.1312390131153708957e-16 -1.8642824289394265503e-20" />
+<geometry>
+<mesh filename="meshes/part_1_5.stl"/>
+</geometry>
+<material name="part_1_5_material">
+<color rgba="0.61568627450980395466 0.81176470588235294379 0.92941176470588238168 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.028552407289709619276 -0.0078589767938891108567 -0.0060000000000051279675" rpy="-1.570796326794896558 9.1312390131153708957e-16 -1.8642824289394265503e-20" />
+<geometry>
+<mesh filename="meshes/part_1_5.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0 0 0" rpy="0 0 0"/>
+<mass value="0" />
+<inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+</inertial>
+</link>
+
+<link name="part_1_10">
+<visual>
+<origin xyz="-0.017524803018038770386 -0.0071295923980055943281 -0.0052500000000001972172" rpy="-1.5707963267948970021 5.1781495757909496288e-16 -1.0683552993335580234e-20" />
+<geometry>
+<mesh filename="meshes/part_1_10.stl"/>
+</geometry>
+<material name="part_1_10_material">
+<color rgba="0.91764705882352937127 0.91764705882352937127 0.91764705882352937127 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.017524803018038770386 -0.0071295923980055943281 -0.0052500000000001972172" rpy="-1.5707963267948970021 5.1781495757909496288e-16 -1.0683552993335580234e-20" />
+<geometry>
+<mesh filename="meshes/part_1_10.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0 0 0" rpy="0 0 0"/>
+<mass value="0" />
+<inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+</inertial>
+</link>
+
+<link name="d1_urdf_mk_5_2">
+<visual>
+<origin xyz="-0.0090000000000001467715 -0.0059999999999999628283 -0.0047499999999967203873" rpy="-1.5707963267948961139 8.3887279286790611569e-17 5.6298189567398223051e-22" />
+<geometry>
+<mesh filename="meshes/d1_urdf_mk_5_2.stl"/>
+</geometry>
+<material name="d1_urdf_mk_5_2_material">
+<color rgba="0.2313725490196078538 0.38039215686274507888 0.7058823529411765163 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.0090000000000001467715 -0.0059999999999999628283 -0.0047499999999967203873" rpy="-1.5707963267948961139 8.3887279286790611569e-17 5.6298189567398223051e-22" />
+<geometry>
+<mesh filename="meshes/d1_urdf_mk_5_2.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0 0 0" rpy="0 0 0"/>
+<mass value="0" />
+<inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+</inertial>
+</link>
+
+<joint name="Rmiddle_34" type="revolute">
+<origin xyz="-0.024999999999999994449 -7.0950190167451410161e-16 -0.00050000000000001085243" rpy="2.1112792124637222662e-15 4.2282540904663028594e-15 1.4703029479179967952e-15" />
+<parent link="part_1_10" />
+<child link="d1_urdf_mk_5_2" />
+<axis xyz="0 0 1"/>
+<limit effort="1" velocity="20" lower="0" upper="1.570796326794896558"/>
+<joint_properties friction="0.0"/>
+</joint>
+
+<joint name="Rmiddle_23" type="revolute">
+<origin xyz="-0.038000000000001060707 0.0007500000000000240849 -0.00074999999999999199252" rpy="-2.9397682155232943803e-19 -8.8817841970012507457e-15 -1.2706303861153298997e-19" />
+<parent link="part_1_5" />
+<child link="part_1_10" />
+<axis xyz="0 0 1"/>
+<limit effort="1" velocity="20" lower="0" upper="1.570796326794896558"/>
+<joint_properties friction="0.0"/>
+</joint>
+
+<joint name="Rmiddle_12" type="revolute">
+<origin xyz="-0.014749999999999874323 -0.0059999999999999758388 -0.0095000000000000466016" rpy="1.570796326794896558 -0.00023234185639790731867 1.7634682316292334031e-14" />
+<parent link="part_1_4" />
+<child link="part_1_5" />
+<axis xyz="0 0 1"/>
+<limit effort="1" velocity="20" lower="0" upper="1.570796326794896558"/>
+<joint_properties friction="0.0"/>
+</joint>
+
+<joint name="Rmiddle_01" type="revolute">
+<origin xyz="0.0080000000000000886374 0.17138739999999760832 -0.013464871376238059589" rpy="3.141592653589793116 -1.6544891460574565518e-15 -1.57079632679489678" />
+<parent link="right_-forearm_and_palm_subassembly" />
+<child link="part_1_4" />
+<axis xyz="0 0 1"/>
+<limit effort="1" velocity="20" lower="-0.29670597283903604735" upper="0.29670597283903604735"/>
+<joint_properties friction="0.0"/>
+</joint>
+
+<link name="part_1_3">
+<visual>
+<origin xyz="-0.0049999999999999766853 1.0408340855860842566e-17 -0.01831458565330660454" rpy="-1.4485681946286609539e-16 8.5979375613828736454e-16 -4.7960275618789167375e-18" />
+<geometry>
+<mesh filename="meshes/part_1_3.stl"/>
+</geometry>
+<material name="part_1_3_material">
+<color rgba="0.64705882352941179736 0.64705882352941179736 0.64705882352941179736 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.0049999999999999766853 1.0408340855860842566e-17 -0.01831458565330660454" rpy="-1.4485681946286609539e-16 8.5979375613828736454e-16 -4.7960275618789167375e-18" />
+<geometry>
+<mesh filename="meshes/part_1_3.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0 0 0" rpy="0 0 0"/>
+<mass value="0" />
+<inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+</inertial>
+</link>
+
+<link name="part_1_8">
+<visual>
+<origin xyz="-0.02855240728970959152 -0.007858976793889109122 -0.0060000000000051366411" rpy="-1.570796326794896558 9.0892961387071763956e-16 -1.4940706051306780416e-31" />
+<geometry>
+<mesh filename="meshes/part_1_8.stl"/>
+</geometry>
+<material name="part_1_8_material">
+<color rgba="0.61568627450980395466 0.81176470588235294379 0.92941176470588238168 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.02855240728970959152 -0.007858976793889109122 -0.0060000000000051366411" rpy="-1.570796326794896558 9.0892961387071763956e-16 -1.4940706051306780416e-31" />
+<geometry>
+<mesh filename="meshes/part_1_8.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0 0 0" rpy="0 0 0"/>
+<mass value="0" />
+<inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+</inertial>
+</link>
+
+<link name="part_1_9">
+<visual>
+<origin xyz="-0.01752480301803874263 -0.0071295923980055934607 -0.005250000000000198952" rpy="-1.5707963267948970021 5.0120804174936174337e-16 0" />
+<geometry>
+<mesh filename="meshes/part_1_9.stl"/>
+</geometry>
+<material name="part_1_9_material">
+<color rgba="0.91764705882352937127 0.91764705882352937127 0.91764705882352937127 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.01752480301803874263 -0.0071295923980055934607 -0.005250000000000198952" rpy="-1.5707963267948970021 5.0120804174936174337e-16 0" />
+<geometry>
+<mesh filename="meshes/part_1_9.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0 0 0" rpy="0 0 0"/>
+<mass value="0" />
+<inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+</inertial>
+</link>
+
+<link name="d1_urdf_mk_5_3">
+<visual>
+<origin xyz="-0.0090000000000001745271 -0.005999999999999961961 -0.0047499999999967151831" rpy="-1.5707963267948961139 8.1770595005316305547e-17 8.5623916193067716874e-33" />
+<geometry>
+<mesh filename="meshes/d1_urdf_mk_5_3.stl"/>
+</geometry>
+<material name="d1_urdf_mk_5_3_material">
+<color rgba="0.2313725490196078538 0.38039215686274507888 0.7058823529411765163 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.0090000000000001745271 -0.005999999999999961961 -0.0047499999999967151831" rpy="-1.5707963267948961139 8.1770595005316305547e-17 8.5623916193067716874e-33" />
+<geometry>
+<mesh filename="meshes/d1_urdf_mk_5_3.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0 0 0" rpy="0 0 0"/>
+<mass value="0" />
+<inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+</inertial>
+</link>
+
+<joint name="Rindex_34" type="revolute">
+<origin xyz="-0.024999999999999911182 -7.0212932690161267146e-16 0.00025000000000008348877" rpy="7.4240582250389793858e-29 3.5350409787859061583e-15 -4.1034671378148210959e-16" />
+<parent link="part_1_9" />
+<child link="d1_urdf_mk_5_3" />
+<axis xyz="0 0 1"/>
+<limit effort="1" velocity="20" lower="0" upper="1.570796326794896558"/>
+<joint_properties friction="0.0"/>
+</joint>
+
+<joint name="Rindex_23" type="revolute">
+<origin xyz="-0.038000000000001893374 0.00075000000000001107447 1.1796119636642288242e-16" rpy="2.2371602234002138676e-30 -3.4459329146801910899e-16 4.7808165792185426355e-32" />
+<parent link="part_1_8" />
+<child link="part_1_9" />
+<axis xyz="0 0 1"/>
+<limit effort="1" velocity="20" lower="0" upper="1.570796326794896558"/>
+<joint_properties friction="0.0"/>
+</joint>
+
+<joint name="Rindex_12" type="revolute">
+<origin xyz="-0.014749999999999929834 -0.0059999999999999983902 -0.0093145856533065410354" rpy="1.570796326794896558 -2.5728434691242042365e-15 4.2832613627015727541e-16" />
+<parent link="part_1_3" />
+<child link="part_1_8" />
+<axis xyz="0 0 1"/>
+<limit effort="1" velocity="20" lower="0" upper="1.570796326794896558"/>
+<joint_properties friction="0.0"/>
+</joint>
+
+<joint name="Rindex_01" type="revolute">
+<origin xyz="0.029622764714676740744 0.16833073180745675157 -0.010464871376238074271" rpy="-3.141592653589793116 -1.7205498556985711885e-15 -1.640609496874599893" />
+<parent link="right_-forearm_and_palm_subassembly" />
+<child link="part_1_3" />
+<axis xyz="0 0 1"/>
+<limit effort="1" velocity="20" lower="-0.29670597283903604735" upper="0.29670597283903604735"/>
+<joint_properties friction="0.0"/>
+</joint>
+
+<link name="part_1_13">
+<visual>
+<origin xyz="-0.0049999999999999836242 0 0.00062867965644038126261" rpy="-3.141592653589793116 2.8412180052083664035e-17 -1.0362953928005868636e-17" />
+<geometry>
+<mesh filename="meshes/part_1_13.stl"/>
+</geometry>
+<material name="part_1_13_material">
+<color rgba="0.2313725490196078538 0.38039215686274507888 0.7058823529411765163 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.0049999999999999836242 0 0.00062867965644038126261" rpy="-3.141592653589793116 2.8412180052083664035e-17 -1.0362953928005868636e-17" />
+<geometry>
+<mesh filename="meshes/part_1_13.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0 0 0" rpy="0 0 0"/>
+<mass value="0" />
+<inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+</inertial>
+</link>
+
+<link name="part_1_14">
+<visual>
+<origin xyz="-0.02927735623681019389 -0.0078134566939175864597 -0.0067500000000003251843" rpy="-1.570796326794896336 3.5957415181266592233e-16 -3.9248096413004967227e-17" />
+<geometry>
+<mesh filename="meshes/part_1_14.stl"/>
+</geometry>
+<material name="part_1_14_material">
+<color rgba="0.64705882352941179736 0.64705882352941179736 0.64705882352941179736 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.02927735623681019389 -0.0078134566939175864597 -0.0067500000000003251843" rpy="-1.570796326794896336 3.5957415181266592233e-16 -3.9248096413004967227e-17" />
+<geometry>
+<mesh filename="meshes/part_1_14.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0 0 0" rpy="0 0 0"/>
+<mass value="0" />
+<inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+</inertial>
+</link>
+
+<link name="part_1_15">
+<visual>
+<origin xyz="-0.01752480301803861773 -0.0071295923980051884028 -0.0062499999999999431011" rpy="-1.57079632679489678 5.9563816754776738757e-16 2.2641152229285319928e-17" />
+<geometry>
+<mesh filename="meshes/part_1_15.stl"/>
+</geometry>
+<material name="part_1_15_material">
+<color rgba="0.61568627450980395466 0.81176470588235294379 0.92941176470588238168 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.01752480301803861773 -0.0071295923980051884028 -0.0062499999999999431011" rpy="-1.57079632679489678 5.9563816754776738757e-16 2.2641152229285319928e-17" />
+<geometry>
+<mesh filename="meshes/part_1_15.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0 0 0" rpy="0 0 0"/>
+<mass value="0" />
+<inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+</inertial>
+</link>
+
+<link name="part_1_16">
+<visual>
+<origin xyz="-0.0089999999999997304378 -0.0060000000000001024736 -0.0057500000000045153881" rpy="-1.570796326794896558 3.4801876389228566673e-16 5.2417229469240623582e-17" />
+<geometry>
+<mesh filename="meshes/part_1_16.stl"/>
+</geometry>
+<material name="part_1_16_material">
+<color rgba="0.49803921568627451677 0.49803921568627451677 0.49803921568627451677 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="-0.0089999999999997304378 -0.0060000000000001024736 -0.0057500000000045153881" rpy="-1.570796326794896558 3.4801876389228566673e-16 5.2417229469240623582e-17" />
+<geometry>
+<mesh filename="meshes/part_1_16.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0 0 0" rpy="0 0 0"/>
+<mass value="0" />
+<inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+</inertial>
+</link>
+
+<joint name="Rthumb_34" type="revolute">
+<origin xyz="-0.02499999999999967526 -4.3021142204224815941e-16 0.0010000000000001674216" rpy="1.5100914587471960572e-14 6.0564979084029330379e-15 3.2240668987608148028e-15" />
+<parent link="part_1_15" />
+<child link="part_1_16" />
+<axis xyz="0 0 1"/>
+<limit effort="1" velocity="20" lower="0" upper="1.570796326794896558"/>
+<joint_properties friction="0.0"/>
+</joint>
+
+<joint name="Rthumb_23" type="revolute">
+<origin xyz="-0.038000000000000748457 0.00075000000000033373304 -0.00049999999999996574962" rpy="4.356240256702371216e-15 -1.0808697371298254794e-14 1.502608612091488014e-15" />
+<parent link="part_1_14" />
+<child link="part_1_15" />
+<axis xyz="0 0 1"/>
+<limit effort="1" velocity="20" lower="0" upper="1.570796326794896558"/>
+<joint_properties friction="0.0"/>
+</joint>
+
+<joint name="Rthumb_12" type="revolute">
+<origin xyz="-0.014749999999999992284 0.0067499999999999921174 -0.0077500000000000207612" rpy="-1.570796326794896558 0.1278135441885557555 -9.7711416361414100955e-15" />
+<parent link="part_1_13" />
+<child link="part_1_14" />
+<axis xyz="0 0 1"/>
+<limit effort="1" velocity="20" lower="0" upper="1.570796326794896558"/>
+<joint_properties friction="0.0"/>
+</joint>
+
+<joint name="Rthumb_01" type="revolute">
+<origin xyz="0.018462818719192957556 0.12624400835168420043 0.020375974317474648823" rpy="1.0663166621722175442 1.005735711728976689 3.1415926535897891192" />
+<parent link="right_-forearm_and_palm_subassembly" />
+<child link="part_1_13" />
+<axis xyz="0 0 1"/>
+<limit effort="1" velocity="20" lower="-0.64577182323790194296" upper="0.64577182323790194296"/>
+<joint_properties friction="0.0"/>
+</joint>
+
+
+</robot>
