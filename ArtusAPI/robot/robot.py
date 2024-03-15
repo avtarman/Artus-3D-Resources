@@ -44,11 +44,15 @@ class Robot:
             raise ValueError("Unknown robot type")
         
 
-    def set_joint_angles(self, joint_angles):
+    def set_joint_angles(self, joint_angles:dict,name:bool):
         """
         Set the joint angles of the hand
         """
-        return self.robot.set_joint_angles(joint_angles)
+        if name:
+            return self.robot.set_joint_angles_by_name(joint_angles)
+        else:
+            return self.robot.set_joint_angles(joint_angles)
+    
     
     def set_home_position(self):
         """
@@ -65,9 +69,6 @@ class Robot:
 
 def main():
     artus_robot = Robot(hand_type='left')
-    
-    joint_angles = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
-    print(artus_robot.set_joint_angles(joint_angles))
 
 if __name__ == "__main__":
     main()

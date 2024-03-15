@@ -13,21 +13,19 @@ class WiFiServer:
                  FORMAT = "utf-8", # Format of the message
                  DISCONNECT_MESSAGE = "!DISCONNECT", # Disconnection message from the client
                  port= 5050,
-                 reqReturnFlag= False,
-                 DONECOMMAND = 211,
-                 target_ssid="Artus3DTester"):
+                 target_ssid="Artus3DTester",
+                 password = None # possibility to take in password
+                 ):
         
         self.HEADER = HEADER
         self.FORMAT = FORMAT
         self.DISCONNECT_MESSAGE = DISCONNECT_MESSAGE
-        self.password = None
+        self.password = password
 
         self.target_ssid = target_ssid
         ip = None
-        # get ip automatically
-        # self.server = socket.gethostbyname(socket.gethostname()) # 192.168.4.2
-    
-
+        
+        # Looking for IP 192.168.4.2
         # Port Number
         self.port = port
 
@@ -35,7 +33,7 @@ class WiFiServer:
         self.conn = None
         self.addr = None
 
-        self.msg = ""
+        self.maximum_freq = None
 
     def _get_available_ip(self):
         gateway_ip = None
@@ -50,7 +48,8 @@ class WiFiServer:
                         try:
                             return address.address
                         except KeyError:
-                            print(f"Error no gateway infomration available")
+                            #TODO logging
+                            None
 
         return None
 
@@ -66,19 +65,21 @@ class WiFiServer:
 
         # create server socket
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server_socket.settimeout(5)
+        self.server_socket.settimeout(8)
         self.server_socket.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
         self.server_socket.bind(self.esp)
 
         # listen for connections
         self.server_socket.listen()
-        print(f"[LISTENING] Server is listening on  {self.server_socket}:{self.port}")
+        # TODO logging
+
         # Accept the connection
         try:
             self.conn, self.addr = self.server_socket.accept()
-            print(f"[NEW CONNECTION] {self.addr} connected.")
+            # TODO logging
         except TimeoutError as e:
-            print(f"Timeout Error - unable to connect")
+            None
+            # TODO logging
         time.sleep(1)
 
     def _find_ssid(self):
@@ -90,13 +91,20 @@ class WiFiServer:
 
             # prompt user if first time
             if not os.path.isfile(os.getcwd()+'\\Wi-Fi-'+self.target_ssid+'.xml'):
-                input("First time Connection, Please connect to Artus3D Hand and enter Y when done")
+                # wait for connecting first time
+                input("First time Connection, Please connect to Artus Hand and enter Y when done")
+                
                 time.sleep(1)
+
+                # save profile
                 save_profile_cmd = f'netsh wlan export profile {self.target_ssid} key=clear folder={os.getcwd()}'
                 subprocess.run(save_profile_cmd,shell=True)
+
                 time.sleep(1)
+                
                 if not os.path.isfile(os.getcwd()+'\\Wi-Fi-'+self.target_ssid+'.xml'):
-                    logging.error('no wifi profile created')
+                    # TODO logging
+                    None
 
             else:
                 # connect to profile 
@@ -106,21 +114,25 @@ class WiFiServer:
         elif sys == "Linux":
             # Linux uses the "nmcli" command to connect to Wi-Fi networks
             connect_command = f'nmcli dev wifi connect "{self.target_ssid}"'
+
+            # input password
             if not self.password:
                 self.password = input('type ssid password:')
             if self.password:
                 connect_command += f' password "{self.password}"'
+
             subprocess.run(connect_command, shell=True)
+            
+            # clear password
+            self.password = None
         
         else:
-            print(f"platform not found")
+            # TODO logging
+            None
 
         # wait X seconds to connect
         for i in range(10):
             time.sleep(0.01)
-            print(".",end="")
-        print("")
-
 
     def close(self):
         self.server_socket.close()
@@ -137,32 +149,30 @@ class WiFiServer:
             subprocess.run(disconnect_command, shell=True)
 
         else:
-            print("Unsupported operating system")
+            # TODO logging
             return
 
-        print(f"Disconnecting from SSID '{self.target_ssid}'...")
+        # TODO logging
         time.sleep(2)  # Wait for a few seconds for the disconnect to take effect
+
         return 
     
     def receive(self):
-         # receive message of 1024 bytes (or an int)
-        
-        msg = self.conn.recv(200).decode(self.FORMAT) # 193 is byte size of feedback string 
-        ## TODO: make sure the packet is complete
-        if msg != self.msg:
-            self.msg = msg
-        return msg
-        # return "
+        byte_msg = self.conn.recv(1024) # receive bytes
+
+        if len(byte_msg) == 65:
+            return byte_msg
+
+        else:
+            return None
+
     
-    def send(self, command):
-        # list to str
-        # command = ','.join([str(x) for x in command])
-        # add a \n at the end of the str
-        command =  str(command)
-        command += '\n'
-        # send encoded data
-        # print(command)
-        self.conn.send(command.encode(self.FORMAT))
+    def send(self, data:bytearray):
+        try:
+            self.conn.sendall(data)
+        except Exception as e:
+            # TODO insert error logging
+            None
  
     def flash_wifi(self): 
         acknowledged = False

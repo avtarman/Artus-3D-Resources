@@ -47,8 +47,42 @@ class Communication:
             self.communicator = WiFiServer(target_ssid=self.communication_channel_identifier)
         else:
             raise ValueError("Unknown communication method")
-       
     
+    ################# Communication: Private Methods ##################
+    def _list_to_byte_encode(self,package:list) -> bytearray:
+        # data to send
+        send_data = bytearray(self.command_len)
+
+        # append command first
+        send_data[0:1] = package.to_bytes(1,byteorder='little')
+
+        for i in range(len(package)):
+            send_data[i+1:i+2] = package[i].to_bytes(1,byteorder='little')
+
+        # set last value to '\n'
+        send_data[-1:] = '\n'.encode('ascii')
+        
+        # return byte array to send
+        return send_data
+    
+    def _byte_to_list_decode(self,package:bytearray) -> tuple:
+        recv_data = []
+        i = 0
+        while i < 65:
+            if 17 <= i <= 45: # 16 bit signed integer to int
+                recv_data.append(int.from_bytes(package[i:i+2],byteorder='big',signed=True))
+                i+=2
+            else:   # 8 bit signed integer to int
+                recv_data.append(package[i].from_bytes(package[i:i+1],byteorder='little',signed=True))
+                i+=1
+        
+        # extract acknowledge value
+        ack = recv_data[0]
+        del recv_data[0] # delete 0th value from array
+
+        return ack,recv_data
+
+
     ################# Communication: Public Methods ##################
     def open_connection(self):
         """
@@ -56,12 +90,13 @@ class Communication:
         """
         self.communicator.open()
 
-    def send_data(self, message):
+    def send_data(self, message:list):
         """
         send message
         """
         try:
-            self.communicator.send(message)
+            byte_msg = self._list_to_byte_encode(message)
+            self.communicator.send(byte_msg)
             return True
         except Exception as e:
             logging.warning("unable to send command")
@@ -69,12 +104,13 @@ class Communication:
             pass
         return False
 
-    def receive_data(self):
+    def receive_data(self) -> list:
         """
         receive message
         """
         try:    
-            message_received = self.communicator.receive()
+            byte_msg_recv = self.communicator.receive()
+            ack,message_received = self._byte_to_list_decode(byte_msg_recv)
         except Exception as e:
             logging.warning("unable to receive message")
             print(e)
@@ -90,17 +126,10 @@ class Communication:
 def test_wifi():
     communication = Communication(communication_method='WiFi', communication_channel_identifier='Artus3D')
     communication.open_connection()
-    while True:
-        msg = communication.receive()
-        if msg != "":
-            print(msg)
 
 def test_uart():
     communication = Communication(communication_method='UART', communication_channel_identifier='COM9')
     communication.open_connection()
-    while True:
-        communication.send("hello\n")
-        time.sleep(1)
 
 
 if __name__ == "__main__":
