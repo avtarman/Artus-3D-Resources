@@ -65,7 +65,7 @@ class WiFiServer:
 
         # create server socket
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server_socket.settimeout(8)
+        self.server_socket.settimeout(8) # blocking timeout to connect
         self.server_socket.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
         self.server_socket.bind(self.esp)
 
@@ -76,6 +76,7 @@ class WiFiServer:
         # Accept the connection
         try:
             self.conn, self.addr = self.server_socket.accept()
+            self.conn.settimeout(0.001) # 1 ms timeout for recv and send methods
             # TODO logging
         except TimeoutError as e:
             None

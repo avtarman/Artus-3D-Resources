@@ -43,8 +43,10 @@ class UART:
         if self.esp32.in_waiting == 65:
             msg_bytes = self.esp32.read(65)
             return msg_bytes
-        else: # clear buffer if not correct amount of data
+        elif self.esp32.in_waiting > 0: # clear buffer if not correct amount of data
             msg_bytes = self.esp32.read_all()
+            return None
+        else: # non blocking
             return None            
 
     def close(self):
