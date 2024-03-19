@@ -1,28 +1,23 @@
 
 import time
+import json
+import sys
+import os
+from pathlib import Path
+# Current file's directory
+current_file_path = Path(__file__).resolve()
+# Add the desired path to the system path
+desired_path = current_file_path.parent.parent
+sys.path.append(str(desired_path))
+print(desired_path)
 
 class Commands:
 
-    def __init__(self,
-                 target_command = 176,
-                 calibration_command = 55,
-                 start_command = 88,
-                 sleep_command = 25,
-                 get_feedback_command = 20,
-                 firmware_update_command= 52,
-                 locked_reset_low_command = 12,
-                 save_grasp_on_board = 200,
-                 get_grasp_on_board = 210
-                ):
+    def __init__(self):
         
         # commands 
-        self.target_command = target_command
-        self.calibration_command = calibration_command
-        self.start_command = start_command
-        self.sleep_command = sleep_command
-        self.get_feedback_command = get_feedback_command
-        self.firmware_update_command = firmware_update_command
-        self.locked_reset_low_command = locked_reset_low_command
+        with open(os.path.join(desired_path,"commands.json")) as file:
+            self.commands = json.load(file)
 
     def get_robot_start_command(self) -> list:
         """
@@ -36,7 +31,7 @@ class Commands:
         minute  = int(time.localtime().tm_min)
         second  = int(time.localtime().tm_sec)
 
-        return [self.start_command,20,year,month,day,hour,minute,second]
+        return [self.commands['start_command'],20,year,month,day,hour,minute,second]
 
 
     def get_target_position_command(self) -> list:
@@ -46,33 +41,33 @@ class Commands:
             command_list[joint_data.index] = joint_data.target_angle
             command_list[joint_data.index+16] = joint_data.velocity
         # insert the command
-        command_list.insert(0,self.target_command)
+        command_list.insert(0,self.commands['target_command'])
         
         return command_list
 
     def get_calibration_command(self):
         command_list = [0]*33
-        command_list.insert(0,self.calibration_command)
+        command_list.insert(0,self.commands['calibration_command'])
         return command_list
 
     def get_sleep_command(self):
         command_list = [0]*33
-        command_list.insert(0,self.sleep_command)
+        command_list.insert(0,self.commands['sleep_command'])
         return command_list
 
     def get_states_command(self):
         command_list = [0]*33
-        command_list.insert(0,self.get_feedback_command)
+        command_list.insert(0,self.commands['get_feedback_command'])
         return command_list
     
     def get_firmware_update_command(self):
         command_list = [0]*33
-        command_list.insert(0,self.firmware_update_command)
+        command_list.insert(0,self.commands['firmware_update_command'])
         return command_list
     
     def get_locked_reset_low_command(self, joint=None, motor=None):
         command_list = [0]*33
-        command_list.insert(0,self.calibration_command)
+        command_list.insert(0,self.commands['reset_command'])
         
         # constraint checker 
         if 0 <= joint <= 15:
