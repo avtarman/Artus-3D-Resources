@@ -1,11 +1,13 @@
 import serial
+import logging
 import time
 
 class UART:
     def __init__(self,
                  port='COM9',
                  baudrate=115200, #115200, 
-                 timeout=0.5):
+                 timeout=0.5,
+                 logger = None):
         
         # automatically connect to the first available port
         self.port = port
@@ -19,10 +21,16 @@ class UART:
         self.timer_recv = self.timer_send*2
         self.maximum_freq = 700 # hz
 
+        if not logger:
+            self.logger = logging.getLogger(__name__)
+        else:
+            self.logger = logger
+
     def open(self):
         self.esp32.port=self.port
         self.esp32.close()
         self.esp32.open()
+        self.logger.info(f"Opening {self.port} @ {self.baudrate} baudrate")
 
     def send(self, data:bytearray):
         self.esp32.write(data)
@@ -45,6 +53,7 @@ class UART:
             return msg_bytes
         elif self.esp32.in_waiting > 0: # clear buffer if not correct amount of data
             msg_bytes = self.esp32.read_all()
+            self.logger.warning(f"Incorrect amount of data:{len(msg_bytes)} - clearing buffer")
             return None
         else: # non blocking
             return None            

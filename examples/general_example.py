@@ -1,5 +1,6 @@
 import time
 import json
+import os
 import sys
 from pathlib import Path
 # Current file's directory
@@ -28,7 +29,7 @@ Enter command:
 ''')
 
 def example():
-    artusapi = ArtusAPI(communication_method='UART',hand_type='right',communication_channel_identifier='/dev/ttyUSB0')
+    artusapi = ArtusAPI(communication_method='WiFi',hand_type='right',communication_channel_identifier='ArtusMK6RH')
     while True:
         user_input = main_menu()
 
@@ -44,13 +45,13 @@ def example():
             case "5":
                 artusapi.calibrate()
             case "6":
-                with open('../data/grasp_poses/grasp_example.json','r') as file:
+                with open(os.path.join(desired_path,'data','hand_poses','grasp_example.json'),'r') as file:
                     grasp_dict = json.load(file)
                     artusapi.set_joint_angles(grasp_dict)
             case "7":
                 print(artusapi.get_joint_angles())
             case "8":
-                with open('../data/grasp_poses/grasp_example.json','r') as file:
+                with open(os.path.join(desired_path,'data','hand_poses','grasp_open.json'),'r') as file:
                     grasp_dict = json.load(file)
                     artusapi.set_joint_angles(grasp_dict)   
 

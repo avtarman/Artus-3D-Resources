@@ -14,8 +14,8 @@ class WiFiServer:
                  DISCONNECT_MESSAGE = "!DISCONNECT", # Disconnection message from the client
                  port= 5050,
                  target_ssid="Artus3DTester",
-                 password = None # possibility to take in password
-                 ):
+                 password = None, # possibility to take in password
+                 logger = None):
         
         self.HEADER = HEADER
         self.FORMAT = FORMAT
@@ -34,6 +34,10 @@ class WiFiServer:
         self.addr = None
 
         self.maximum_freq = None
+        if not logger:
+            self.logger = logging.getLogger(__name__)
+        else:
+            self.logger = logger
 
     def _get_available_ip(self):
         gateway_ip = None
@@ -49,37 +53,44 @@ class WiFiServer:
                             return address.address
                         except KeyError:
                             #TODO logging
+                            self.logger.error(f"No gateway information available")
                             None
 
         return None
 
     """ Start server and listen for connections """
     def open(self):
-        # look for wifi
-        self._find_ssid()
+        try:
 
-        # get IP addresses associated with local machine
-        source_ip = self._get_available_ip()
-        # TCP tuple
-        self.esp = (source_ip,self.port)
+            # look for wifi
+            self._find_ssid()
 
-        # create server socket
-        self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server_socket.settimeout(8) # blocking timeout to connect
-        self.server_socket.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
-        self.server_socket.bind(self.esp)
+            # get IP addresses associated with local machine
+            source_ip = self._get_available_ip()
+            # TCP tuple
+            self.esp = (source_ip,self.port)
 
-        # listen for connections
-        self.server_socket.listen()
-        # TODO logging
+            # create server socket
+            self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.server_socket.settimeout(8) # blocking timeout to connect
+            self.server_socket.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
+            self.server_socket.bind(self.esp)
+
+            # listen for connections
+            self.server_socket.listen()
+            # TODO logging
+            self.logger.info(f"Listening for connection")
+        except Exception as e:
+            self.logger.error(f"No Network named {self.target_ssid}")
 
         # Accept the connection
         try:
             self.conn, self.addr = self.server_socket.accept()
-            self.conn.settimeout(0.001) # 1 ms timeout for recv and send methods
+            self.conn.settimeout(0.1) # 1 ms timeout for recv and send methods
             # TODO logging
+            self.logger.info(f"New Connection: {self.addr} connected.")
         except TimeoutError as e:
-            None
+            self.logger.error('Connection Timeout')
             # TODO logging
         time.sleep(1)
 
@@ -105,7 +116,7 @@ class WiFiServer:
                 
                 if not os.path.isfile(os.getcwd()+'\\Wi-Fi-'+self.target_ssid+'.xml'):
                     # TODO logging
-                    None
+                    self.logger.warning(f"Unable to create wifi profile")
 
             else:
                 # connect to profile 
@@ -129,7 +140,7 @@ class WiFiServer:
         
         else:
             # TODO logging
-            None
+            self.logger.error("Unsupported operating system")
 
         # wait X seconds to connect
         for i in range(10):
@@ -151,20 +162,28 @@ class WiFiServer:
 
         else:
             # TODO logging
+            self.logger.error("Unsupported operating system")
             return
 
         # TODO logging
+        self.logger.info(f"Disconnected from {self.target_ssid}")
         time.sleep(2)  # Wait for a few seconds for the disconnect to take effect
 
         return 
     
     def receive(self):
-        byte_msg = self.conn.recv(1024) # receive bytes
+        try:
+            byte_msg = self.conn.recv(65) # receive bytes
 
-        if len(byte_msg) == 65:
-            return byte_msg
+            if len(byte_msg) == 65: # receive the first 65 bytes
+                return byte_msg
 
-        else:
+            else:
+                self.logger.warning(f"Incomplete data received - package size = {len(byte_msg)}")
+                return None
+        except Exception as e:
+            # TODO logging
+            self.logger.warning(f"No data available to receive")
             return None
 
     
@@ -173,6 +192,7 @@ class WiFiServer:
             self.conn.sendall(data)
         except Exception as e:
             # TODO insert error logging
+            self.logger.error(f"Unable to send data")
             None
  
     def flash_wifi(self): 

@@ -16,10 +16,10 @@ class Commands:
     def __init__(self):
         
         # commands 
-        with open(os.path.join(desired_path,"commands.json")) as file:
+        with open(os.path.join(desired_path,'commands',"commands.json")) as file:
             self.commands = json.load(file)
 
-    def get_robot_start_command(self) -> list:
+    def get_robot_start_command(self,stream:bool,freq:int) -> list:
         """
         Creates a message to start the hand
         """
@@ -31,13 +31,16 @@ class Commands:
         minute  = int(time.localtime().tm_min)
         second  = int(time.localtime().tm_sec)
 
-        return [self.commands['start_command'],20,year,month,day,hour,minute,second]
+        if stream: 
+            return [self.commands['start_command'],20,year,month,day,hour,minute,second,1,(freq-500)]
+        else:
+            return [self.commands['start_command'],20,year,month,day,hour,minute,second]
 
 
-    def get_target_position_command(self) -> list:
-        command_list = [0]*33 # create empty buffer
+    def get_target_position_command(self,hand_joints:dict) -> list:
+        command_list = [0]*32 # create empty buffer
         # fill command list with data
-        for name,joint_data in self.hand_joints.items():
+        for name,joint_data in hand_joints.items():
             command_list[joint_data.index] = joint_data.target_angle
             command_list[joint_data.index+16] = joint_data.velocity
         # insert the command
@@ -46,27 +49,27 @@ class Commands:
         return command_list
 
     def get_calibration_command(self):
-        command_list = [0]*33
+        command_list = [0]*32
         command_list.insert(0,self.commands['calibration_command'])
         return command_list
 
     def get_sleep_command(self):
-        command_list = [0]*33
+        command_list = [0]*32
         command_list.insert(0,self.commands['sleep_command'])
         return command_list
 
     def get_states_command(self):
-        command_list = [0]*33
+        command_list = [0]*32
         command_list.insert(0,self.commands['get_feedback_command'])
         return command_list
     
     def get_firmware_update_command(self):
-        command_list = [0]*33
+        command_list = [0]*32
         command_list.insert(0,self.commands['firmware_update_command'])
         return command_list
     
     def get_locked_reset_low_command(self, joint=None, motor=None):
-        command_list = [0]*33
+        command_list = [0]*32
         command_list.insert(0,self.commands['reset_command'])
         
         # constraint checker 

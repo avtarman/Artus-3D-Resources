@@ -84,7 +84,6 @@ class ArtusLite:
         # free up mem
         del self.joint_max_angles
         del self.joint_min_angles
-        del self.joint_names
         del self.joint_rotation_directions
         del self.joint_velocities
         del self.number_of_joints
@@ -107,12 +106,12 @@ class ArtusLite:
         ordered_joint_angles = {key:value for key,value in sorted_items}
         # set values based on index
         for name,target_data in ordered_joint_angles.items():
-            self.hand_joints[self.joint_names[target_data.index]].target_angle = target_data.target_angle * self.hand_joints[self.joint_names[target_data.index]].rotation_direction
+            self.hand_joints[self.joint_names[target_data['index']]].target_angle = target_data['target_angle'] * self.hand_joints[self.joint_names[target_data['index']]].rotation_direction
             
             if 'velocity' in target_data:
-                self.hand_joints[self.joint_names[target_data.index]].velocity = target_data.velocity
+                self.hand_joints[self.joint_names[target_data['index']]].velocity = target_data['velocity']
             else: # fill default velocity
-                self.hand_joints[self.joint_names[target_data.index]].velocity = self.joint_velocities[target_data.index]
+                self.hand_joints[self.joint_names[target_data['index']]].velocity = self.joint_velocities[target_data['index']]
         self._check_joint_limits(self.hand_joints)
 
     """
@@ -140,12 +139,12 @@ class ArtusLite:
         """
         Check if the joint angles are within the limits
         """
-        for joint in self.hand_joints:
-            if joint_angles[joint.index] > joint.max_angle:
-                joint_angles[joint.index] = joint.max_angle
+        for name,joint in self.hand_joints.items():
+            if joint_angles[name].target_angle > joint.max_angle:
+                joint_angles[name].target_angle = joint.max_angle
                 # TODO logging
-            if joint_angles[joint.index] < joint.min_angle:
-                joint_angles[joint.index] = joint.min_angle
+            if joint_angles[name].target_angle < joint.min_angle:
+                joint_angles[name].target_angle = joint.min_angle
                 # TODO logging
         return joint_angles
     

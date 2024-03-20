@@ -1,5 +1,6 @@
 
 import sys
+import logging
 from pathlib import Path
 # Current file's directory
 current_file_path = Path(__file__).resolve()
@@ -23,7 +24,11 @@ class ArtusAPI:
                 communication_channel_identifier='COM9',
                 #  robot
                 robot_type='artus_lite',
-                hand_type ='left'):
+                hand_type ='left',
+                stream = False,
+                communication_frequency = 400, # hz
+                logger = None
+                ):
 
         self._communication_handler = Communication(communication_method=communication_method,
                                                   communication_channel_identifier=communication_channel_identifier)
@@ -32,8 +37,14 @@ class ArtusAPI:
                                    hand_type = hand_type)
         
         self._last_command_sent_time = time.perf_counter()
-        self._communication_frequency = 0.01 # 100 Hz
+        self._communication_frequency = 1 / communication_frequency
+        self._communication_frequency_us = int(self._communication_frequency * 1000000)
+        self.stream = stream
 
+        if not logger:
+            self.logger = logging.getLogger(__name__)
+        else:
+            self.logger = logger
     
     # communication setup
     def connect(self):
@@ -46,20 +57,20 @@ class ArtusAPI:
 
     # robot states
     def wake_up(self):
-        robot_wake_up_command = self._command_handler.get_robot_start_command()
-        return self._communication_handler.send(robot_wake_up_command)
+        robot_wake_up_command = self._command_handler.get_robot_start_command(self.stream,self._communication_frequency_us) # to ms for masterboard
+        return self._communication_handler.send_data(robot_wake_up_command)
     def sleep(self):
         robot_sleep_command = self._command_handler.get_sleep_command()
-        return self._communication_handler.send(robot_sleep_command)
+        return self._communication_handler.send_data(robot_sleep_command)
     def calibrate(self):
         robot_calibrate_command = self._command_handler.get_calibration_command()
-        return self._communication_handler.send(robot_calibrate_command)
+        return self._communication_handler.send_data(robot_calibrate_command)
     
 
     # robot control
     def set_joint_angles(self, joint_angles:dict):
         self._robot_handler.set_joint_angles(joint_angles=joint_angles,name=False)
-        robot_set_joint_angles_command = self._command_handler.get_target_position_command()
+        robot_set_joint_angles_command = self._command_handler.get_target_position_command(self._robot_handler.robot.hand_joints)
         # check communication frequency
         if not self._check_communication_frequency():
             return False
@@ -79,7 +90,7 @@ class ArtusAPI:
         """
         current_time = time.perf_counter()
         if current_time - self._last_command_sent_time < self._communication_frequency:
-            print("Command not sent. Communication frequency is too high.")
+            self.logger.warning("Command not sent. Communication frequency is too high.")
             return False
         self._last_command_sent_time = current_time
         return True
@@ -88,7 +99,7 @@ class ArtusAPI:
 
     # robot feedback
     def _receive_feedback(self):
-        feedback_command = self._command_handler.get_feedback_command()
+        feedback_command = self._command_handler.get_states_command()
         self._communication_handler.send_data(feedback_command)
         return self._communication_handler.receive_data()
     
@@ -96,6 +107,17 @@ class ArtusAPI:
         feedback_command = self._receive_feedback()
         joint_angles = self._robot_handler.get_joint_angles(feedback_command)
         return joint_angles
+    
+    # robot feedback stream
+    def get_streamed_joint_angles(self):
+        if not self._check_communication_frequency():
+            return False
+        feedback_command = self._communication_handler.receive_data()
+        if not feedback_command:
+            return None
+        joint_angles = self._robot_handler.get_joint_angles(feedback_command)
+        return joint_angles
+
         
     
 

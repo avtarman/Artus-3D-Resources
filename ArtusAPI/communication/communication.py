@@ -26,13 +26,21 @@ class Communication:
     """
     def __init__(self,
                  communication_method='UART',
-                 communication_channel_identifier='COM9'):
+                 communication_channel_identifier='COM9',logger = None):
         # initialize communication
         self.communication_method = communication_method
         self.communication_channel_identifier = communication_channel_identifier
         self.communicator = None
         # setup communication
         self._setup_communication()
+        # params
+        self.command_len = 33
+        self.recv_len = 65
+
+        if not logger:
+            self.logger = logging.getLogger(__name__)
+        else:
+            self.logger = logger
 
     
     ################# Communication: _Initialization ##################
@@ -51,13 +59,13 @@ class Communication:
     ################# Communication: Private Methods ##################
     def _list_to_byte_encode(self,package:list) -> bytearray:
         # data to send
-        send_data = bytearray(self.command_len)
+        send_data = bytearray(self.command_len+1)
 
         # append command first
-        send_data[0:1] = package.to_bytes(1,byteorder='little')
+        send_data[0:1] = package[0].to_bytes(1,byteorder='little')
 
-        for i in range(len(package)):
-            send_data[i+1:i+2] = package[i].to_bytes(1,byteorder='little')
+        for i in range(len(package)-1):
+            send_data[i+1:i+2] = int(package[i+1]).to_bytes(1,byteorder='little')
 
         # set last value to '\n'
         send_data[-1:] = '\n'.encode('ascii')
@@ -99,7 +107,7 @@ class Communication:
             self.communicator.send(byte_msg)
             return True
         except Exception as e:
-            logging.warning("unable to send command")
+            self.logger.warning("unable to send command")
             print(e)
             pass
         return False
@@ -110,9 +118,12 @@ class Communication:
         """
         try:    
             byte_msg_recv = self.communicator.receive()
+            if not byte_msg_recv:
+                self.logger.warning("No data received")
+                return None
             ack,message_received = self._byte_to_list_decode(byte_msg_recv)
         except Exception as e:
-            logging.warning("unable to receive message")
+            self.logger.warning("unable to receive message")
             print(e)
         return message_received
 
