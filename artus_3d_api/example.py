@@ -14,10 +14,10 @@ Command options:
 3. calibrate
 4. send command from grasp_patterns/example_command.txt
 5. save grasp pattern to file
-6. use grasp pattern from file
+6. get grasp patterns from file
 7. get robot states
 8. ~ reset finger ~
-9. open hand from grasp_patterns/grasp_open.txt
+9. execute target from grasp_patterns on SD card
 10. close hand using grasp in grasp_patterns/grasp.txt
 11. firmware flash actuators
 12. save current hand state for power cycle
@@ -30,7 +30,7 @@ LHW = 'Artus3DTesterLHWHITE'
 RHW = 'Artus3DTesterRHWHITE'
 
 def example():
-    artus3d = Artus3DAPI(target_ssid=LHB,port='/dev/ttyUSB0',communication_method=UART)
+    artus3d = Artus3DAPI(target_ssid=LHB,port='COM8',communication_method=UART)
     while True:
         user_input = main_menu()
         match user_input:
@@ -46,7 +46,7 @@ def example():
                 if command != "":
                     artus3d.send_target_command(command)
             case "5":
-                artus3d.save_grasp_pattern()
+                command = artus3d.save_grasp_pattern()
             case "6":
                 artus3d.get_grasp_pattern()
             case "7":
@@ -56,10 +56,7 @@ def example():
                 user_act = input("choose actuator:\n0:both\n1:act1\n2:act2")
                 artus3d.locked_reset_low(joint,user_act)
             case "9":
-                with open(os.path.join("grasp_patterns","grasp_open.txt"), "r") as f:
-                    command = f.read()
-                if command != "":
-                    artus3d.send_target_command(command)
+                artus3d.execute_grasp_pattern()
             case "10":
                 with open(os.path.join("grasp_patterns","grasp.txt"), "r") as f:
                     command = f.read()
