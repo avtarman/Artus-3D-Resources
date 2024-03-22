@@ -32,7 +32,7 @@ class Commands:
         second  = int(time.localtime().tm_sec)
 
         if stream: 
-            return [self.commands['start_command'],20,year,month,day,hour,minute,second,1,(freq-500)]
+            return [self.commands['start_command'],20,year,month,day,hour,minute,second,1,(freq>>16)&0xff,(freq>>8)&0xff,freq&0xff]
         else:
             return [self.commands['start_command'],20,year,month,day,hour,minute,second]
 

@@ -57,6 +57,7 @@ class ArtusAPI:
 
     # robot states
     def wake_up(self):
+        print(f"communication frequency in useconds = {self._communication_frequency_us}")
         robot_wake_up_command = self._command_handler.get_robot_start_command(self.stream,self._communication_frequency_us) # to ms for masterboard
         return self._communication_handler.send_data(robot_wake_up_command)
     def sleep(self):

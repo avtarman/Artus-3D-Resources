@@ -15,14 +15,14 @@ from ArtusAPI.artus_api import ArtusAPI
 def example():
     with open(os.path.join(desired_path,'data','hand_poses','grasp_example.json'),'r') as file:
         grasp_dict = json.load(file)
-    artusapi = ArtusAPI(communication_method='WiFi',hand_type='right',communication_channel_identifier='ArtusMK6RH',stream=True,communication_frequency=10)
+    artusapi = ArtusAPI(communication_method='WiFi',hand_type='right',communication_channel_identifier='ArtusMK6RH',stream=True,communication_frequency=800)
 
     artusapi.connect()
     artusapi.wake_up()
     while True:
         # artusapi.set_joint_angles(grasp_dict)
         print(artusapi.get_streamed_joint_angles())
-        # time.sleep(0.1)
+        time.sleep(artusapi._communication_frequency)
 
 
 if __name__ == '__main__':
