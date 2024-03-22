@@ -35,10 +35,14 @@ class Artus3DAPI:
 
         # command codes
         self.target_cmd = '176'
+        self.execute_grasp_cmd = '250'
         self.calibrate_cmd = '055'
         self.start_cmd = '088'
-        self.sleep_cmd = '025'
         self.getstates_cmd = '010'
+        self.sleep_cmd = '025'
+        self.save_grasp_cmd ='200'
+        self.get_grasps_cmd = '210'
+        self.execute_grasp_cmd = '250'
         self.empty_message = "[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n"
 
         # placeholders for values
@@ -121,7 +125,6 @@ class Artus3DAPI:
             second = '0'+ second
 
         self.robot_command = "c088p[20,"+year+","+month+","+day+","+hour+","+minute+","+second+",00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n"
-        
         # send command
         self._send(self.robot_command)
         return self.robot_command
@@ -155,6 +158,10 @@ class Artus3DAPI:
         # set the command
         self.robot_command = 'c{0}p[{1}]v[{2}]end\n'.format(
             self.command,
+            ','.join(str(joint.input_angle) for name,joint in self.joints.items()),
+            ','.join(str(joint.input_speed) for name,joint in self.joints.items())
+        )
+        self.grasp_pattern = 'p[{0}]v[{1}]end\n'.format(
             ','.join(str(joint.input_angle) for name,joint in self.joints.items()),
             ','.join(str(joint.input_speed) for name,joint in self.joints.items())
         )
@@ -300,41 +307,62 @@ class Artus3DAPI:
         elif self.communication_method == "UART": # uart
             self.python_serial.flash_serial()
     ''' 
-    save grasp pattern from self.robot_command into separate text file
+    save last executed grasp pattern to SD card on masterboard
     '''
-    def save_grasp_pattern(self,name=None):
-        if name is None:
-            name = input("Enter Grasp Pattern Name: ")
-        filepath = os.path.join("grasp_patterns",name+'.txt')
-        if not os.path.exists("grasp_patterns"):
-            os.makedirs("grasp_patterns")
+    def save_grasp_pattern(self):
+        while True:
+            num = input("Enter file num (1-6) to save grasp to")
+            if int(num) >= 1 and int(num) <= 6:
+                break
+            elif num == "":
+                break
+            logging.warning("Invalid input. Please enter a number between 1 and 6 or press enter.")
+        if num =="": return
+        save_pos = self.save_grasp_cmd + int(num)
+        
+        self.robot_command = 'c'+ save_pos + self.grasp_pattern
+        print("Saving grasp: ", self.grasp_pattern, ' to file ' + num)
+        self._send(self.robot_command)
 
-        if os.path.isfile(filepath):
-            action = input("Rewrite last file? (y/n)\n")
-            if action == 'y':
-                with open(filepath,'w') as f:
-                    f.write(self.robot_command)
-            else: 
-                print("File not overwritten..")
-
+        # str_return = ''
+        # while str_return == '':
+        #     str_return = self._receive()
+        # print(str_return)
         return self.robot_command
+
     '''
     Load grasp pattern into self.robot_command from text file
     '''
     def get_grasp_pattern(self,name=None):
-        if name is None:
-            name = input("Enter Grasp Pattern Name: ")
-        filepath = os.path.join("grasp_patterns",name+'.txt')
 
-        if not os.path.isfile(filepath):
-            print("File does not exist")
-
-        else:
-            with open(filepath,'r') as f:
-                tmp_cmd = f.read()
-                self.robot_command = tmp_cmd
-
+        self.robot_command = 'c'+self.get_grasps_cmd+'p'+self.empty_message
+        self._send(self.robot_command)
+        str_return = ''
+        i = 0
+        while i < 6:
+            str_return = self._receive()
+            if str_return !='': 
+                print(str_return)
+                i+=1
+        return 
+    
+    '''
+    Load grasp pattern into self.robot_command from text file
+    '''
+    def execute_grasp_pattern(self):
+        while True:
+            num = input("Enter file num (1-6) to execute grasp from")
+            if int(num) >= 1 and int(num) <= 6:
+                break
+            elif num == "":
+                break
+            logging.warning("Invalid input. Please enter a number between 1 and 6 or press enter.")
+        if num =="": return
+        grasp_cmd = self.execute_grasp_cmd + int(num)
+        self.robot_command = 'c'+grasp_cmd+'p'+self.empty_message
+        self._send(self.robot_command)
         return self.robot_command
+    
     '''
     Helper function to check and parse the command string and make
         the values readable for the Robot Hand
