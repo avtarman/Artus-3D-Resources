@@ -68,8 +68,9 @@ class Communication:
             send_data[i+1:i+2] = int(package[i+1]).to_bytes(1,byteorder='little')
 
         # set last value to '\n'
-        send_data[-1:] = '\n'.encode('ascii')
+        send_data[-1:] = '\0'.encode('ascii')
         
+        print(send_data)
         # return byte array to send
         return send_data
     
@@ -77,7 +78,7 @@ class Communication:
         recv_data = []
         i = 0
         while i < 65:
-            if 17 <= i <= 45: # 16 bit signed integer to int
+            if 17 <= i <= 49: # 16 bit signed integer to int
                 recv_data.append(int.from_bytes(package[i:i+2],byteorder='big',signed=True))
                 i+=2
             else:   # 8 bit signed integer to int
@@ -119,13 +120,15 @@ class Communication:
         try:    
             byte_msg_recv = self.communicator.receive()
             if not byte_msg_recv:
-                self.logger.warning("No data received")
+                # self.logger.warning("No data received")
                 return None
             ack,message_received = self._byte_to_list_decode(byte_msg_recv)
+            # print(ack)
         except Exception as e:
             self.logger.warning("unable to receive message")
             print(e)
-        return message_received
+            return None
+        return ack,message_received
 
     def close_connection(self):
         self.communicator.close()
@@ -139,8 +142,21 @@ def test_wifi():
     communication.open_connection()
 
 def test_uart():
-    communication = Communication(communication_method='UART', communication_channel_identifier='COM9')
+    communication = Communication(communication_method='UART', communication_channel_identifier='/dev/ttyUSB0')
     communication.open_connection()
+    time.sleep(1)
+    x = [0]*33
+    x[0] = 210
+    while True:
+        communication.send_data(x)
+        i=0
+        while i < 6:
+
+            # time.sleep(0.002)
+            # print(communication.receive_data()[0])
+            if communication.receive_data() is not None:
+                i+=1
+        time.sleep(0.5)
 
 
 if __name__ == "__main__":

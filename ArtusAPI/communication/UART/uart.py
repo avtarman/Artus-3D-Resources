@@ -18,7 +18,7 @@ class UART:
 
         # required delays for sending message
         self.timer_send = 0.003
-        self.timer_recv = self.timer_send*2
+        self.timer_recv = self.timer_send*4
         self.maximum_freq = 700 # hz
 
         if not logger:
@@ -31,8 +31,10 @@ class UART:
         self.esp32.close()
         self.esp32.open()
         self.logger.info(f"Opening {self.port} @ {self.baudrate} baudrate")
+        self.esp32.flush()
 
     def send(self, data:bytearray):
+        # print(data)
         self.esp32.write(data)
 
         # required delay
@@ -43,17 +45,18 @@ class UART:
     def receive(self):
 
         # required delay
-        t = time.perf_counter()
-        while time.perf_counter() - t < self.timer_recv:
-            pass
+        # t = time.perf_counter()
+        # while time.perf_counter() - t < self.timer_recv:
+        #     pass
 
         # check data
-        if self.esp32.in_waiting == 65:
+        if self.esp32.in_waiting >= 65: # get data if greater or equal to 65
             msg_bytes = self.esp32.read(65)
+            print(msg_bytes)
             return msg_bytes
         elif self.esp32.in_waiting > 0: # clear buffer if not correct amount of data
-            msg_bytes = self.esp32.read_all()
-            self.logger.warning(f"Incorrect amount of data:{len(msg_bytes)} - clearing buffer")
+            # msg_bytes = self.esp32.read_all()
+            # self.logger.warning(f"Incorrect amount of data:{(self.esp32.in_waiting)}")
             return None
         else: # non blocking
             return None            
