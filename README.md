@@ -6,6 +6,8 @@ The `artus_lite_api` folder is required to be copied into your project for use.
 ## Installation
 Using pip:
 ```bash
+pip install psutil
+pip install pyserial
 pip install ArtusAPI
 ```
 
