@@ -11,9 +11,9 @@ print(desired_path)
 
 
 
-from ArtusAPI.communication.communication import Communication
-from ArtusAPI.commands.commands import Commands
-from ArtusAPI.robot.robot import Robot
+from .communication import Communication
+from .commands import Commands
+from .robot import Robot
 import time
 
 class ArtusAPI:

@@ -1,23 +1,34 @@
-
-import time
-import json
-import sys
 import os
-from pathlib import Path
-# Current file's directory
-current_file_path = Path(__file__).resolve()
-# Add the desired path to the system path
-desired_path = current_file_path.parent.parent
-sys.path.append(str(desired_path))
-print(desired_path)
-
+import json
+import time
 class Commands:
 
-    def __init__(self):
+    def __init__(self,
+    start_command= 11,
+    calibrate_command = 13,
+    sleep_command = 15,
+    firmware_update_command = 17,
+    reset_command = 19,
+
+    target_command = 102,
+    get_feedback_command = 104,
+
+    save_grasp_onboard_command = 200,
+    return_grasps_command = 210,
+    execute_grasp_command = 224):
         
-        # commands 
-        with open(os.path.join(desired_path,'commands',"commands.json")) as file:
-            self.commands = json.load(file)
+        self.commands = {
+            'start_command': start_command,
+            'calibrate_command': calibrate_command,
+            'sleep_command': sleep_command,
+            'firmware_update_command': firmware_update_command,
+            'reset_command': reset_command,
+            'target_command': target_command,
+            'get_feedback_command': get_feedback_command,
+            'save_grasp_onboard_command': save_grasp_onboard_command,
+            'return_grasps_command': return_grasps_command,
+            'execute_grasp_command': execute_grasp_command
+        }
 
     def get_robot_start_command(self,stream:bool,freq:int) -> list:
         """

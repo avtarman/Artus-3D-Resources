@@ -1,17 +1,20 @@
 
 
-import sys
-from pathlib import Path
-# Current file's directory
-current_file_path = Path(__file__).resolve()
-# Add the desired path to the system path
-desired_path = current_file_path.parent.parent.parent.parent
-sys.path.append(str(desired_path))
-print(desired_path)
+# import sys
+# from pathlib import Path
+# # Current file's directory
+# current_file_path = Path(__file__).resolve()
+# # Add the desired path to the system path
+# desired_path = current_file_path.parent.parent.parent.parent
+# sys.path.append(str(desired_path))
+# print(desired_path)
 
-# Artus Lite Robots
-from ArtusAPI.robot.artus_lite.artus_lite_left import ArtusLite_LeftHand
-from ArtusAPI.robot.artus_lite.artus_lite_right import ArtusLite_RightHand
+# # Artus Lite Robots
+# from ArtusAPI.robot.artus_lite.artus_lite_left import ArtusLite_LeftHand
+# from ArtusAPI.robot.artus_lite.artus_lite_right import ArtusLite_RightHand
+
+from .artus_lite.artus_lite_left import ArtusLite_LeftHand
+from .artus_lite.artus_lite_right import ArtusLite_RightHand
 
 # Artus 3D Robots
 

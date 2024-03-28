@@ -3,6 +3,38 @@
 This repository contains the Python API for controlling the Artus Lite Robotic Hand developed and maintained by Sarcomere Dynamics Inc. Please contact the team if there are any questions or issues that arise through the use of the API. 
 
 The `artus_lite_api` folder is required to be copied into your project for use. 
+## Installation
+Using pip:
+```bash
+pip install ArtusAPI
+```
+
+## Usage
+```python
+from ArtusAPI.artus_api import ArtusAPI
+artus_lite = ArtusAPI(robot_type='artus_lite', communication_type='WiFi')
+artus_lite.connect()
+```
+
+
+## Directory Structure
+```bash
+├── ArtusAPI
+│   ├── commnands
+│   │   ├── commands.py # Command strings for the Robot Hand
+│   ├── communication
+│   │   ├── WiFi
+│   │   │   ├── WiFi.py # WiFi communication class
+│   │   ├── UART
+│   │   │   ├── UART.py # UART communication class
+│   │   ├── communication.py # Communication class for the API
+│   ├── robot
+│   │   ├── artus_3d
+│   │   │   ├── artus_3d.py # Artus 3D Hand class
+│   │   ├── artus_lite
+│   │   │   ├── artus_lite.py # Artus Lite Hand class
+│   │   ├── robot.py # Robot Hand class for the API
+│   ├── artus_api.py # API Core
 
 ## Video Intro
 

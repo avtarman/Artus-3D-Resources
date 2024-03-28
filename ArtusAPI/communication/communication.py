@@ -4,19 +4,22 @@ import time
 
 
 
-import sys
-from pathlib import Path
-# Current file's directory
-current_file_path = Path(__file__).resolve()
-# Add the desired path to the system path
-desired_path = current_file_path.parent.parent.parent
-sys.path.append(str(desired_path))
-print(desired_path)
+# import sys
+# from pathlib import Path
+# # Current file's directory
+# current_file_path = Path(__file__).resolve()
+# # Add the desired path to the system path
+# desired_path = current_file_path.parent.parent.parent
+# sys.path.append(str(desired_path))
+# print(desired_path)
 
-# Communication methodss
-from ArtusAPI.communication.WiFi.wifi_server import WiFiServer
-from ArtusAPI.communication.UART.uart import UART
+# # Communication methodss
+# from ArtusAPI.communication.WiFi.wifi_server import WiFiServer
+# from ArtusAPI.communication.UART.uart import UART
 # from ArtusAPI.ArtusAPI.communication.can import CAN
+
+from .UART.uart import UART
+from .WiFi.wifi_server import WiFiServer
 
 class Communication:
     """
