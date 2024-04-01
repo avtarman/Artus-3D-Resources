@@ -18,7 +18,7 @@ git clone <this repo>
 
 2. Install required libraries
 
-3. Chnage the parameter values to desired values in the "artus_api_bringup.launch.py"
+3. Change the parameter values to desired values in the "artus_api_bringup.launch.py"
    
 
 4. cd path/to/project and build ROS2 package
