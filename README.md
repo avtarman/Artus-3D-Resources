@@ -1,9 +1,14 @@
-![Sarcomere Dynamics Inc.](/public/SarcomereLogoHorizontal.svg)
-# Artus Lite Python API
-This repository contains the Python API for controlling the Artus Lite Robotic Hand developed and maintained by Sarcomere Dynamics Inc. Please contact the team if there are any questions or issues that arise through the use of the API. 
+<img src='data/images/SarcomereLogoHorizontal.svg'>
 
-The `artus_lite_api` folder is required to be copied into your project for use. 
-## Installation
+# Python Artus Robotic Hand API
+This repository contains a Python API for controlling the Artus robotic hands by Sarcomere Dynamics Inc. 
+
+## Getting Started
+
+### Requirements
+Requires Python version >= 3.10 installed on the host system
+
+### Installation
 Using pip:
 ```bash
 pip install psutil
@@ -12,11 +17,71 @@ pip install ArtusAPI
 ```
 
 ## Usage
+
+### Creating an ArtusAPI Class Object
+Below are some examples of instantiating the ArtusAPI class to control a single hand. Below is a description of the parameters and what they mean.
+
+* `__communication_method__` : The communication method between the host system and the Artus hand
+* `__communication_channel_identifier__` : The identifying parameter of the communication method such as COM port over Serial or network name over WiFi
+* `__robot_type__` : The Artus robot hand name 
+* `__hand_type__` : left or right hand
+* `__stream__` : whether streaming feedback data is required or not. Default: `False`
+* `__communication_frequency__` : The frequency of the feedback and command communication. Default: `400` Hz
+* `__logger__` : If integrating the API into control code, you may already have a logger. THis will allow for homogeneous logging to the same files as what you currently have. Default: `None`
+
+#### WiFi Example
 ```python
 from ArtusAPI.artus_api import ArtusAPI
-artus_lite = ArtusAPI(robot_type='artus_lite', communication_type='WiFi')
+artus_lite = ArtusAPI(robot_type='artus_lite', communication_type='WiFi',hand_type='left',communication_channel_identifier='Artus_Lite')
 artus_lite.connect()
 ```
+
+#### Serial Example
+```python
+from ArtusAPI.artus_api import ArtusAPI
+artus_lite = ArtusAPI(robot_type='artus_lite', communication_type='UART',hand_type='right',communication_channel_identifier='COM7')
+artus_lite.connect()
+```
+
+### Normal Startup Procedure
+There is a standard series of commands that need to be followed before sending target commands or receiving feedback data is possible. 
+
+Before any software, ensure that the power connector is secured and connected to the Artus hand and if using a wired connection (Serial or CANbus), ensure the connection/cable is good. 
+
+First, to create a communication connection between the API and the Artus hand, `ArtusAPI.connect()` must be run to confirm communication is open on the selected communication type.
+
+Second, the `ArtusAPI.wake_up()` function must be run to allow the hand to load it's necessary configurations.
+
+Once these two steps are complete, optionally, you can run `ArtusAPI.calibrate()` to calibrate the finger joints. Otherwise, the system is now ready to start sending and receiving data!
+
+## Interacting with the API
+To get the most out of the Artus hands, the functions that will likely be most interacted with are `set_joint_angles(self, joint_angles:dict)` and `get_joint_angles(self)`. The `set_joint_angles` function allows the user to set 16 independent joint values with a desired velocity/force value in the form of a dictionary. See the [grasp_close file](data/hand_poses/grasp_close.json) for an example of a full 16 joint dictionary for the Artus Lite. See the [Artus Lite README](ArtusAPI/robot/artus_lite/README.md) for joint mapping.
+
+### Setting Joints
+As mentioned above, there are 16 independent degrees of freedom for the Artus Lite, which can be set simultaneously or independently. If, for example, a user need only curl the pinky, a shorter dictionary like the following could be used as a parameter to the function:
+```
+pinky_dict = {"pinky_flex" : 
+                            {
+                                "index": 14,
+                                "input_angle" : 90
+                            },
+              "pinky_d2" :
+                            {
+                                "index":15,
+                                "input_angle" : 90
+                            }
+            }
+
+ArtusAPI.set_joint_angles(pinky_dict)
+```
+
+Notice that the above example does not include the `"input_speed"` field that the json file has. The `"input_speed"` field is optional and will default to the nominal speed.
+
+### Getting Feedback
+There are two ways to get feedback data depending on how the class is instantiated.
+
+1. In streaming mode (`stream = True`), after sending the `wake_up()` command, the system will start streaming feedback data which will populate the `ArtusAPI._robot_handler.robot.hand_joints` dictionary. Fields that hold feedback data are named with `feedback_X` where _X_ could be angle, current or temperature.
+2. In Request mode (`stream = False`), sending a `get_joint_angles()` command will request the feedback data before anything is sent from the Artus hand. This communication setting is slower than the streaming mode, but for testing purposes and getting familiar with the Artus hand, we recommend starting with this setting. 
 
 
 ## Directory Structure
