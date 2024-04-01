@@ -29,6 +29,16 @@ class ArtusAPI:
                 communication_frequency = 400, # hz
                 logger = None
                 ):
+        """
+        ArtusAPI class controls the communication and control of between a system and an Artus Hand by Sarcomere Dynamics Inc.
+        :communication_method: communication method that is supported on the Artus Hand
+        :communication_channel_identifier: channel identifier for the communication method
+        :robot_type: name of the series of robot hand
+        :hand_type: left or right
+        :stream: streaming feedback data
+        :communication_frequency: maximum frequency to stream data
+        :logger: python logger settings to inherit
+        """
 
         self._communication_handler = Communication(communication_method=communication_method,
                                                   communication_channel_identifier=communication_channel_identifier)
@@ -48,8 +58,14 @@ class ArtusAPI:
     
     # communication setup
     def connect(self):
+        """
+        Open a connection to the Artus Hand
+        """
         return self._communication_handler.open_connection()
     def disconnect(self):
+        """
+        Close a connection to the Artus Hand
+        """
         return self._communication_handler.close_connection()
     
 
@@ -57,19 +73,32 @@ class ArtusAPI:
 
     # robot states
     def wake_up(self):
+        """
+        Wake-up the Artus Hand
+        """
         print(f"communication frequency in useconds = {self._communication_frequency_us}")
         robot_wake_up_command = self._command_handler.get_robot_start_command(self.stream,self._communication_frequency_us) # to ms for masterboard
         return self._communication_handler.send_data(robot_wake_up_command)
     def sleep(self):
+        """
+        Sleep the Artus Hand
+        """
         robot_sleep_command = self._command_handler.get_sleep_command()
         return self._communication_handler.send_data(robot_sleep_command)
     def calibrate(self):
+        """
+        Calibrate the Artus Hand
+        """
         robot_calibrate_command = self._command_handler.get_calibration_command()
         return self._communication_handler.send_data(robot_calibrate_command)
     
 
     # robot control
     def set_joint_angles(self, joint_angles:dict):
+        """
+        Set joint angle targets and speed values to the Artus Hand
+        :joint_angles: dictionary of input angles and input speeds
+        """
         self._robot_handler.set_joint_angles(joint_angles=joint_angles,name=False)
         robot_set_joint_angles_command = self._command_handler.get_target_position_command(self._robot_handler.robot.hand_joints)
         # check communication frequency
@@ -78,6 +107,9 @@ class ArtusAPI:
         return self._communication_handler.send_data(robot_set_joint_angles_command)
     
     def set_home_position(self):
+        """
+        sends the joints to home positions (0) which opens the Artus Hand
+        """
         self._robot_handler.set_home_position()
         robot_set_home_position_command = self._command_handler.get_target_position_command()
         # check communication frequency
@@ -96,8 +128,6 @@ class ArtusAPI:
         self._last_command_sent_time = current_time
         return True
 
-
-
     # robot feedback
     def _receive_feedback(self):
         feedback_command = self._command_handler.get_states_command()
@@ -105,12 +135,18 @@ class ArtusAPI:
         return self._communication_handler.receive_data()
     
     def get_joint_angles(self):
+        """
+        Populate feedback fields in self._robot_handler.hand_joints dict
+        """
         feedback_command = self._receive_feedback()
         joint_angles = self._robot_handler.get_joint_angles(feedback_command)
         return joint_angles
     
     # robot feedback stream
     def get_streamed_joint_angles(self):
+        """
+        Populate feedback fields in self._robot_handler.hand_joints dict
+        """
         if not self._check_communication_frequency():
             return False
         feedback_command = self._communication_handler.receive_data()
