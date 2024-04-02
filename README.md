@@ -1,5 +1,5 @@
 # ArtusAPI ROS2 Humble
-ROS2 node for controlling ArtusAPI
+ROS2 node for controlling Artus Robots using Artus API
 
 ## Table of Contents
 * [Requirements](#requirements)
