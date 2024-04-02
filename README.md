@@ -1,16 +1,22 @@
 # ArtusAPI ROS2 Humble
-This repository contains the Python API for controlling the Artus 3D Robotic Hand developed and maintained by Sarcomere Dynamics Inc. Please contact the team if there are any questions or issues that arise through the use of the API. 
-![Sarcomere Dynamics Inc.](/public/SD_logo.png)
+ROS2 node for controlling ArtusAPI
 
 ## Table of Contents
-* [Requirements]
-* [Getting Started]
+* [Requirements & Install](#requirements--install)
+* [Install python dependencies](#install-python-dependencies)
+* [Getting Started](#getting-started)
+
 
 ## Requirements & Install
 - Ubuntu 22.04
 - ROS2 Humble
 - Python 3
 - Colcon
+
+## Install python dependencies
+```bash
+pip install -r requirements.txt
+```
 
 ## Getting Started
 1. Clone the code using
@@ -27,4 +33,3 @@ git clone <this repo>
 
  5. Run the Launch file
     ros2 launch artus_api_bringup artus_api_bringup.launch.py
-
