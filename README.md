@@ -2,12 +2,12 @@
 ROS2 node for controlling ArtusAPI
 
 ## Table of Contents
-* [Requirements & Install](#requirements--install)
+* [Requirements](#requirements)
 * [Install python dependencies](#install-python-dependencies)
 * [Getting Started](#getting-started)
 
 
-## Requirements & Install
+## Requirements
 - Ubuntu 22.04
 - ROS2 Humble
 - Python 3
@@ -33,3 +33,4 @@ git clone <this repo>
 
  5. Run the Launch file
     ros2 launch artus_api_bringup artus_api_bringup.launch.py
+
