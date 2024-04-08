@@ -41,7 +41,11 @@ MK5LH = 'ArtusMk5LH'
 RW = 'Artus3DRW'
 
 def example():
+<<<<<<< HEAD
     artus3d = Artus3DAPI(port='COM11',communication_method=UART,hand='left')
+=======
+    artus3d = Artus3DAPI(target_ssid='ArtusMK6RH',port='/dev/ttyUSB1',communication_method=UART,hand='right')
+>>>>>>> 87679efb007b0ea4235755c3d5b31db4696682f3
     while True:
         user_input = main_menu()
         match user_input:
