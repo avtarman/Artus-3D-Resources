@@ -42,7 +42,7 @@ RW = 'Artus3DRW'
 
 def example():
     # artus3d = Artus3DAPI(port='COM11',communication_method=UART,hand='left')
-    artus3d = Artus3DAPI(target_ssid='ArtusMK6RH',port='/dev/ttyUSB1',communication_method=UART,hand='right')
+    artus3d = Artus3DAPI(target_ssid='ArtusMK6RH',port='/dev/ttyUSB0',communication_method=UART,hand='right')
     while True:
         user_input = main_menu()
         match user_input:

@@ -227,7 +227,7 @@ class Artus3DAPI:
         while str_return == '':
             str_return = self._receive()
 
-        print(str_return)
+        # print(str_return)
         # if empty Mk5+ compatible
         if "position" in str_return:
             return None,None
@@ -240,9 +240,16 @@ class Artus3DAPI:
             states_return = json.loads(valid_json_return)
 
             for name,joint in self.joints.items():
-                joint.feedback_angle = states_return['p'][joint.joint_index]
+                if 'flex' in name:
+                    joint.feedback_angle = int(states_return['p'][joint.joint_index]+(abs(states_return['p'][joint.joint_index+1])/2))
+                elif 'spread' in name:
+                    joint.feedback_angle = int(states_return['p'][joint.joint_index]/2)
+                else:
+                    joint.feedback_angle = states_return['p'][joint.joint_index]
                 # joint.feedback_current = states_return['c'][joint.joint_index]
                 # joint.feedback_temperature = states_return['t'][joint.joint_index]
+
+            print('  |  '.join(f"{name}:{obj.feedback_angle}" for name,obj in self.joints.items()))
 
         except Exception as e:
             logging.error('Unable to load robot states')
