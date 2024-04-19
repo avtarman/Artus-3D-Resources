@@ -232,13 +232,17 @@ class Artus3DAPI:
         if "position" in str_return:
             return None,None
         try:
-            valid_json_return = str_return.replace("'","\"")
+            valid_json_return = str_return.replace("'",'"').replace(" ","")
+            valid_json_return = valid_json_return[:(valid_json_return.find(']'))]+"]}"
+            
+
+            # valid_json_return = valid_json_return[:47]+"}"
             states_return = json.loads(valid_json_return)
 
             for name,joint in self.joints.items():
                 joint.feedback_angle = states_return['p'][joint.joint_index]
-                joint.feedback_current = states_return['c'][joint.joint_index]
-                joint.feedback_temperature = states_return['t'][joint.joint_index]
+                # joint.feedback_current = states_return['c'][joint.joint_index]
+                # joint.feedback_temperature = states_return['t'][joint.joint_index]
 
         except Exception as e:
             logging.error('Unable to load robot states')
