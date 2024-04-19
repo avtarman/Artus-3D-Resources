@@ -2,6 +2,8 @@
 # Artus 3D Python API
 This repository contains the Python API for controlling the Artus 3D Robotic Hand developed and maintained by Sarcomere Dynamics Inc. Please contact the team if there are any questions or issues that arise through the use of the API. 
 
+The `artus_3d_api` folder is required to be copied into your project for use. 
+
 ## Table of Contents
 * [Requirements](#requirements--install)
 * [API Core](#api-core)

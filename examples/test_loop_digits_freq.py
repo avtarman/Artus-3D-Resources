@@ -3,7 +3,7 @@ import os
 current_dir = os.getcwd()
 import sys
 sys.path.append(current_dir)
-from Artus3DAPI import Artus3DAPI
+from artus_3d_api.Artus3DAPI import Artus3DAPI
 
 LHB = 'Artus3DTesterLHBLACK'
 LHW = 'Artus3DTesterLHWHITE'

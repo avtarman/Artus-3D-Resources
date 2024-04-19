@@ -3,7 +3,7 @@ import os
 current_directory = os.getcwd()
 import sys
 sys.path.append(current_directory)
-from Artus3DAPI import Artus3DAPI,UART,WIFI
+from artus_3d_api.Artus3DAPI import Artus3DAPI,UART,WIFI
 
 
 

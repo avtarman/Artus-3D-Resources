@@ -3,7 +3,8 @@ import os
 current_directory = os.getcwd()
 import sys
 sys.path.append(current_directory)
-from Artus3DAPI import Artus3DAPI,UART,WIFI
+# print(os.path.dirname(current_directory))
+from artus_3d_api.Artus3DAPI import Artus3DAPI,UART,WIFI
 
 def main_menu():
     return input('''
@@ -14,13 +15,8 @@ Command options:
 3. calibrate
 4. send command from grasp_patterns/example_command.txt
 5. get states
-// 5. save grasp pattern to file
-// 6. use grasp pattern from file
-// 7. get robot states
-// 8. ~ reset finger ~
 6. open hand from grasp_patterns/grasp_open.txt
 7. close hand using grasp in grasp_patterns/grasp.txt
-// 11. firmware flash actuators
 8. save current hand state for power cycle
 9. close connection
                  
@@ -95,11 +91,6 @@ def example():
                     artus3d.send_target_command(command)
             case "o":
                 with open(os.path.join("grasp_patterns","one.txt"), "r") as f:
-                    command = f.read()
-                if command != "":
-                    artus3d.send_target_command(command)
-            case "h":
-                with open(os.path.join("grasp_patterns","scouts_honour.txt"), "r") as f:
                     command = f.read()
                 if command != "":
                     artus3d.send_target_command(command)

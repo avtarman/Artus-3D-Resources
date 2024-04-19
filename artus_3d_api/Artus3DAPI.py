@@ -11,9 +11,9 @@ import logging
 
 import os
 import sys
-from src.python_server import PythonServer
-from src.python_uart import PythonEsp32Serial
-from src.Artus3DJoint import Artus3DJoint
+from artus_3d_api.src.python_server import PythonServer
+from artus_3d_api.src.python_uart import PythonEsp32Serial
+from artus_3d_api.src.Artus3DJoint import Artus3DJoint
 
 # Constants
 WIFI = 'WiFi'
@@ -302,10 +302,12 @@ class Artus3DAPI:
 
             elif self.communication_method == "UART": # uart
                 message  = self.python_serial.receive()
+            return message
         except Exception as e:
             logging.warning("unable to receive message")
             print(e)
-        return message
+            return " "
+        
 
     '''
     Calibrate Robot Hand
