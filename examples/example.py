@@ -1,14 +1,15 @@
 import time
+import json
 import os
 current_directory = os.getcwd()
 import sys
 sys.path.append(current_directory)
 # print(os.path.dirname(current_directory))
-from artus_3d_api.Artus3DAPI import Artus3DAPI,UART,WIFI
+from artus_lite_api.ArtusAPI import ArtusAPI,UART,WIFI
 
 def main_menu():
     return input('''
-Artus 3D API v1.0.0
+Artus Lite API v1.1.0
 Command options:
 1. start connection to hand
 2. start robot
@@ -16,29 +17,28 @@ Command options:
 4. send command from grasp_patterns/example_command.txt
 5. get states
 6. open hand from grasp_patterns/grasp_open.txt
-7. close hand using grasp in grasp_patterns/grasp.txt
-8. save current hand state for power cycle
-9. close connection
-                 
+7. save current hand state for power cycle
+8. close connection
+
+r : reset joint
+
 Fun Hand Signs:
 s : Spock
 p : Peace
 d : Devil Ears
 o : Number One
-l : pinch
 Enter command: ''')
 
-LHB = 'Artus3DTesterLHBLACK'
-LHW = 'Artus3DTesterLHWHITE'
-LHW = 'Artus3DTesterLHWHITE'
-RHW = 'Artus3DTesterRHWHITE'
-MK6LH = 'ArtusMK6LH'
-MK5LH = 'ArtusMk5LH'
-RW = 'Artus3DRW'
+def json_to_command(filename:str,artusapi:ArtusAPI):
+    with open(os.path.join('grasp_patterns',filename),'r') as file:
+        grasp_dict = json.load(file)
+        for name,values in grasp_dict.items():
+            artusapi.set_robot_params_by_joint_name(name,values['input_angle'],values['input_speed'])
+        artusapi.send_target_command()
 
 def example():
-    # artus3d = Artus3DAPI(port='COM11',communication_method=UART,hand='left')
-    artus3d = Artus3DAPI(target_ssid='ArtusMK6RH',port='/dev/ttyUSB0',communication_method=UART,hand='right')
+    # artus3d = ArtusAPI(port='COM11',communication_method=UART,hand='left')
+    artus3d = ArtusAPI(target_ssid='ArtusMK6RH',port='/dev/ttyUSB0',communication_method=UART,hand='right')
     while True:
         user_input = main_menu()
         match user_input:
@@ -49,25 +49,14 @@ def example():
             case "3":
                 artus3d.calibrate()
             case "4":
-                with open(os.path.join("grasp_patterns","example_command.txt"), "r") as f:
-                    command = f.read()
-                if command != "":
-                    artus3d.send_target_command(command)
+                json_to_command('example_command.json',artus3d)
             case "5":
                 artus3d.get_robot_states()
             case "6":
-                with open(os.path.join("grasp_patterns","grasp_open.txt"), "r") as f:
-                    command = f.read()
-                if command != "":
-                    artus3d.send_target_command(command)
+                json_to_command('grasp_open.json',artus3d)
             case "7":
-                with open(os.path.join("grasp_patterns","grasp.txt"), "r") as f:
-                    command = f.read()
-                if command != "":
-                    artus3d.send_target_command(command)
-            case "8":
                 artus3d.sleep()
-            case "9":
+            case "8":
                 artus3d.close_connection()    
 
             case "r":
@@ -75,30 +64,13 @@ def example():
                 m = input('enter motor 0 - both | 1 - m1 | 2 - m2')
                 artus3d.locked_reset_low(j,m)
             case "s":
-                with open(os.path.join("grasp_patterns","spock.txt"), "r") as f:
-                    command = f.read()
-                if command != "":
-                    artus3d.send_target_command(command)
+                json_to_command('spock.json',artus3d)
             case "p":
-                with open(os.path.join("grasp_patterns","peace.txt"), "r") as f:
-                    command = f.read()
-                if command != "":
-                    artus3d.send_target_command(command)
+                json_to_command('peace.json',artus3d)
             case "d":
-                with open(os.path.join("grasp_patterns","devil_ears.txt"), "r") as f:
-                    command = f.read()
-                if command != "":
-                    artus3d.send_target_command(command)
+                json_to_command('devil_ears.json',artus3d)
             case "o":
-                with open(os.path.join("grasp_patterns","one.txt"), "r") as f:
-                    command = f.read()
-                if command != "":
-                    artus3d.send_target_command(command)
-            case "l":
-                with open(os.path.join("grasp_patterns","pinch.txt"), "r") as f:
-                    command = f.read()
-                if command != "":
-                    artus3d.send_target_command(command)
+                json_to_command('one.json',artus3d)
 
 if __name__ == '__main__':
     example()

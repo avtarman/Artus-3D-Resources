@@ -11,16 +11,16 @@ import logging
 
 import os
 import sys
-from artus_3d_api.src.python_server import PythonServer
-from artus_3d_api.src.python_uart import PythonEsp32Serial
-from artus_3d_api.src.Artus3DJoint import Artus3DJoint
+from artus_lite_api.src.python_server import PythonServer
+from artus_lite_api.src.python_uart import PythonEsp32Serial
+from artus_lite_api.src.ArtusLiteJoint import ArtusLiteJoint
 
 # Constants
 WIFI = 'WiFi'
 UART = 'UART'
 
 
-class Artus3DAPI:
+class ArtusAPI:
     def __init__(self,
                  communication_method = 'WiFi',
                  port='COM9',
@@ -57,7 +57,7 @@ class Artus3DAPI:
         self.joints = {}
 
         for i,joint in enumerate(self.joint_names):
-            self.joints[joint] = Artus3DJoint(joint,i,constraints['max'][i],constraints['min'][i])
+            self.joints[joint] = ArtusLiteJoint(joint,i,constraints['max'][i],constraints['min'][i])
 
         self.robot_command = self.grasp_pattern = None
         
@@ -202,14 +202,14 @@ class Artus3DAPI:
     Update states for Robot Hand
     @param: single item
     '''
-    def set_robot_params_by_joint_name(self,index:int,input_angle:int,input_speed:int=None):
-        for joint_name,joint in self.joints.items():
-            if joint.index == index:
-                self.joint.input_angle = input_angle
-            if input_speed:
-                self.joint.input_speed = input_speed
-            break
-        return
+    # def set_robot_params_by_joint_name(self,index:int,input_angle:int,input_speed:int=None):
+    #     for name,joint in self.joints.items():
+    #         if joint['joint_index'] == index:
+    #             self.joint.input_angle = input_angle
+    #         if input_speed:
+    #             self.joint.input_speed = input_speed
+    #         break
+    #     return
 
     '''
     Get states from Robot Hand

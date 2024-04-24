@@ -3,12 +3,12 @@ import os
 current_directory = os.getcwd()
 import sys
 sys.path.append(current_directory)
-from artus_3d_api.Artus3DAPI import Artus3DAPI,UART,WIFI
+from artus_lite_api.ArtusAPI import ArtusAPI,UART,WIFI
 
 
 
 if __name__ == '__main__':
-    artus = Artus3DAPI(port='/dev/ttyUSB0',communication_method=UART)
+    artus = ArtusAPI(port='/dev/ttyUSB0',communication_method=UART)
 
     artus.start_connection()
 

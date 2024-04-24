@@ -1,6 +1,6 @@
 import logging 
 
-class Artus3DJoint:
+class ArtusLiteJoint:
     def __init__(self,joint_name=None,joint_index=None, maximum_angle=None, minimum_angle=None):
         self.joint_name = joint_name
         self.joint_index = joint_index

@@ -3,11 +3,11 @@ import os
 current_directory = os.getcwd()
 import sys
 sys.path.append(current_directory)
-from artus_3d_api.Artus3DAPI import Artus3DAPI,UART,WIFI
+from artus_lite_api.ArtusAPI import ArtusAPI,UART,WIFI
 
 MK5LH = 'ArtusMK6LH'
 sleep = 0.5
-artus = Artus3DAPI(target_ssid=MK5LH,communication_method=UART,port='COM11',hand='left')
+artus = ArtusAPI(target_ssid=MK5LH,communication_method=UART,port='COM11',hand='left')
 
 artus.start_connection()
 time.sleep(1)
