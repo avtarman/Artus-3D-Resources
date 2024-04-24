@@ -11,16 +11,16 @@ import logging
 
 import os
 import sys
-from src.python_server import PythonServer
-from src.python_uart import PythonEsp32Serial
-from src.Artus3DJoint import Artus3DJoint
+from artus_lite_api.src.python_server import PythonServer
+from artus_lite_api.src.python_uart import PythonEsp32Serial
+from artus_lite_api.src.ArtusLiteJoint import ArtusLiteJoint
 
 # Constants
 WIFI = 'WiFi'
 UART = 'UART'
 
 
-class Artus3DAPI:
+class ArtusAPI:
     def __init__(self,
                  communication_method = 'WiFi',
                  port='COM9',
@@ -61,7 +61,7 @@ class Artus3DAPI:
         self.joints = {}
 
         for i,joint in enumerate(self.joint_names):
-            self.joints[joint] = Artus3DJoint(joint,i,constraints['max'][i],constraints['min'][i])
+            self.joints[joint] = ArtusLiteJoint(joint,i,constraints['max'][i],constraints['min'][i])
 
         self.robot_command = self.grasp_pattern = None
         
@@ -148,12 +148,38 @@ class Artus3DAPI:
     '''
     def send_target_command(self,cmd=None):
         if cmd:
+            if self.hand == 'right':
+                # find position index
+                index = cmd.find('[')
+                # create list from string
+                string_list = list(cmd)
+                index+=1 # increment 1 index for start of position
+                # iterate through angles
+                for i in range(16):
+                    if i in [1,5,8,11,14]: # positions of spreads
+                        if abs(int(cmd[index:index+3])) > 0: # only change if absolute value is greater than 0
+                            if string_list[index] == '-':
+                                string_list[index] = '+'
+                            else:
+                                string_list[index] = '-'
+                    # thumb changes
+                    elif i == 2:
+                        temp = string_list[index:index+3]
+                    elif i == 3:
+                        string_list[index-4:index-1] = string_list[index:index+3]
+                        string_list [index:index+3] = temp 
+                    index += 4
+                    
+                cmd = ''.join(string_list)
             self._send(cmd)
             return None
         self.command = self.target_cmd
 
         for joint_name,joint in self.joints.items():
             joint.check_input_constraints()
+            if self.hand == 'right':
+                if 'spread' in joint_name:
+                    joint.input_angle = -joint.input_angle
 
         # set the command
         self.robot_command = 'c{0}p[{1}]v[{2}]end\n'.format(
@@ -183,14 +209,14 @@ class Artus3DAPI:
     Update states for Robot Hand
     @param: single item
     '''
-    def set_robot_params_by_joint_name(self,index:int,input_angle:int,input_speed:int=None):
-        for joint_name,joint in self.joints.items():
-            if joint.index == index:
-                self.joint.input_angle = input_angle
-            if input_speed:
-                self.joint.input_speed = input_speed
-            break
-        return
+    # def set_robot_params_by_joint_name(self,index:int,input_angle:int,input_speed:int=None):
+    #     for name,joint in self.joints.items():
+    #         if joint['joint_index'] == index:
+    #             self.joint.input_angle = input_angle
+    #         if input_speed:
+    #             self.joint.input_speed = input_speed
+    #         break
+    #     return
 
     '''
     Get states from Robot Hand
@@ -199,22 +225,38 @@ class Artus3DAPI:
 
         self._send("c010p"+self.empty_message)
 
+        start = time.perf_counter()
+
+        while time.perf_counter() - start < 0.0001:
+            pass  
+
         str_return = ''
         while str_return == '':
             str_return = self._receive()
 
-        print(str_return)
+        # print(str_return)
         # if empty Mk5+ compatible
         if "position" in str_return:
             return None,None
         try:
-            valid_json_return = str_return.replace("'","\"")
+            valid_json_return = str_return.replace("'",'"').replace(" ","")
+            valid_json_return = valid_json_return[:(valid_json_return.find(']'))]+"]}"
+            
+
+            # valid_json_return = valid_json_return[:47]+"}"
             states_return = json.loads(valid_json_return)
 
             for name,joint in self.joints.items():
-                joint.feedback_angle = states_return['p'][joint.joint_index]
-                joint.feedback_current = states_return['c'][joint.joint_index]
-                joint.feedback_temperature = states_return['t'][joint.joint_index]
+                if 'flex' in name:
+                    joint.feedback_angle = int(states_return['p'][joint.joint_index]+(abs(states_return['p'][joint.joint_index+1])/2))
+                elif 'spread' in name:
+                    joint.feedback_angle = int(states_return['p'][joint.joint_index]/2)
+                else:
+                    joint.feedback_angle = states_return['p'][joint.joint_index]
+                # joint.feedback_current = states_return['c'][joint.joint_index]
+                # joint.feedback_temperature = states_return['t'][joint.joint_index]
+
+            print('  |  '.join(f"{name}:{obj.feedback_angle}" for name,obj in self.joints.items()))
 
         except Exception as e:
             logging.error('Unable to load robot states')
@@ -267,10 +309,12 @@ class Artus3DAPI:
 
             elif self.communication_method == "UART": # uart
                 message  = self.python_serial.receive()
+            return message
         except Exception as e:
             logging.warning("unable to receive message")
             print(e)
-        return message
+            return " "
+        
 
     '''
     Calibrate Robot Hand
@@ -294,10 +338,10 @@ class Artus3DAPI:
         while True:
             num = input("Enter STM number (1-8) to flash or press enter to perform a full flash procedure: ")
             if num == '':
-                self._send("c052p[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n")
+                self._send("c099p[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n")
                 break
             elif int(num) > 0 and int(num) <= 8:
-                self._send("c052p[0"+num+",00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n")
+                self._send("c099p[0"+num+",00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]v[00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00]end\n")
                 break
             logging.warning("Invalid input. Please enter a number between 1 and 8 or press enter.")
 

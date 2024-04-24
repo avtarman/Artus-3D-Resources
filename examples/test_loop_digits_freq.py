@@ -3,7 +3,7 @@ import os
 current_dir = os.getcwd()
 import sys
 sys.path.append(current_dir)
-from Artus3DAPI import Artus3DAPI
+from artus_lite_api.ArtusAPI import ArtusAPI
 
 LHB = 'Artus3DTesterLHBLACK'
 LHW = 'Artus3DTesterLHWHITE'
@@ -12,8 +12,8 @@ W = 'WiFi'
 U = 'UART'
 
 
-artus3dleft = Artus3DAPI(target_ssid=RHW,communication_method=U,port='/dev/ttyUSB0')
-artus3dright = Artus3DAPI(target_ssid=LHB,port='/dev/ttyUSB0',communication_method='UART')
+artus3dleft = ArtusAPI(target_ssid=RHW,communication_method=U,port='/dev/ttyUSB0')
+artus3dright = ArtusAPI(target_ssid=LHB,port='/dev/ttyUSB0',communication_method='UART')
 
 # start the connection to server
 artus3dleft.start_connection()

@@ -3,5 +3,5 @@
 # test cases
 test/
 # pycache
-artus_3d_api/__pycache__/
-artus_3d_api/src/__pycache__/
+artus_lite_api/__pycache__/
+artus_lite_api/src/__pycache__/
