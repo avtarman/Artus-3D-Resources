@@ -172,14 +172,19 @@ artusHands = [artus_liteLeft,artus_liteRight]
 
 ## Directory Structure
 ```bash
-├── Artus3DAPI.py # Python API for Artus Lite
-├── example.py # Example usage of the API
+artus_lite_api
+├── ArtusAPI.py # Python API for Artus Lite
 ├── src # Dependencies for the API
 │   ├── python_server.py # for WiFi communication
 │   ├── python_uart.py # for UART communication
 |   └── Artus3DJoint.py # our Joint class
-├── grasp_patterns # grasps folder
 ├── requirements.txt # for easy pip install
+grasp_patterns
+├── grasp_patterns # grasps folder
+examples
+├── example.py # for easy pip install
+public
+README.md
 ```
 
 ## Revision Control
