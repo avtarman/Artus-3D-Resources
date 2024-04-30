@@ -199,7 +199,7 @@ class ArtusAPI:
     @param: single item
     '''
     def set_robot_params_by_joint_name(self,name:str,input_angle:int=None,input_speed:int=None):
-        if input_angle:
+        if input_angle is not None:
             self.joints[name].input_angle = input_angle
         if input_speed:
             self.joints[name].input_speed = input_speed
