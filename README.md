@@ -86,6 +86,11 @@ class ArtusLiteJoint()
 
 ## Running example.py
 Before running the example script, determine whether your Artus Lite is running WiFi or UART, and edit the following line with the name of the target SSID for WiFi and port over UART
+
+* On Windows, find the port name by navigating to "Device Manager">"Ports". It should show up as a COM port. (e.g. COM3)
+* On Linux, use the command `dmesg | grep ttyUSB` to find the usb device. (e.g. /dev/ttyUSB1)
+    * If a permission error is encountered, use the command `sudo chmod 777 /dev/ttyUSB1` 
+
 ```python
 artus_lite = ArtusAPI(target_ssid='Artus3DLH',port='/dev/ttyUSB0',communication_method='Wifi')
 ```
