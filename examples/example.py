@@ -21,6 +21,7 @@ Command options:
 8. close connection
 
 r : reset joint
+rh: reset all joints
 
 Fun Hand Signs:
 s : Spock
@@ -35,6 +36,25 @@ def json_to_command(filename:str,artusapi:ArtusAPI):
         for name,values in grasp_dict.items():
             artusapi.set_robot_params_by_joint_name(name,values['input_angle'],values['input_speed'])
         artusapi.send_target_command()
+
+def reset_low_all(artusapi:ArtusAPI):
+    artusapi.locked_reset_low('0','0')
+    time.sleep(1)
+    artusapi.locked_reset_low('2','0')
+    time.sleep(1)
+    artusapi.locked_reset_low('4','0')
+    time.sleep(1)
+    artusapi.locked_reset_low('6','0')
+    time.sleep(1)
+    artusapi.locked_reset_low('7','0')
+    time.sleep(1)
+    artusapi.locked_reset_low('10','0')
+    time.sleep(1)
+    artusapi.locked_reset_low('12','0')
+    time.sleep(1)
+    artusapi.locked_reset_low('13','0')
+    time.sleep(1)
+
 
 def example():
     # artus3d = ArtusAPI(port='COM11',communication_method=UART,hand='left')
@@ -63,6 +83,9 @@ def example():
                 j = input('enter joint index to reset')
                 m = input('enter motor 0 - both | 1 - m1 | 2 - m2')
                 artus3d.locked_reset_low(j,m)
+
+            case "rh":
+                reset_low_all(artus3d)
             case "s":
                 json_to_command('spock.json',artus3d)
             case "p":
