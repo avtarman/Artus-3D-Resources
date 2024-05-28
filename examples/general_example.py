@@ -29,7 +29,7 @@ Enter command:
 ''')
 
 def example():
-    artusapi = ArtusAPI(communication_method='WiFi',hand_type='right',communication_channel_identifier='ArtusMK6RH')
+    artusapi = ArtusAPI(communication_method='WiFi',hand_type='right',communication_channel_identifier='ArtusLite')
     while True:
         user_input = main_menu()
 

@@ -107,6 +107,7 @@ class Communication:
         send message
         """
         try:
+            print(message)
             byte_msg = self._list_to_byte_encode(message)
             self.communicator.send(byte_msg)
             return True

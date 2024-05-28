@@ -176,9 +176,9 @@ class ArtusLite:
         and populate the feedback fields in the hand_joints dictionary
         """
         for name,joint_data in self.hand_joints.items():
-            joint_data.feedback_angle = feedback_package[joint_data.index]
-            joint_data.feedback_current = feedback_package[joint_data.index+16]
-            joint_data.feedback_temperature = feedback_package[joint_data.index+32]
+            joint_data.feedback_angle = feedback_package[1][joint_data.index]
+            joint_data.feedback_current = feedback_package[1][joint_data.index+15]
+            joint_data.feedback_temperature = feedback_package[1][joint_data.index+31]
 
         return feedback_package
 
