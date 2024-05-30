@@ -3,7 +3,7 @@ import json
 import os
 current_directory = os.getcwd()
 import sys
-sys.path.append(current_directory)
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # print(os.path.dirname(current_directory))
 from artus_lite_api.ArtusAPI import ArtusAPI,UART,WIFI
 
@@ -32,7 +32,7 @@ t : Trial (debugging purposes)
 Enter command: ''')
 
 def json_to_command(filename:str,artusapi:ArtusAPI):
-    with open(os.path.join('grasp_patterns',filename),'r') as file:
+    with open(os.path.join(r'C:/Users/General User/Desktop/github_files/Sarcomere_Dynamics_Resources/grasp_patterns',filename),'r') as file:
         grasp_dict = json.load(file)
         for name,values in grasp_dict.items():
             artusapi.set_robot_params_by_joint_name(name,values['input_angle'],values['input_speed'])
@@ -75,7 +75,7 @@ def read_feedback(artus3d: ArtusAPI, frequency = 2):
 
 
 def example():
-    artus3d = ArtusAPI(port='COM3',communication_method=UART,hand='left')
+    artus3d = ArtusAPI(port='COM11',communication_method=UART,hand='left')
     # artus3d = ArtusAPI(target_ssid='ArtusMK6RH',port='/dev/ttyUSB0',communication_method=UART,hand='right')
     while True:
         try:

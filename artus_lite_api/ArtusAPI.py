@@ -11,9 +11,11 @@ import logging
 
 import os
 import sys
+sys.path.append((os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from artus_lite_api.src.python_server import PythonServer
 from artus_lite_api.src.python_uart import PythonEsp32Serial
 from artus_lite_api.src.ArtusLiteJoint import ArtusLiteJoint
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from RMD_Actuator_Control.RMD_Actuator_Control.data_pipeline.zmq_utils import zmqUtils
 
 # Constants
@@ -63,6 +65,7 @@ class ArtusAPI:
 
         if self.zmq == True:
             self.zmq = zmqUtils(source="Artus", streaming_freq= 15)
+            
 
         self.joints = {}
 

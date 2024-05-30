@@ -4,9 +4,9 @@ import os
 current_directory = os.getcwd()
 import sys
 import multiprocessing
-sys.path.append(current_directory)
+sys.path.append(os.path.dirname((os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 # print(os.path.dirname(current_directory))
-from artus_lite_api.ArtusAPI import ArtusAPI,UART,WIFI
+from Sarcomere_Dynamics_Resources.artus_lite_api.ArtusAPI import ArtusAPI,UART,WIFI
 import pandas as pd
 import numpy as np
 from datetime import datetime
@@ -22,14 +22,92 @@ Artus simulation for zmq:
                  ''')
 
 def json_to_command(filename:str,artusapi:ArtusAPI):
-    with open(os.path.join('grasp_patterns',filename),'r') as file:
+    with open(os.path.join(r'C:/Users/General User/Desktop/github_files/Sarcomere_Dynamics_Resources/grasp_patterns',filename),'r') as file:
         grasp_dict = json.load(file)
         for name,values in grasp_dict.items():
             artusapi.set_robot_params_by_joint_name(name,values['input_angle'],values['input_speed'])
         artusapi.send_target_command()
 
 
+def simulate_artus_teleop(artus3d_L:ArtusAPI, record):
+    # CALIBRATE BEFORE RUNNING THIS FILE
+    # artus3d_L = ArtusAPI(port='COM11',communication_method=UART,hand='left', zmq_=False)
+    # artus3d_R = ArtusAPI(port='COM4', communication_method = 'UART', hand = 'right', zmq_ = False)
+
+    artus3d_L.start_connection()
+    # artus3d_R.start_connection()
+    artus3d_L.start_robot()
+    # artus3d_R.start_robot()
+
+    duration = 4
+    record = True
+    # while record.value == False:
+    #     continue
+
+    current_time = time.perf_counter()
+
+    while record == True:
+        json_to_command(filename = 'trial.json', artusapi = artus3d_L)
+        # json_to_artus_command('trial.json', artus3d_R)
+
+        while time.perf_counter() - current_time < duration:
+            joints_L = artus3d_L.get_robot_states()
+            joint_positions_L = []
+            for _, joint in joints_L.items():
+                joint_positions_L.append(joint.feedback_angle)
+
+            # joints_R = artus3d_R.get_robot_states()
+            # joint_positions_R = []
+            # for _, joint in joints_R.items():
+            #     joint_positions_R.append(joint.feedback_angle)
+            grasp_pattern_L = artus3d_L.grasp_pattern
+            start_index = grasp_pattern_L.find('[') + 1
+            end_index = grasp_pattern_L.find(']', start_index)
+            cmd_substring_L = grasp_pattern_L[start_index:end_index]
+            joint_commads_L = list(map(int, cmd_substring_L.split(',')))
+
+            # start_index = artus3d_R.grasp_pattern.find('[') + 1
+            # end_index = artus3d_R.grasp_pattern.find(']', start_index)
+            # cmd_substring_R = artus3d_R.grasp_pattern[start_index:end_index]
+            # joint_commads_R = list(map(int, cmd_substring_R.split(',')))
+
+            # artus3d_L.zmq.send_feedback_zmq(joint_positions_L, joint_positions_L) #, joint_positions_R)
+            # artus3d_L.zmq.send_command_zmq(joint_commads_L, joint_commads_L) #, joint_commads_R)
+
+        current_time = time.perf_counter()
+
+        json_to_command('grasp_open.json', artus3d_L)
+        # json_to_artus_command('grasp_open.json', artus3d_R)
+
+        while time.perf_counter() - current_time < duration:
+            joints_L = artus3d_L.get_robot_states()
+            joint_positions_L = []
+            for _, joint in joints_L.items():
+                joint_positions_L.append(joint.feedback_angle)
+
+            # joints_R = artus3d_R.get_robot_states()
+            # joint_positions_R = []
+            # for _, joint in joints_R.items():
+            #     joint_positions_R.append(joint.feedback_angle)
+
+            start_index = artus3d_L.grasp_pattern.find('[') + 1
+            end_index = artus3d_L.grasp_pattern.find(']', start_index)
+            cmd_substring_L = artus3d_L.grasp_pattern[start_index:end_index]
+            joint_commads_L = list(map(int, cmd_substring_L.split(',')))
+
+            # start_index = artus3d_R.grasp_pattern.find('[') + 1
+            # end_index = artus3d_R.grasp_pattern.find(']', start_index)
+            # cmd_substring_R = artus3d_R.grasp_pattern[start_index:end_index]
+            # joint_commads_R = list(map(int, cmd_substring_R.split(',')))
+
+            # artus3d_L.zmq.send_feedback_zmq(joint_positions_L, joint_positions_L) #, joint_positions_R)
+            # artus3d_L.zmq.send_command_zmq(joint_commads_L,joint_commads_L) # joint_commads_R)
+
+        current_time = time.perf_counter()
+
 def simulation(artus3d:ArtusAPI, save_directory, reading_frequency = 2, duration = 4):
+    artus3d.start_connection()
+    artus3d.start_robot()
     sent_command = []
     recieved_feedback = []
 
@@ -144,14 +222,14 @@ def simulation(artus3d:ArtusAPI, save_directory, reading_frequency = 2, duration
     
 
 
-def simulation_for_zmq(reading_frequency = 5, save_directory = r"C:/Users/sansk/OneDrive/Desktop/artus_data"):
+def simulation_for_zmq(reading_frequency = 5, save_directory = r"C:/Users/General User/Desktop/teleoperation_data_pipeline"): #r"C:/Users/sansk/OneDrive/Desktop/artus_data"):
     date = datetime.now()
     date = str(date.strftime("%Y_%d_%b_%H_%M_%S"))
     os.makedirs(save_directory, exist_ok=True)
     current_session_directory = os.path.join(save_directory, date)
     os.mkdir(current_session_directory)
 
-    artus3d = ArtusAPI(port='COM3',communication_method=UART,hand='left')
+    artus3d = ArtusAPI(port='COM11',communication_method=UART,hand='left', zmq_=True)
     while True:
         user_input = zmq_menu()
         match user_input:
@@ -164,7 +242,9 @@ def simulation_for_zmq(reading_frequency = 5, save_directory = r"C:/Users/sansk/
             case "4":
                 simulation(artus3d, save_directory=current_session_directory, reading_frequency=reading_frequency)
             case "5":
-                artus3d.close_connection()
+                record = True
+                # record.value = True
+                simulate_artus_teleop(artus3d_L=artus3d, record = record)
             # case "t":
             #     debug_simulation(artus3d=artus3d, reading_frequency= reading_frequency)
 
