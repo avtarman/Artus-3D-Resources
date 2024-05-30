@@ -14,6 +14,7 @@ import sys
 from artus_lite_api.src.python_server import PythonServer
 from artus_lite_api.src.python_uart import PythonEsp32Serial
 from artus_lite_api.src.ArtusLiteJoint import ArtusLiteJoint
+from RMD_Actuator_Control.RMD_Actuator_Control.data_pipeline.zmq_utils import zmqUtils
 
 # Constants
 WIFI = 'WiFi'
@@ -25,13 +26,15 @@ class ArtusAPI:
                  communication_method = 'WiFi',
                  port='COM9',
                  target_ssid = 'Artus3DTester',
-                 hand = 'right'
+                 hand = 'right',
+                 zmq_ = False
                  ):
         
         self.target_ssid = target_ssid
         self.communication_method = communication_method
         self.port = port
         self.hand = hand
+        self.zmq = zmq_
 
         # command codes
         self.target_cmd = '176'
@@ -57,6 +60,9 @@ class ArtusAPI:
             'max':[90,30,90,90,90,15,90,90,15,90,90,15,90,90,15,90],
             'min':[0,-30,0,0,0,-15,0,0,-15,0,0,-15,0,0,-15,0]
         }
+
+        if self.zmq == True:
+            self.zmq = zmqUtils(source="Artus", streaming_freq= 15)
 
         self.joints = {}
 
