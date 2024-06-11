@@ -65,11 +65,14 @@ class ArtusAPI:
         }
 
         if self.zmq == True:
-            self.zmq = zmqUtils(source="Artus", streaming_freq= 15)
-            # self.zmq = zmqUtils_alternate(source="Artus")
+            # self.zmq = zmqUtils(source="Artus", streaming_freq= 15)
+            self.zmq = zmqUtils_alternate(source="Artus")
             
 
         self.joints = {}
+        
+        self.joint_commands = [0]*len(self.joint_names)
+        self.joint_feedback = [0]*len(self.joint_names)
 
         for i,joint in enumerate(self.joint_names):
             self.joints[joint] = ArtusLiteJoint(joint,i,constraints['max'][i],constraints['min'][i])
