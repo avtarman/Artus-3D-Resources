@@ -4,18 +4,19 @@ import time
 class Commands:
 
     def __init__(self,
-    start_command= 11,
-    calibrate_command = 13,
-    sleep_command = 15,
-    firmware_update_command = 17,
-    reset_command = 19,
+    start_command= 0x0B,
+    calibrate_command = 0x0D,
+    sleep_command = 0x0F,
+    firmware_update_command = 0x11,
+    reset_command = 0x13,
 
-    target_command = 102,
-    get_feedback_command = 104,
+    target_command = 0x66,
+    get_feedback_command = 0x68,
 
-    save_grasp_onboard_command = 200,
-    return_grasps_command = 210,
-    execute_grasp_command = 224):
+    save_grasp_onboard_command = 0xC8,
+    return_grasps_command = 0xD2,
+    execute_grasp_command = 0xE0,
+	reset_on_start = 0):
         
         self.commands = {
             'start_command': start_command,
@@ -29,6 +30,7 @@ class Commands:
             'return_grasps_command': return_grasps_command,
             'execute_grasp_command': execute_grasp_command
         }
+        self.reset_on_start = reset_on_start
 
     def get_robot_start_command(self,stream:bool,freq:int) -> list:
         """
@@ -45,7 +47,7 @@ class Commands:
         if stream: 
             return [self.commands['start_command'],20,year,month,day,hour,minute,second,1,(freq>>16)&0xff,(freq>>8)&0xff,freq&0xff]
         else:
-            return [self.commands['start_command'],20,year,month,day,hour,minute,second]
+            return [self.commands['start_command'],20,year,month,day,hour,minute,second,self.reset_on_start]
 
 
     def get_target_position_command(self,hand_joints:dict) -> list:
@@ -59,9 +61,20 @@ class Commands:
         
         return command_list
 
+    def get_firmware_command(self,fw_size,upload,drivers):
+        command_list = [0]*32
+        command_list.insert(0,self.commands['firmware_update_command'])
+        command_list[1] = (fw_size >> 24) & 0xFF
+        command_list[2] = (fw_size >> 16) & 0xff
+        command_list[3] = (fw_size >> 8)  & 0xff
+        command_list[4] = (fw_size) & 0xff
+        command_list[5] = upload
+        command_list[6] = drivers
+        return command_list
+
     def get_calibration_command(self):
         command_list = [0]*32
-        command_list.insert(0,self.commands['calibration_command'])
+        command_list.insert(0,self.commands['calibrate_command'])
         return command_list
 
     def get_sleep_command(self):

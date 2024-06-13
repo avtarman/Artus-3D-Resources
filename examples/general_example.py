@@ -8,7 +8,6 @@ current_file_path = Path(__file__).resolve()
 # Add the desired path to the system path
 desired_path = current_file_path.parent.parent
 sys.path.append(str(desired_path))
-print(desired_path)
 
 from ArtusAPI.artus_api import ArtusAPI
 
@@ -53,7 +52,9 @@ def example():
             case "8":
                 with open(os.path.join(desired_path,'data','hand_poses','grasp_open.json'),'r') as file:
                     grasp_dict = json.load(file)
-                    artusapi.set_joint_angles(grasp_dict)   
+                    artusapi.set_joint_angles(grasp_dict) 
+            case 'f':
+                artusapi.update_firmware()  
 
 if __name__ == '__main__':
     example()

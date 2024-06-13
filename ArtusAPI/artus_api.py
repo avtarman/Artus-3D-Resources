@@ -14,6 +14,7 @@ print(desired_path)
 from .communication import Communication
 from .commands import Commands
 from .robot import Robot
+from .firmware_update import FirmwareUpdater
 import time
 
 class ArtusAPI:
@@ -140,6 +141,7 @@ class ArtusAPI:
         """
         feedback_command = self._receive_feedback()
         joint_angles = self._robot_handler.get_joint_angles(feedback_command)
+        print(joint_angles)
         return joint_angles
     
     # robot feedback stream
@@ -155,9 +157,38 @@ class ArtusAPI:
         joint_angles = self._robot_handler.get_joint_angles(feedback_command)
         return joint_angles
 
-        
-    
+    def update_firmware(self):
+        file_path = None
+        fw_size  = 0
+        # input to upload a new file
+        upload_flag = input(f'Uploading a new BIN file? (y/n)  :  ')
+        upload = True
+            
 
+        self._firmware_updater = FirmwareUpdater(self._communication_handler,
+                                        self._command_handler)
+        
+        if upload_flag == 'n' or upload_flag == 'N':
+            self._firmware_updater.file_location = 'not empty'
+            upload = False
+        else:
+            self._firmware_updater.file_location = input('Please enter binfile absolute path:  ')
+            fw_size = self._firmware_updater.get_bin_file_info()
+        
+        # set which drivers to flash should be 1-8
+        drivers_to_flash = int(input(f'Which drivers would you like to flash? \n0:ALL\nor 1-8\n:  '))
+        if not drivers_to_flash:
+            drivers_to_flash = 0
+
+        firmware_command = self._command_handler.get_firmware_command(fw_size,upload,drivers_to_flash)
+        self._communication_handler.send_data(firmware_command)
+        if upload:
+            self._firmware_updater.update_firmware(fw_size)
+
+        print(f'File size = {fw_size}')        
+        print(f'flashing...')
+        self._communication_handler.wait_for_ack()
+        print(f'Power Cycle the device to take effect')
 
 def test_artus_api():
     artus_api = ArtusAPI()

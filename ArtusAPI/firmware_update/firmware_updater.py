@@ -1,54 +1,129 @@
+import os
+import time
+import logging
+
+BYTES_CHUNK = 32
+UPLOAD_CHUNKS_COMMAND = 0x30
+FINISH_CHUNKS_COMMAND = 0x32
 
 class FirmwareUpdater:
 
     def __init__(self,
-                 communication_handler= None,
-                 file_location = ""
+                 communication_handler = None,
+                 command_handler = None,
+                 file_location = None,
+                 logger = None
                     ):
         
-        self.communication_handler = communication_handler
+        self._communication_handler = communication_handler
+        self._command_handler = command_handler
         self.file_location = file_location
 
+        if not logger:
+            self.logger = logging.getLogger(__name__)
+        else:
+            self.logger = logger
 
-    def update_firmware(self, communication_handler):
-        acknowledged = False
+    def get_bin_file_info(self):
+        # get the file location and size for comparison later
+        file_size = int(os.path.getsize(self.file_location))
 
-        file_location = self.file_location
-        file_size = os.path.getsize(file_location) 
+        print(f'Bin file size = {file_size}')
 
-        self.communication_handler.send("file ready\n".encode())
-        self.communication_handler.send((str(file_size)+"\n").encode())
+        # open file and get data
+        return file_size
 
 
-        file = open(file_location, "rb")
+    def update_firmware(self,file_size):
+        
+        time.sleep(0.1)
+        
+        # wait for ACK back before sending data
+        self.wait_for_ack()
+
+        # load File Data
+        file = open(self.file_location,'rb')
         file_data = file.read()
-        file.close
+        file.close()
 
-        self.communication_handler.sendall(file_data)
+        # number of 32B chunks needed
+        chunks_required = int(file_size/BYTES_CHUNK) + 1
+        print((f'Num of chunks to send: {chunks_required}'))
 
-        while not acknowledged:
-            message = self.conn.recv(1024).decode()
-            if message == "failed":
-                print("File upload failed\n")
-                acknowledged = True
-            elif message == "success":   
-                print("File upload successful\n")
-                acknowledged = True
-
-        print("Flashing...")
-
-        while True:
-            message = self.conn.recv(1024).decode()
-            if message == "FLASHED":
-                print("Firmware update complete")
-                break
+        # send actual binary data - note 32bytes because length of command is 34
+        # init counter
+        i = 0
+        ret = False
+        while i < len(file_data):
+            
+            # if not enough file data for 32B, fill with 0xFFs
+            if i+BYTES_CHUNK > file_size:
+                chunk = list(file_data[i:])
+                while len(chunk) < BYTES_CHUNK: # Always make sure 32B of valid data
+                    chunk.append(0xFF)
+            
             else:
-                print(message)
+                chunk = list(file_data[i:i+BYTES_CHUNK])
+            
+            
+            # checksum last value
+            csum = self.calc_check_sum(chunk)
+            # set 33rd byte as checksum value
+            chunk.append(csum)
+
+            # print(f'{chunk} {len(chunk)}')
+
+            # send data
+            self._communication_handler.send_data(chunk)
+
+            # sleep
+            time.sleep(0.008)
+
+            # print([hex(x) for x in chunk])
+                
+            # wait for ack
+            ret = self.wait_for_ack()
+            # debug print
+            # print(f'CHUNKS LEFT {chunks_required} {csum}')
+
+            if ret:
+                chunks_required -= 1
+                i += BYTES_CHUNK
+                csum = 0
+                ret = 0
+        
+
+            time.sleep(0.01)
+
+        print(f'Firmware update in progress..')
+
+    def calc_check_sum(self,data:list)->int:
+        checksum = 0
+        for i in data:
+            checksum ^= i
+        return checksum
+
+    def wait_for_ack(self):
+        while 1:
+            tmp,rc_csum = self._communication_handler.receive_data()
+            if tmp == 2:           
+                # print(f'{tmp} {rc_csum[0]}')
+                if rc_csum[0] == 1:
+                    return True
+                else:
+                    self.logger.warn(f'firmware flash checksum error')
+                    return False
+            elif tmp == 9:
+                self.logger.error(f'firmware flash failed')
+                return False
+            time.sleep(0.001)
+            
 
 
 def test_firmware_updater():
-    firmware_updater = FirmwareUpdater()
-    firmware_updater.update_firmware(communication_handler=None)
+    my_fp = "/home/ryan/Documents/Artus-3D-actuator-fw-F3/build/actuator_mx_build.bin"
+    firmware_updater = FirmwareUpdater(communication_channel_identifier='ArtusLite000',communication_method='WiFi',file_location=my_fp)
+    firmware_updater.update_firmware()
 
 if __name__ == "__main__":
     test_firmware_updater()

@@ -27,20 +27,28 @@ class UART:
             self.logger = logger
 
     def open(self):
-        self.esp32.port=self.port
-        self.esp32.close()
-        self.esp32.open()
-        self.logger.info(f"Opening {self.port} @ {self.baudrate} baudrate")
-        self.esp32.flush()
+        try:
+            self.esp32.port=self.port
+            self.esp32.close()
+            self.esp32.open()
+            self.logger.info(f"Opening {self.port} @ {self.baudrate} baudrate")
+            self.esp32.flush()
+        except Exception as e:
+            self.logger.error(f'Error opening port {self.port}')
+            self.logger.error(e)
 
     def send(self, data:bytearray):
         # print(data)
-        self.esp32.write(data)
+        try:
+            self.esp32.write(data)
 
-        # required delay
-        t = time.perf_counter()
-        while time.perf_counter() - t < self.timer_send:
-            pass
+            # required delay
+            t = time.perf_counter()
+            while time.perf_counter() - t < self.timer_send:
+                pass
+        except Exception as e:
+            self.logger.error(f'Unable to send command through {self.port}')
+            self.logger.error(e)
 
     def receive(self):
 
@@ -48,18 +56,21 @@ class UART:
         # t = time.perf_counter()
         # while time.perf_counter() - t < self.timer_recv:
         #     pass
-
-        # check data
-        if self.esp32.in_waiting >= 65: # get data if greater or equal to 65
-            msg_bytes = self.esp32.read(65)
-            print(msg_bytes)
-            return msg_bytes
-        elif self.esp32.in_waiting > 0: # clear buffer if not correct amount of data
-            # msg_bytes = self.esp32.read_all()
-            # self.logger.warning(f"Incorrect amount of data:{(self.esp32.in_waiting)}")
-            return None
-        else: # non blocking
-            return None            
+        try:
+            # check data
+            if self.esp32.in_waiting >= 65: # get data if greater or equal to 65
+                msg_bytes = self.esp32.read(65)
+                print(msg_bytes)
+                return msg_bytes
+            elif self.esp32.in_waiting > 0: # clear buffer if not correct amount of data
+                # msg_bytes = self.esp32.read_all()
+                # self.logger.warning(f"Incorrect amount of data:{(self.esp32.in_waiting)}")
+                return None
+            else: # non blocking
+                return None
+        except Exception as e:
+            self.logger.error(f'Error receiving data')
+            self.logger.error(e)            
 
     def close(self):
         self.esp32.close()

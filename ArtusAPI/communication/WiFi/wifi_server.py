@@ -41,7 +41,7 @@ class WiFiServer:
 
     def _get_available_ip(self):
         gateway_ip = None
-        
+
         # Get all network interfaces
         interfaces = psutil.net_if_addrs()
 
@@ -69,10 +69,10 @@ class WiFiServer:
             source_ip = self._get_available_ip()
             # TCP tuple
             self.esp = (source_ip,self.port)
-
+            print(self.esp)
             # create server socket
             self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.server_socket.settimeout(8) # blocking timeout to connect
+            self.server_socket.settimeout(10) # blocking timeout to connect
             self.server_socket.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
             self.server_socket.bind(self.esp)
 
@@ -82,11 +82,12 @@ class WiFiServer:
             self.logger.info(f"Listening for connection")
         except Exception as e:
             self.logger.error(f"No Network named {self.target_ssid}")
+            print(e)
 
         # Accept the connection
         try:
             self.conn, self.addr = self.server_socket.accept()
-            self.conn.settimeout(0.1) # 1 ms timeout for recv and send methods
+            self.conn.settimeout(0.5) # 1 ms timeout for recv and send methods
             # TODO logging
             self.logger.info(f"New Connection: {self.addr} connected.")
         except TimeoutError as e:
@@ -119,6 +120,8 @@ class WiFiServer:
                     self.logger.warning(f"Unable to create wifi profile")
 
             else:
+                # refresh wifi scan
+                
                 # connect to profile 
                 connect_command = f'netsh wlan connect ssid={self.target_ssid} name={self.target_ssid} interface=Wi-Fi'
                 subprocess.run(connect_command, shell=True)
@@ -130,13 +133,13 @@ class WiFiServer:
             # input password
             if not self.password:
                 self.password = input('type ssid password:')
-            if self.password:
+            elif self.password:
                 connect_command += f' password "{self.password}"'
 
             subprocess.run(connect_command, shell=True)
             
             # clear password
-            self.password = None
+            # self.password = None
         
         else:
             # TODO logging
@@ -157,7 +160,7 @@ class WiFiServer:
 
         elif system == "Linux":
             # Linux uses the "nmcli" command to disconnect from Wi-Fi networks
-            disconnect_command = f'nmcli dev disconnect iface "wlp2s0" ssid "{self.target_ssid}"'
+            disconnect_command = f'nmcli con down id "{self.target_ssid}"'
             subprocess.run(disconnect_command, shell=True)
 
         else:
@@ -183,7 +186,7 @@ class WiFiServer:
                 return None
         except Exception as e:
             # TODO logging
-            self.logger.warning(f"No data available to receive")
+            self.logger.warning(f"No data available to receive {e}")
             return None
 
     
@@ -194,41 +197,3 @@ class WiFiServer:
             # TODO insert error logging
             self.logger.error(f"Unable to send data")
             None
- 
-    def flash_wifi(self): 
-        acknowledged = False
-
-        file_location = input("Enter file path: ")
-        # file_location = "C:\\Users\\RyanLee\\Documents\\GitHub\\Artus-3D-actuators-fw\\Debug\\actuator_m0.bin"
-        file_size = os.path.getsize(file_location) 
-
-        self.conn.send("file ready\n".encode())
-        self.conn.send((str(file_size)+"\n").encode())
-        file = open(file_location, "rb")
-        file_data = file.read()
-        file.close
-        self.conn.sendall(file_data)
-
-        while not acknowledged:
-            message = self.conn.recv(1024).decode()
-            if message == "failed":
-                print("File upload failed\n")
-                acknowledged = True
-            elif message == "success":   
-                print("File upload successful\n")
-                acknowledged = True
-
-        print("Flashing...")
-        
-        while True:
-            message = self.conn.recv(1024).decode()
-            if message == "FLASHED":
-                print("Firmware update complete")
-                break
-    
-    def upload_logs_wifi():
-        while True:
-            # receive here
-            if """ finishing condition""":
-                break
-        return

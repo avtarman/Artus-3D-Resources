@@ -73,7 +73,7 @@ class Communication:
         # set last value to '\n'
         send_data[-1:] = '\0'.encode('ascii')
         
-        print(send_data)
+        # print(send_data)
         # return byte array to send
         return send_data
     
@@ -100,14 +100,18 @@ class Communication:
         """
         start the communication
         """
-        self.communicator.open()
+        try:
+            self.communicator.open()
+        except Exception as e:
+            self.logger.error("unable to connect to Robot")
+            print(e)
 
     def send_data(self, message:list):
         """
         send message
         """
         try:
-            print(message)
+            # print(message)
             byte_msg = self._list_to_byte_encode(message)
             self.communicator.send(byte_msg)
             return True
@@ -125,7 +129,7 @@ class Communication:
             byte_msg_recv = self.communicator.receive()
             if not byte_msg_recv:
                 # self.logger.warning("No data received")
-                return None
+                return None,None
             ack,message_received = self._byte_to_list_decode(byte_msg_recv)
             # print(ack)
         except Exception as e:
@@ -136,6 +140,14 @@ class Communication:
 
     def close_connection(self):
         self.communicator.close()
+
+
+    def wait_for_ack(self):
+        while 1:
+            tmp,rc_csum = self.receive_data()
+            if tmp is not None:
+                return 1
+            time.sleep(0.001)
 
 
 ##################################################################
@@ -161,7 +173,6 @@ def test_uart():
             if communication.receive_data() is not None:
                 i+=1
         time.sleep(0.5)
-
 
 if __name__ == "__main__":
     # test_wifi()
