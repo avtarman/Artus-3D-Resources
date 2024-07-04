@@ -45,9 +45,9 @@ class Commands:
         second  = int(time.localtime().tm_sec)
 
         if stream: 
-            return [self.commands['start_command'],20,year,month,day,hour,minute,second,1,(freq>>16)&0xff,(freq>>8)&0xff,freq&0xff]
+            return [self.commands['start_command'],20,year,month,day,hour,minute,second,1,(freq>>16)&0xff,(freq>>8)&0xff,freq&0xff,self.reset_on_start]
         else:
-            return [self.commands['start_command'],20,year,month,day,hour,minute,second,self.reset_on_start]
+            return [self.commands['start_command'],20,year,month,day,hour,minute,second,0,0,0,0,self.reset_on_start]
 
 
     def get_target_position_command(self,hand_joints:dict) -> list:
@@ -98,12 +98,12 @@ class Commands:
         
         # constraint checker 
         if 0 <= joint <= 15:
-            command_list[0] = joint
+            command_list[1] = joint
         else:
             # TODO logging
             None
         if 0 <= motor <= 2:
-            command_list[1] = motor
+            command_list[2] = motor
         else:
             # TODO logging
             None

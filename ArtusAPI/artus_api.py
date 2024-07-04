@@ -79,7 +79,14 @@ class ArtusAPI:
         """
         print(f"communication frequency in useconds = {self._communication_frequency_us}")
         robot_wake_up_command = self._command_handler.get_robot_start_command(self.stream,self._communication_frequency_us) # to ms for masterboard
-        return self._communication_handler.send_data(robot_wake_up_command)
+        self._communication_handler.send_data(robot_wake_up_command)
+
+        # wait for data back
+        if self._communication_handler.wait_for_ack():
+            self.logger.info(f'Finished calibration')
+        else:
+            self.logger.warn(f'Error in calibration')
+
     def sleep(self):
         """
         Sleep the Artus Hand
@@ -91,7 +98,13 @@ class ArtusAPI:
         Calibrate the Artus Hand
         """
         robot_calibrate_command = self._command_handler.get_calibration_command()
-        return self._communication_handler.send_data(robot_calibrate_command)
+        self._communication_handler.send_data(robot_calibrate_command)
+
+        # wait for data back
+        if self._communication_handler.wait_for_ack():
+            self.logger.info(f'Finished calibration')
+        else:
+            self.logger.warn(f'Error in calibration')
     
 
     # robot control
@@ -189,6 +202,12 @@ class ArtusAPI:
         print(f'flashing...')
         self._communication_handler.wait_for_ack()
         print(f'Power Cycle the device to take effect')
+
+    def reset(self):
+        j = int(input(f'Enter Joint to reset: '))
+        m = int(input(f'Enter Motor to reset: '))
+        reset_command = self._command_handler.get_locked_reset_low_command(j,m)
+        self._communication_handler.send_data(reset_command)
 
 def test_artus_api():
     artus_api = ArtusAPI()

@@ -55,6 +55,9 @@ def example():
                     artusapi.set_joint_angles(grasp_dict) 
             case 'f':
                 artusapi.update_firmware()  
+            case 'r':
+                artusapi.reset()
+
 
 if __name__ == '__main__':
     example()
