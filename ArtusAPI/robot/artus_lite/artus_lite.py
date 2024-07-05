@@ -160,8 +160,8 @@ class ArtusLite:
             if joint_angles[joint.index] > 100:
                 joint_angles[joint.index] = 100
                 # TODO logging
-            if joint_angles[joint.index] < 60:
-                joint_angles[joint.index] = 60
+            if joint_angles[joint.index] < 0:
+                joint_angles[joint.index] = 0
                 # TODO logging
         return joint_angles
 
