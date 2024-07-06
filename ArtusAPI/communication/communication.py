@@ -68,7 +68,7 @@ class Communication:
         send_data[0:1] = package[0].to_bytes(1,byteorder='little')
 
         for i in range(len(package)-1):
-            send_data[i+1:i+2] = int(package[i+1]).to_bytes(1,byteorder='little')
+            send_data[i+1:i+2] = int(package[i+1]).to_bytes(1,byteorder='little',signed=True)
 
         # set last value to '\n'
         send_data[-1:] = '\0'.encode('ascii')
@@ -125,11 +125,13 @@ class Communication:
         """
         receive message
         """
+        byte_msg_recv = None
         try:    
-            byte_msg_recv = self.communicator.receive()
-            if not byte_msg_recv:
-                # self.logger.warning("No data received")
-                return None,None
+            while byte_msg_recv is None:
+                byte_msg_recv = self.communicator.receive()
+                if not byte_msg_recv:
+                    # self.logger.warning("No data received")
+                    return None,None
             ack,message_received = self._byte_to_list_decode(byte_msg_recv)
             # print(ack)
         except Exception as e:

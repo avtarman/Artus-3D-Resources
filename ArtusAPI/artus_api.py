@@ -28,7 +28,8 @@ class ArtusAPI:
                 hand_type ='left',
                 stream = False,
                 communication_frequency = 400, # hz
-                logger = None
+                logger = None,
+                reset_on_start = 0
                 ):
         """
         ArtusAPI class controls the communication and control of between a system and an Artus Hand by Sarcomere Dynamics Inc.
@@ -43,7 +44,7 @@ class ArtusAPI:
 
         self._communication_handler = Communication(communication_method=communication_method,
                                                   communication_channel_identifier=communication_channel_identifier)
-        self._command_handler = Commands()
+        self._command_handler = Commands(reset_on_start=reset_on_start)
         self._robot_handler = Robot(robot_type = robot_type,
                                    hand_type = hand_type)
         
@@ -125,7 +126,7 @@ class ArtusAPI:
         sends the joints to home positions (0) which opens the Artus Hand
         """
         self._robot_handler.set_home_position()
-        robot_set_home_position_command = self._command_handler.get_target_position_command()
+        robot_set_home_position_command = self._command_handler.get_target_position_command(hand_joints=self._robot_handler.robot.hand_joints)
         # check communication frequency
         if not self._check_communication_frequency():
             return False
@@ -146,6 +147,8 @@ class ArtusAPI:
     def _receive_feedback(self):
         feedback_command = self._command_handler.get_states_command()
         self._communication_handler.send_data(feedback_command)
+        # test
+        time.sleep(0.005)
         return self._communication_handler.receive_data()
     
     def get_joint_angles(self):

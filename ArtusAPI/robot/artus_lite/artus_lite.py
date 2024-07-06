@@ -59,6 +59,10 @@ class ArtusLite:
                 self.feedback_angle = 0
                 self.feedback_current = 0
                 self.feedback_temperature = temperature
+                
+            def __str__(self):
+                return "Index: " + str(self.index)+"Target Angle: " +str(self.target_angle)
+
         self.Joint = Joint
 
         self._create_hand()
@@ -85,7 +89,7 @@ class ArtusLite:
         del self.joint_max_angles
         del self.joint_min_angles
         del self.joint_rotation_directions
-        del self.joint_velocities
+        # self.joint_velocities
         del self.number_of_joints
 
         def __str__(self):
@@ -166,15 +170,17 @@ class ArtusLite:
         Set the hand to the home position at default velocity
         """
         # create new target dictionary with default velocity and default angle
-        joint_angles = {key: {'target_angle':value.default_angle,'velocity':self.joint_velocities[value.index]} for key,value in self.hand_joints.items()}
-
-        return self.set_joint_angles_by_name(joint_angles)
+        
+        joint_angles = {key: {'index': value.index, 'target_angle':value.default_angle,'velocity':self.joint_velocities[value.index]} for key,value in self.hand_joints.items()}
+        print(self.hand_joints['thumb_spread'])
+        return self.set_joint_angles(joint_angles)
     
     def get_joint_angles(self, feedback_package:list):
         """
         Get the joint angles and feedback list data
         and populate the feedback fields in the hand_joints dictionary
         """
+        print(f'FB PACKAGE = {feedback_package}')
         for name,joint_data in self.hand_joints.items():
             joint_data.feedback_angle = feedback_package[1][joint_data.index]
             joint_data.feedback_current = feedback_package[1][joint_data.index+15]

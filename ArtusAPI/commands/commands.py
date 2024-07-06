@@ -54,8 +54,8 @@ class Commands:
         command_list = [0]*32 # create empty buffer
         # fill command list with data
         for name,joint_data in hand_joints.items():
-            command_list[joint_data.index] = joint_data.target_angle
-            command_list[joint_data.index+16] = joint_data.velocity
+            command_list[joint_data.index] = int(joint_data.target_angle)
+            command_list[joint_data.index+16] = int(joint_data.velocity)
         # insert the command
         command_list.insert(0,self.commands['target_command'])
         

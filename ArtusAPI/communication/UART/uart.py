@@ -5,7 +5,7 @@ import time
 class UART:
     def __init__(self,
                  port='COM9',
-                 baudrate=115200, #115200, 
+                 baudrate=921600, #115200, 
                  timeout=0.5,
                  logger = None):
         

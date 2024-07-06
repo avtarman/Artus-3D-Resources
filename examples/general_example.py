@@ -28,7 +28,7 @@ Enter command:
 ''')
 
 def example():
-    artusapi = ArtusAPI(communication_method='WiFi',hand_type='right',communication_channel_identifier='ArtusLite')
+    artusapi = ArtusAPI(communication_method='UART',hand_type='right',communication_channel_identifier='COM4')
     while True:
         user_input = main_menu()
 
