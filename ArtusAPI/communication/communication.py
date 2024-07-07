@@ -111,7 +111,9 @@ class Communication:
         send message
         """
         try:
-            # print(message)
+            # Test
+            self.logger.info(f'data sent to hand {message}')
+            print(f'data sent to hand = {message}')
             byte_msg = self._list_to_byte_encode(message)
             self.communicator.send(byte_msg)
             return True
