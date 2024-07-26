@@ -56,6 +56,8 @@ class Communication:
             self.communicator = UART(port=self.communication_channel_identifier)
         elif self.communication_method == 'WiFi':
             self.communicator = WiFiServer(target_ssid=self.communication_channel_identifier)
+        elif self.communication_method == 'None':
+            pass
         else:
             raise ValueError("Unknown communication method")
     
