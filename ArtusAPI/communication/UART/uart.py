@@ -71,12 +71,12 @@ class UART:
                 return msg_bytes
             elif self.esp32.in_waiting > 0: # clear buffer if not correct amount of data
                 msg_bytes = self.esp32.read_all()
-                self.logger.warning(f"Incorrect amount of data:{(self.esp32.in_waiting)}")
+                self.logger.warning(f"Incomplete data received - package size = {(self.esp32.in_waiting)}")
                 return None
             else: # non blocking
                 return None
         except Exception as e:
-            self.logger.error(f'Error receiving data')
+            self.logger.warning(f"No data available to receive {e}")
             self.logger.error(e)            
 
     def close(self):

@@ -68,7 +68,11 @@ class Communication:
         send_data[0:1] = package[0].to_bytes(1,byteorder='little')
 
         for i in range(len(package)-1):
-            send_data[i+1:i+2] = int(package[i+1]).to_bytes(1,byteorder='little',signed=True)
+            try:
+                send_data[i+1:i+2] = int(package[i+1]).to_bytes(1,byteorder='little',signed=True)
+            except OverflowError as e:
+                send_data[i+1:i+2] = int(package[i+1]).to_bytes(1,byteorder='little',signed=False)
+
 
         # set last value to '\n'
         send_data[-1:] = '\0'.encode('ascii')

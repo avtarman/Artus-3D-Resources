@@ -188,7 +188,9 @@ class ArtusAPI:
             self._firmware_updater.file_location = 'not empty'
             upload = False
         else:
+
             self._firmware_updater.file_location = input('Please enter binfile absolute path:  ')
+
             fw_size = self._firmware_updater.get_bin_file_info()
         
         # set which drivers to flash should be 1-8
@@ -211,6 +213,12 @@ class ArtusAPI:
         m = int(input(f'Enter Motor to reset: '))
         reset_command = self._command_handler.get_locked_reset_low_command(j,m)
         self._communication_handler.send_data(reset_command)
+    
+    def hard_close(self):
+        j = int(input(f'Enter Joint to reset: '))
+        m = int(input(f'Enter Motor to reset: '))
+        hard_close = self._command_handler.get_hard_close_command(j,m)
+        self._communication_handler.send_data(hard_close)
 
 def test_artus_api():
     artus_api = ArtusAPI()

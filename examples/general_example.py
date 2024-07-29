@@ -28,7 +28,8 @@ Enter command:
 ''')
 
 def example():
-    artusapi = ArtusAPI(communication_method='UART',hand_type='right',communication_channel_identifier='COM4')
+    artusapi = ArtusAPI(communication_method='WiFi',hand_type='left',communication_channel_identifier='ArtusLite_L')
+    # artusapi = ArtusAPI(communication_method='UART',hand_type='right',communication_channel_identifier='/dev/ttyUSB0')
     while True:
         user_input = main_menu()
 
@@ -38,6 +39,7 @@ def example():
             case "2":
                 artusapi.disconnect()
             case "3":
+                # artusapi._command_handler.reset_on_start = 1
                 artusapi.wake_up()
             case "4":
                 artusapi.sleep()
@@ -57,6 +59,8 @@ def example():
                 artusapi.update_firmware()  
             case 'r':
                 artusapi.reset()
+            case 'c':
+                artusapi.hard_close()
 
 
 if __name__ == '__main__':

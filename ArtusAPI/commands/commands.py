@@ -92,6 +92,24 @@ class Commands:
         command_list.insert(0,self.commands['firmware_update_command'])
         return command_list
     
+    def get_hard_close_command(self,joint=None,motor=None):
+        command_list = [0]*32
+        command_list.insert(0,self.commands['reset_command'])
+        
+        # constraint checker 
+        if 0 <= joint <= 15:
+            command_list[1] = joint
+        else:
+            # TODO logging
+            None
+        if 0 <= motor <= 2:
+            command_list[2] = motor
+        else:
+            # TODO logging
+            None
+            
+        return command_list
+    
     def get_locked_reset_low_command(self, joint=None, motor=None):
         command_list = [0]*32
         command_list.insert(0,self.commands['reset_command'])
