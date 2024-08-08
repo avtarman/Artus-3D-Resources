@@ -9,6 +9,7 @@ class Commands:
     sleep_command = 0x0F,
     firmware_update_command = 0x11,
     reset_command = 0x13,
+    hard_close = 0x38,
 
     target_command = 0x66,
     get_feedback_command = 0x68,
@@ -24,6 +25,7 @@ class Commands:
             'sleep_command': sleep_command,
             'firmware_update_command': firmware_update_command,
             'reset_command': reset_command,
+            'hard_close_command' : hard_close,
             'target_command': target_command,
             'get_feedback_command': get_feedback_command,
             'save_grasp_onboard_command': save_grasp_onboard_command,
@@ -94,7 +96,7 @@ class Commands:
     
     def get_hard_close_command(self,joint=None,motor=None):
         command_list = [0]*32
-        command_list.insert(0,self.commands['reset_command'])
+        command_list.insert(0,self.commands['hard_close_command'])
         
         # constraint checker 
         if 0 <= joint <= 15:

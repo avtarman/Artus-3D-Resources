@@ -56,7 +56,7 @@
     "middle_d2":
     {
         "target_angle": 50,
-        "velocity": 80,
+        "velocity": 100,
         "index": 9
     },
     "ring_spread":
