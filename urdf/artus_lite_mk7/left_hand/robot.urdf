@@ -1,0 +1,706 @@
+<robot name="ArtusLite_LeftHand">
+
+    <link name="base_link"/>
+    
+    <joint name="virtual" type="fixed">
+    <origin xyz="0 0 0" rpy="1.67 0 0"/>
+    <parent link="base_link"/>
+    <child link="left_forearm_and_palm_assembly"/>
+    </joint>
+        
+    <link name="left_forearm_and_palm_assembly">
+    <visual>
+    <origin xyz="6.6271857793176427714e-18 0.1062500000000000111 0.00092800153782069891295" rpy="1.570796326794896558 -3.8857805861880478915e-16 -3.141592653589793116" />
+    <geometry>
+    <mesh filename="meshes/base_plate.stl"/>
+    </geometry>
+    <material name="l_base_plate_material">
+    <color rgba="0.91764705882352937127 0.91764705882352937127 0.91764705882352937127 1.0"/>
+    </material>
+    </visual>
+    <collision>
+    <origin xyz="6.6271857793176427714e-18 0.1062500000000000111 0.00092800153782069891295" rpy="1.570796326794896558 -3.8857805861880478915e-16 -3.141592653589793116" />
+    <geometry>
+    <mesh filename="meshes/base_plate.stl"/>
+    </geometry>
+    </collision>
+    <visual>
+    <origin xyz="6.5458706163812299388e-18 0.10625000000000003886 0.00092800153782067809627" rpy="1.570796326794896558 -3.8857805861880478915e-16 -3.141592653589793116" />
+    <geometry>
+    <mesh filename="meshes/forearm_urdf.stl"/>
+    </geometry>
+    <material name="l_forearm_urdf_material">
+    <color rgba="0.90196078431372550543 0.90196078431372550543 0.90196078431372550543 1.0"/>
+    </material>
+    </visual>
+    <collision>
+    <origin xyz="6.5458706163812299388e-18 0.10625000000000003886 0.00092800153782067809627" rpy="1.570796326794896558 -3.8857805861880478915e-16 -3.141592653589793116" />
+    <geometry>
+    <mesh filename="meshes/forearm_urdf.stl"/>
+    </geometry>
+    </collision>
+    <visual>
+    <origin xyz="0.093632374404047979954 0.14039834978141413346 0.024699999999999999734" rpy="-1.3877787807814456755e-16 -6.1062266354383619584e-16 3.141592653589793116" />
+    <geometry>
+    <mesh filename="meshes/left_palm_urdf.stl"/>
+    </geometry>
+    <material name="l_left_palm_urdf_material">
+    <color rgba="0.34901960784313723618 0.37647058823529411242 0.4000000000000000222 1.0"/>
+    </material>
+    </visual>
+    <collision>
+    <origin xyz="0.093632374404047979954 0.14039834978141413346 0.024699999999999999734" rpy="-1.3877787807814456755e-16 -6.1062266354383619584e-16 3.141592653589793116" />
+    <geometry>
+    <mesh filename="meshes/left_palm_urdf.stl"/>
+    </geometry>
+    </collision>
+    <inertial>
+    <origin xyz="0.00019107511920071163446 0.11166052882125258872 -0.0030890351728010993423" rpy="0 0 0"/>
+    <mass value="0.35338696093763821704" />
+    <inertia ixx="0.0017764148706197761731" ixy="-1.1959614087843364218e-05"  ixz="-6.8170571042849263806e-06" iyy="0.00023975575828881251668" iyz="4.8190826124171415529e-05" izz="0.0018504216703211907955" />
+    </inertial>
+    </link>
+    
+    <link name="l_t4_urdf">
+    <visual>
+    <origin xyz="-0.08389999999999996072 1.2143064331837649661e-17 -0.0097499999999999809042" rpy="-3.141592653589793116 -1.5413372953762783163e-17 5.5900639310256326189e-17" />
+    <geometry>
+    <mesh filename="meshes/t4_urdf.stl"/>
+    </geometry>
+    <material name="l_t4_urdf_material">
+    <color rgba="0.34901960784313723618 0.37647058823529411242 0.4000000000000000222 1.0"/>
+    </material>
+    </visual>
+    <collision>
+    <origin xyz="-0.08389999999999996072 1.2143064331837649661e-17 -0.0097499999999999809042" rpy="-3.141592653589793116 -1.5413372953762783163e-17 5.5900639310256326189e-17" />
+    <geometry>
+    <mesh filename="meshes/t4_urdf.stl"/>
+    </geometry>
+    </collision>
+    <inertial>
+    <origin xyz="-0.0058427530488760759386 -3.1276186814453169819e-10 -0.010494198053015345307" rpy="0 0 0"/>
+    <mass value="0.010288104754589431911" />
+    <inertia ixx="9.0136774732367750461e-07" ixy="-8.7726063621736599189e-14"  ixz="1.6540276525723793388e-08" iyy="9.0496845343764967793e-07" iyz="-2.4535322478719615859e-12" izz="1.1625687816350763315e-06" />
+    </inertial>
+    </link>
+    
+    <link name="l_t3_urdf">
+    <visual>
+    <origin xyz="-0.067375000000000032085 -7.5000000000019495516e-05 -0.0087500000000000546091" rpy="-1.5707963267948976682 -5.9811091719746543593e-16 -3.7212248125799093435e-18" />
+    <geometry>
+    <mesh filename="meshes/t3_urdf.stl"/>
+    </geometry>
+    <material name="l_t3_urdf_material">
+    <color rgba="0.34901960784313723618 0.37647058823529411242 0.4000000000000000222 1.0"/>
+    </material>
+    </visual>
+    <collision>
+    <origin xyz="-0.067375000000000032085 -7.5000000000019495516e-05 -0.0087500000000000546091" rpy="-1.5707963267948976682 -5.9811091719746543593e-16 -3.7212248125799093435e-18" />
+    <geometry>
+    <mesh filename="meshes/t3_urdf.stl"/>
+    </geometry>
+    </collision>
+    <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="0" />
+    <inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+    </inertial>
+    </link>
+    
+    <link name="l_t2_urdf">
+    <visual>
+    <origin xyz="-0.067450000000000037703 0.040300000000000030242 -0.0072500000000001053185" rpy="-1.57079632679489678 -1.6518257435107929576e-15 3.661485332619527603e-17" />
+    <geometry>
+    <mesh filename="meshes/t2_urdf.stl"/>
+    </geometry>
+    <material name="l_t2_urdf_material">
+    <color rgba="0.34901960784313723618 0.37647058823529411242 0.4000000000000000222 1.0"/>
+    </material>
+    </visual>
+    <collision>
+    <origin xyz="-0.067450000000000037703 0.040300000000000030242 -0.0072500000000001053185" rpy="-1.57079632679489678 -1.6518257435107929576e-15 3.661485332619527603e-17" />
+    <geometry>
+    <mesh filename="meshes/t2_urdf.stl"/>
+    </geometry>
+    </collision>
+    <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="0" />
+    <inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+    </inertial>
+    </link>
+    
+    <link name="l_t1_urdf">
+    <visual>
+    <origin xyz="-0.094450000000000006173 0.040300000000000002487 -0.0062500000000000228983" rpy="-1.570796326794896336 -9.1332575962621735714e-16 -5.0643499769007481721e-17" />
+    <geometry>
+    <mesh filename="meshes/t1_urdf.stl"/>
+    </geometry>
+    <material name="l_t1_urdf_material">
+    <color rgba="0.34901960784313723618 0.37647058823529411242 0.4000000000000000222 1.0"/>
+    </material>
+    </visual>
+    <collision>
+    <origin xyz="-0.094450000000000006173 0.040300000000000002487 -0.0062500000000000228983" rpy="-1.570796326794896336 -9.1332575962621735714e-16 -5.0643499769007481721e-17" />
+    <geometry>
+    <mesh filename="meshes/t1_urdf.stl"/>
+    </geometry>
+    </collision>
+    <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="0" />
+    <inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+    </inertial>
+    </link>
+    
+    <joint name="l_thumb_34" type="revolute">
+    <origin xyz="0.02699999999999996847 5.5511151231257827021e-17 -0.0010000000000000078271" rpy="3.4009006915900816602e-16 1.5792640726178881672e-15 -1.57079632679489678" />
+    <parent link="l_t2_urdf" />
+    <child link="l_t1_urdf" />
+    <axis xyz="0 0 1"/>
+    <limit effort="1" velocity="20" lower="0" upper="1.570796326794896558"/>
+    <joint_properties friction="0.0"/>
+    </joint>
+    
+    <joint name="l_thumb_23" type="revolute">
+    <origin xyz="7.4999999997826805043e-05 -0.04037500000000003586 -0.0015000000000000117406" rpy="6.1081011884469684777e-17 6.564696342128399405e-16 -1.5707963267948970021" />
+    <parent link="l_t3_urdf" />
+    <child link="l_t2_urdf" />
+    <axis xyz="0 0 1"/>
+    <limit effort="1" velocity="20" lower="0" upper="1.570796326794896558"/>
+    <joint_properties friction="0.0"/>
+    </joint>
+    
+    <joint name="l_thumb_12" type="revolute">
+    <origin xyz="-0.016524999999999942513 0.0087500000000000147105 -0.0098249999999999448885" rpy="-1.5707963267948956698 -1.2740903539558086077 1.7268164178027235758e-15" />
+    <parent link="l_t4_urdf" />
+    <child link="l_t3_urdf" />
+    <axis xyz="0 0 1"/>
+    <limit effort="1" velocity="20" lower="0.29670597283903604735" upper="1.570796326794896558"/>
+    <joint_properties friction="0.0"/>
+    </joint>
+    
+    <joint name="l_thumb_01" type="revolute">
+    <origin xyz="0.014693518066513852616 0.1457335573584342403 -0.026000647022553169396" rpy="1.5707963267948956698 -0.79305228016610029851 -2.9670597283903590302" />
+    <parent link="left_forearm_and_palm_assembly" />
+    <child link="l_t4_urdf" />
+    <axis xyz="0 0 1"/>
+    <limit effort="1" velocity="20" lower="-0.785398163397448279" upper="0.785398163397448279"/>
+    <joint_properties friction="0.0"/>
+    </joint>
+    
+    <link name="l_d4-1_urdf">
+    <visual>
+    <origin xyz="-0.079149999999999970379 -3.4694469519536141888e-18 -0.0087500000000000008327" rpy="-3.141592653589793116 2.8217738340531005502e-18 -1.4799331403792561947e-18" />
+    <geometry>
+    <mesh filename="meshes/d4-1_urdf.stl"/>
+    </geometry>
+    <material name="l_d4-1_urdf_material">
+    <color rgba="0.34901960784313723618 0.37647058823529411242 0.4000000000000000222 1.0"/>
+    </material>
+    </visual>
+    <collision>
+    <origin xyz="-0.079149999999999970379 -3.4694469519536141888e-18 -0.0087500000000000008327" rpy="-3.141592653589793116 2.8217738340531005502e-18 -1.4799331403792561947e-18" />
+    <geometry>
+    <mesh filename="meshes/d4-1_urdf.stl"/>
+    </geometry>
+    </collision>
+    <inertial>
+    <origin xyz="-0.0062842813664121394135 2.5879353408397137246e-10 -0.0081923602347070741819" rpy="0 0 0"/>
+    <mass value="0.007132231448786834245" />
+    <inertia ixx="4.8911025414963878454e-07" ixy="-2.0479711672036180681e-14"  ixz="1.4355227474224368753e-08" iyy="5.4026894403887885267e-07" iyz="1.5625068492348320562e-13" izz="7.1745332239577878067e-07" />
+    </inertial>
+    </link>
+    
+    <link name="l_d3-1_urdf">
+    <visual>
+    <origin xyz="-0.063875000000000015099 0.0010000000000000008882 -0.0072500000000000480727" rpy="-1.5707963267948976682 -5.938149961013765022e-16 1.9858454729213926187e-18" />
+    <geometry>
+    <mesh filename="meshes/d3-1_urdf.stl"/>
+    </geometry>
+    <material name="l_d3-1_urdf_material">
+    <color rgba="0.34901960784313723618 0.37647058823529411242 0.4000000000000000222 1.0"/>
+    </material>
+    </visual>
+    <collision>
+    <origin xyz="-0.063875000000000015099 0.0010000000000000008882 -0.0072500000000000480727" rpy="-1.5707963267948976682 -5.938149961013765022e-16 1.9858454729213926187e-18" />
+    <geometry>
+    <mesh filename="meshes/d3-1_urdf.stl"/>
+    </geometry>
+    </collision>
+    <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="0" />
+    <inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+    </inertial>
+    </link>
+    
+    <link name="l_d2-1_urdf">
+    <visual>
+    <origin xyz="-0.062875000000000014211 0.038874999999999999833 -0.0067500000000000927314" rpy="-1.57079632679489678 -1.5959362904671377236e-15 1.772541981320826394e-18" />
+    <geometry>
+    <mesh filename="meshes/d2-1_urdf.stl"/>
+    </geometry>
+    <material name="l_d2-1_urdf_material">
+    <color rgba="0.34901960784313723618 0.37647058823529411242 0.4000000000000000222 1.0"/>
+    </material>
+    </visual>
+    <collision>
+    <origin xyz="-0.062875000000000014211 0.038874999999999999833 -0.0067500000000000927314" rpy="-1.57079632679489678 -1.5959362904671377236e-15 1.772541981320826394e-18" />
+    <geometry>
+    <mesh filename="meshes/d2-1_urdf.stl"/>
+    </geometry>
+    </collision>
+    <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="0" />
+    <inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+    </inertial>
+    </link>
+    
+    <link name="l_d1-1_urdf">
+    <visual>
+    <origin xyz="-0.088875000000000023426 0.038874999999999937383 -0.0062500000000000194289" rpy="-1.5707963267948961139 -8.9049929426726724149e-16 -2.2178015586428448294e-19" />
+    <geometry>
+    <mesh filename="meshes/d1-1_urdf.stl"/>
+    </geometry>
+    <material name="l_d1-1_urdf_material">
+    <color rgba="0.34901960784313723618 0.37647058823529411242 0.4000000000000000222 1.0"/>
+    </material>
+    </visual>
+    <collision>
+    <origin xyz="-0.088875000000000023426 0.038874999999999937383 -0.0062500000000000194289" rpy="-1.5707963267948961139 -8.9049929426726724149e-16 -2.2178015586428448294e-19" />
+    <geometry>
+    <mesh filename="meshes/d1-1_urdf.stl"/>
+    </geometry>
+    </collision>
+    <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="0" />
+    <inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+    </inertial>
+    </link>
+    
+    <joint name="l_pinky_34" type="revolute">
+    <origin xyz="0.026000000000000078604 2.5413698923060223933e-16 -0.00050000000000020514146" rpy="-2.6352799622801008862e-16 4.944229418462387411e-15 -1.5707963267948958919" />
+    <parent link="l_d2-1_urdf" />
+    <child link="l_d1-1_urdf" />
+    <axis xyz="0 0 1"/>
+    <limit effort="1" velocity="20" lower="0" upper="1.570796326794896558"/>
+    <joint_properties friction="0.0"/>
+    </joint>
+    
+    <joint name="l_pinky_23" type="revolute">
+    <origin xyz="-0.0010000000000001049716 -0.037874999999999880984 -0.00050000000000009411916" rpy="-1.2212476320222462198e-15 4.3296185396076653551e-15 -1.570796326794896336" />
+    <parent link="l_d3-1_urdf" />
+    <child link="l_d2-1_urdf" />
+    <axis xyz="0 0 1"/>
+    <limit effort="1" velocity="20" lower="0" upper="1.570796326794896558"/>
+    <joint_properties friction="0.0"/>
+    </joint>
+    
+    <joint name="l_pinky_12" type="revolute">
+    <origin xyz="-0.015275000000000038547 0.0072500000000000792977 -0.0077499999999998108596" rpy="-1.5707963267948972241 -1.5707963267948952257 0" />
+    <parent link="l_d4-1_urdf" />
+    <child link="l_d3-1_urdf" />
+    <axis xyz="0 0 1"/>
+    <limit effort="1" velocity="20" lower="-0.034906585039886590949" upper="1.570796326794896558"/>
+    <joint_properties friction="0.0"/>
+    </joint>
+    
+    <joint name="l_pinky_01" type="revolute">
+    <origin xyz="-0.035163940960675876823 0.18909438839224840256 -0.014053824767915700997" rpy="-2.9670597283903603625 -1.5269348559829246889e-15 -1.4791665410651910761" />
+    <parent link="left_forearm_and_palm_assembly" />
+    <child link="l_d4-1_urdf" />
+    <axis xyz="0 0 1"/>
+    <limit effort="1" velocity="20" lower="-0.29670597283903604735" upper="0.29670597283903604735"/>
+    <joint_properties friction="0.0"/>
+    </joint>
+    
+    <link name="l_d4-2_urdf">
+    <visual>
+    <origin xyz="-0.079149999999999998135 -2.6020852139652106416e-18 -0.0087499999999999990979" rpy="-3.141592653589793116 5.7436350403613672376e-19 5.7105250889035769782e-18" />
+    <geometry>
+    <mesh filename="meshes/d4-2_urdf.stl"/>
+    </geometry>
+    <material name="l_d4-2_urdf_material">
+    <color rgba="0.34901960784313723618 0.37647058823529411242 0.4000000000000000222 1.0"/>
+    </material>
+    </visual>
+    <collision>
+    <origin xyz="-0.079149999999999998135 -2.6020852139652106416e-18 -0.0087499999999999990979" rpy="-3.141592653589793116 5.7436350403613672376e-19 5.7105250889035769782e-18" />
+    <geometry>
+    <mesh filename="meshes/d4-2_urdf.stl"/>
+    </geometry>
+    </collision>
+    <inertial>
+    <origin xyz="-0.0062842813664121810469 2.5879353564983761031e-10 -0.0081923602347070724472" rpy="0 0 0"/>
+    <mass value="0.007132231448786834245" />
+    <inertia ixx="4.8911025414963857278e-07" ixy="-2.0479711669078384582e-14"  ixz="1.4355227474224375371e-08" iyy="5.4026894403887864091e-07" iyz="1.5625068492100196671e-13" izz="7.1745332239577878067e-07" />
+    </inertial>
+    </link>
+    
+    <link name="l_d3-2_urdf">
+    <visual>
+    <origin xyz="-0.063875000000000028977 0.00099999999999994537703 -0.0072500000000000498074" rpy="-1.5707963267948976682 -6.020585537866551411e-16 -4.3503327253986114184e-19" />
+    <geometry>
+    <mesh filename="meshes/d3-2_urdf.stl"/>
+    </geometry>
+    <material name="l_d3-2_urdf_material">
+    <color rgba="0.34901960784313723618 0.37647058823529411242 0.4000000000000000222 1.0"/>
+    </material>
+    </visual>
+    <collision>
+    <origin xyz="-0.063875000000000028977 0.00099999999999994537703 -0.0072500000000000498074" rpy="-1.5707963267948976682 -6.020585537866551411e-16 -4.3503327253986114184e-19" />
+    <geometry>
+    <mesh filename="meshes/d3-2_urdf.stl"/>
+    </geometry>
+    </collision>
+    <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="0" />
+    <inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+    </inertial>
+    </link>
+    
+    <link name="l_d2-2_urdf">
+    <visual>
+    <origin xyz="-0.062875000000000014211 0.038875000000000013711 -0.0067500000000000962008" rpy="-1.570796326794896558 -1.6154086291802975957e-15 4.0910723722577696972e-19" />
+    <geometry>
+    <mesh filename="meshes/d2-2_urdf.stl"/>
+    </geometry>
+    <material name="l_d2-2_urdf_material">
+    <color rgba="0.34901960784313723618 0.37647058823529411242 0.4000000000000000222 1.0"/>
+    </material>
+    </visual>
+    <collision>
+    <origin xyz="-0.062875000000000014211 0.038875000000000013711 -0.0067500000000000962008" rpy="-1.570796326794896558 -1.6154086291802975957e-15 4.0910723722577696972e-19" />
+    <geometry>
+    <mesh filename="meshes/d2-2_urdf.stl"/>
+    </geometry>
+    </collision>
+    <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="0" />
+    <inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+    </inertial>
+    </link>
+    
+    <link name="l_d1-2_urdf">
+    <visual>
+    <origin xyz="-0.088875000000000023426 0.038874999999999992895 -0.00625000000000001249" rpy="-1.5707963267948961139 -8.7617542712142407905e-16 -2.563173964937819768e-19" />
+    <geometry>
+    <mesh filename="meshes/d1-2_urdf.stl"/>
+    </geometry>
+    <material name="l_d1-2_urdf_material">
+    <color rgba="0.34901960784313723618 0.37647058823529411242 0.4000000000000000222 1.0"/>
+    </material>
+    </visual>
+    <collision>
+    <origin xyz="-0.088875000000000023426 0.038874999999999992895 -0.00625000000000001249" rpy="-1.5707963267948961139 -8.7617542712142407905e-16 -2.563173964937819768e-19" />
+    <geometry>
+    <mesh filename="meshes/d1-2_urdf.stl"/>
+    </geometry>
+    </collision>
+    <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="0" />
+    <inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+    </inertial>
+    </link>
+    
+    <joint name="l_ring_34" type="revolute">
+    <origin xyz="0.025999999999999967581 -3.1035287187397564423e-18 -0.00050000000000005768996" rpy="-7.9116884346704368568e-16 -8.8844589975538007006e-17 -1.570796326794961173" />
+    <parent link="l_d2-2_urdf" />
+    <child link="l_d1-2_urdf" />
+    <axis xyz="0 0 1"/>
+    <limit effort="1" velocity="20" lower="0" upper="1.570796326794896558"/>
+    <joint_properties friction="0.0"/>
+    </joint>
+    
+    <joint name="l_ring_23" type="revolute">
+    <origin xyz="-0.0010000000000000579172 -0.037875000000000103029 -0.00049999999999996574962" rpy="-6.6268267847551512137e-16 -1.0385351093495972025e-15 -1.570796326794896336" />
+    <parent link="l_d3-2_urdf" />
+    <child link="l_d2-2_urdf" />
+    <axis xyz="0 0 1"/>
+    <limit effort="1" velocity="20" lower="0" upper="1.570796326794896558"/>
+    <joint_properties friction="0.0"/>
+    </joint>
+    
+    <joint name="l_ring_12" type="revolute">
+    <origin xyz="-0.015274999999999983036 0.007250000000000039399 -0.0077499999999999522396" rpy="-1.570796326794896558 -1.5707963267948961139 0" />
+    <parent link="l_d4-2_urdf" />
+    <child link="l_d3-2_urdf" />
+    <axis xyz="0 0 1"/>
+    <limit effort="1" velocity="20" lower="-0.034906585039886590949" upper="1.570796326794896558"/>
+    <joint_properties friction="0.0"/>
+    </joint>
+    
+    <joint name="l_ring_01" type="revolute">
+    <origin xyz="-0.011784350148794277974 0.19516197601440893328 -0.01051396557923191255" rpy="-3.0545918230670441318 -0.0068123514634775093196 -1.5321205940965847425" />
+    <parent link="left_forearm_and_palm_assembly" />
+    <child link="l_d4-2_urdf" />
+    <axis xyz="0 0 1"/>
+    <limit effort="1" velocity="20" lower="-0.29670597283903604735" upper="0.29670597283903604735"/>
+    <joint_properties friction="0.0"/>
+    </joint>
+    
+    <link name="l_d4-3_urdf">
+    <visual>
+    <origin xyz="-0.079149999999999970379 1.7347234759768070944e-18 -0.0087499999999999990979" rpy="-3.141592653589793116 -2.6325985379695400651e-32 9.8865196963416920084e-33" />
+    <geometry>
+    <mesh filename="meshes/d4-3_urdf.stl"/>
+    </geometry>
+    <material name="l_d4-3_urdf_material">
+    <color rgba="0.34901960784313723618 0.37647058823529411242 0.4000000000000000222 1.0"/>
+    </material>
+    </visual>
+    <collision>
+    <origin xyz="-0.079149999999999970379 1.7347234759768070944e-18 -0.0087499999999999990979" rpy="-3.141592653589793116 -2.6325985379695400651e-32 9.8865196963416920084e-33" />
+    <geometry>
+    <mesh filename="meshes/d4-3_urdf.stl"/>
+    </geometry>
+    </collision>
+    <inertial>
+    <origin xyz="-0.0062842813664121394135 2.5879353908847244634e-10 -0.0081923602347070724472" rpy="0 0 0"/>
+    <mass value="0.007132231448786834245" />
+    <inertia ixx="4.8911025414963878454e-07" ixy="-2.0479711704823095303e-14"  ixz="1.4355227474224360481e-08" iyy="5.4026894403887874679e-07" iyz="1.5625068491441541991e-13" izz="7.1745332239577878067e-07" />
+    </inertial>
+    </link>
+    
+    <link name="l_d3-3_urdf">
+    <visual>
+    <origin xyz="-0.063875000000000015099 0.0009999999999999731326 -0.0072500000000000480727" rpy="-1.5707963267948976682 -5.8880953492685354486e-16 9.2444637330576646994e-33" />
+    <geometry>
+    <mesh filename="meshes/d3-3_urdf.stl"/>
+    </geometry>
+    <material name="l_d3-3_urdf_material">
+    <color rgba="0.34901960784313723618 0.37647058823529411242 0.4000000000000000222 1.0"/>
+    </material>
+    </visual>
+    <collision>
+    <origin xyz="-0.063875000000000015099 0.0009999999999999731326 -0.0072500000000000480727" rpy="-1.5707963267948976682 -5.8880953492685354486e-16 9.2444637330576646994e-33" />
+    <geometry>
+    <mesh filename="meshes/d3-3_urdf.stl"/>
+    </geometry>
+    </collision>
+    <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="0" />
+    <inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+    </inertial>
+    </link>
+    
+    <link name="l_d2-3_urdf">
+    <visual>
+    <origin xyz="-0.062874999999999986455 0.038874999999999999833 -0.0067500000000000944661" rpy="-1.57079632679489678 -1.6156388965885129953e-15 3.6977854932234928379e-32" />
+    <geometry>
+    <mesh filename="meshes/d2-3_urdf.stl"/>
+    </geometry>
+    <material name="l_d2-3_urdf_material">
+    <color rgba="0.34901960784313723618 0.37647058823529411242 0.4000000000000000222 1.0"/>
+    </material>
+    </visual>
+    <collision>
+    <origin xyz="-0.062874999999999986455 0.038874999999999999833 -0.0067500000000000944661" rpy="-1.57079632679489678 -1.6156388965885129953e-15 3.6977854932234928379e-32" />
+    <geometry>
+    <mesh filename="meshes/d2-3_urdf.stl"/>
+    </geometry>
+    </collision>
+    <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="0" />
+    <inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+    </inertial>
+    </link>
+    
+    <link name="l_d1-3_urdf">
+    <visual>
+    <origin xyz="-0.088875000000000009548 0.038874999999999937383 -0.0062500000000000107553" rpy="-1.5707963267948961139 -8.7170368868848025935e-16 2.7733391199175887998e-30" />
+    <geometry>
+    <mesh filename="meshes/d1-3_urdf.stl"/>
+    </geometry>
+    <material name="l_d1-3_urdf_material">
+    <color rgba="0.34901960784313723618 0.37647058823529411242 0.4000000000000000222 1.0"/>
+    </material>
+    </visual>
+    <collision>
+    <origin xyz="-0.088875000000000009548 0.038874999999999937383 -0.0062500000000000107553" rpy="-1.5707963267948961139 -8.7170368868848025935e-16 2.7733391199175887998e-30" />
+    <geometry>
+    <mesh filename="meshes/d1-3_urdf.stl"/>
+    </geometry>
+    </collision>
+    <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="0" />
+    <inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+    </inertial>
+    </link>
+    
+    <joint name="l_middle_34" type="revolute">
+    <origin xyz="0.026000000000000134115 -4.5536491244391186228e-18 -0.00050000000000000044409" rpy="-2.9646186017117878309e-15 3.6635847905925687338e-16 -1.5707963267948532593" />
+    <parent link="l_d2-3_urdf" />
+    <child link="l_d1-3_urdf" />
+    <axis xyz="0 0 1"/>
+    <limit effort="1" velocity="20" lower="0" upper="1.570796326794896558"/>
+    <joint_properties friction="0.0"/>
+    </joint>
+    
+    <joint name="l_middle_23" type="revolute">
+    <origin xyz="-0.001000000000000215777 -0.037874999999999825473 -0.00050000000000005248579" rpy="-1.0155656137714762e-15 -8.1269680571163029421e-16 -1.5707963267948970021" />
+    <parent link="l_d3-3_urdf" />
+    <child link="l_d2-3_urdf" />
+    <axis xyz="0 0 1"/>
+    <limit effort="1" velocity="20" lower="0" upper="1.570796326794896558"/>
+    <joint_properties friction="0.0"/>
+    </joint>
+    
+    <joint name="l_middle_12" type="revolute">
+    <origin xyz="-0.015275000000000010791 0.0072500000000000402664 -0.0077499999999999453007" rpy="-1.57079632679489678 -1.5707963267948961139 0" />
+    <parent link="l_d4-3_urdf" />
+    <child link="l_d3-3_urdf" />
+    <axis xyz="0 0 1"/>
+    <limit effort="1" velocity="20" lower="-0.034906585039886590949" upper="1.570796326794896558"/>
+    <joint_properties friction="0.0"/>
+    </joint>
+    
+    <joint name="l_middle_01" type="revolute">
+    <origin xyz="0.011738453089343185015 0.19915000000000054881 -0.0080006470225532679008" rpy="3.1415926535897926719 1.307825854535432319e-16 -1.57079632679489678" />
+    <parent link="left_forearm_and_palm_assembly" />
+    <child link="l_d4-3_urdf" />
+    <axis xyz="0 0 1"/>
+    <limit effort="1" velocity="20" lower="-0.29670597283903604735" upper="0.29670597283903604735"/>
+    <joint_properties friction="0.0"/>
+    </joint>
+    
+    <link name="l_d4-4_urdf">
+    <visual>
+    <origin xyz="-0.079149999999999942624 0 -0.0087500000000000025674" rpy="3.141592653589793116 4.0724214608378616298e-19 9.955054590212099495e-19" />
+    <geometry>
+    <mesh filename="meshes/d4-4_urdf.stl"/>
+    </geometry>
+    <material name="l_d4-4_urdf_material">
+    <color rgba="0.34901960784313723618 0.37647058823529411242 0.4000000000000000222 1.0"/>
+    </material>
+    </visual>
+    <collision>
+    <origin xyz="-0.079149999999999942624 0 -0.0087500000000000025674" rpy="3.141592653589793116 4.0724214608378616298e-19 9.955054590212099495e-19" />
+    <geometry>
+    <mesh filename="meshes/d4-4_urdf.stl"/>
+    </geometry>
+    </collision>
+    <inertial>
+    <origin xyz="-0.0062842813664121255357 2.5879353780023790396e-10 -0.0081923602347070759166" rpy="0 0 0"/>
+    <mass value="0.007132231448786834245" />
+    <inertia ixx="4.891102541496384669e-07" ixy="-2.0479711692094505898e-14"  ixz="1.4355227474224385297e-08" iyy="5.4026894403887864091e-07" iyz="1.562506849134058799e-13" izz="7.1745332239577867479e-07" />
+    </inertial>
+    </link>
+    
+    <link name="l_d3-4_urdf">
+    <visual>
+    <origin xyz="-0.063875000000000001221 0.0010000000000000008882 -0.0072500000000000480727" rpy="-1.5707963267948976682 -5.8599645083033892048e-16 -1.0864206181267581595e-18" />
+    <geometry>
+    <mesh filename="meshes/d3-4_urdf.stl"/>
+    </geometry>
+    <material name="l_d3-4_urdf_material">
+    <color rgba="0.34901960784313723618 0.37647058823529411242 0.4000000000000000222 1.0"/>
+    </material>
+    </visual>
+    <collision>
+    <origin xyz="-0.063875000000000001221 0.0010000000000000008882 -0.0072500000000000480727" rpy="-1.5707963267948976682 -5.8599645083033892048e-16 -1.0864206181267581595e-18" />
+    <geometry>
+    <mesh filename="meshes/d3-4_urdf.stl"/>
+    </geometry>
+    </collision>
+    <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="0" />
+    <inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+    </inertial>
+    </link>
+    
+    <link name="l_d2-4_urdf">
+    <visual>
+    <origin xyz="-0.0628749999999999587 0.038875000000000006772 -0.0067500000000001031397" rpy="-1.57079632679489678 -1.6210129897967071333e-15 -1.2557336324437900059e-19" />
+    <geometry>
+    <mesh filename="meshes/d2-4_urdf.stl"/>
+    </geometry>
+    <material name="l_d2-4_urdf_material">
+    <color rgba="0.34901960784313723618 0.37647058823529411242 0.4000000000000000222 1.0"/>
+    </material>
+    </visual>
+    <collision>
+    <origin xyz="-0.0628749999999999587 0.038875000000000006772 -0.0067500000000001031397" rpy="-1.57079632679489678 -1.6210129897967071333e-15 -1.2557336324437900059e-19" />
+    <geometry>
+    <mesh filename="meshes/d2-4_urdf.stl"/>
+    </geometry>
+    </collision>
+    <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="0" />
+    <inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+    </inertial>
+    </link>
+    
+    <link name="l_d1-4_urdf">
+    <visual>
+    <origin xyz="-0.088875000000000023426 0.038874999999999992895 -0.00625000000000001249" rpy="-1.5707963267948961139 -8.8313615935463643366e-16 -2.1605675056595369633e-20" />
+    <geometry>
+    <mesh filename="meshes/d1-4_urdf.stl"/>
+    </geometry>
+    <material name="l_d1-4_urdf_material">
+    <color rgba="0.34901960784313723618 0.37647058823529411242 0.4000000000000000222 1.0"/>
+    </material>
+    </visual>
+    <collision>
+    <origin xyz="-0.088875000000000023426 0.038874999999999992895 -0.00625000000000001249" rpy="-1.5707963267948961139 -8.8313615935463643366e-16 -2.1605675056595369633e-20" />
+    <geometry>
+    <mesh filename="meshes/d1-4_urdf.stl"/>
+    </geometry>
+    </collision>
+    <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="0" />
+    <inertia ixx="0" ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+    </inertial>
+    </link>
+    
+    <joint name="l_index_34" type="revolute">
+    <origin xyz="0.026000000000000050848 -5.0957502106818708398e-18 -0.00049999999999996574962" rpy="1.4027645268064363647e-15 -2.2530004780047258679e-15 -1.57079632679489678" />
+    <parent link="l_d2-4_urdf" />
+    <child link="l_d1-4_urdf" />
+    <axis xyz="0 0 1"/>
+    <limit effort="1" velocity="20" lower="0" upper="1.570796326794896558"/>
+    <joint_properties friction="0.0"/>
+    </joint>
+    
+    <joint name="l_index_23" type="revolute">
+    <origin xyz="-0.0010000000000000412205 -0.037874999999999964251 -0.00050000000000011840529" rpy="-2.4817590593525338253e-15 2.570777650635345777e-15 -1.5707963267948958919" />
+    <parent link="l_d3-4_urdf" />
+    <child link="l_d2-4_urdf" />
+    <axis xyz="0 0 1"/>
+    <limit effort="1" velocity="20" lower="0" upper="1.570796326794896558"/>
+    <joint_properties friction="0.0"/>
+    </joint>
+    
+    <joint name="l_index_12" type="revolute">
+    <origin xyz="-0.015274999999999872013 0.0072500000000000966449 -0.0077499999999998967284" rpy="-1.5707963267948976682 -1.5707963267948830133 0" />
+    <parent link="l_d4-4_urdf" />
+    <child link="l_d3-4_urdf" />
+    <axis xyz="0 0 1"/>
+    <limit effort="1" velocity="20" lower="-0.034906585039886590949" upper="1.570796326794896558"/>
+    <joint_properties friction="0.0"/>
+    </joint>
+    
+    <joint name="l_index_01" type="revolute">
+    <origin xyz="0.0352612563274789792 0.19513802398559310092 -0.010513965579231661016" rpy="3.0543261909900740747 -2.6020852139652102472e-15 -1.6100662349647958393" />
+    <parent link="left_forearm_and_palm_assembly" />
+    <child link="l_d4-4_urdf" />
+    <axis xyz="0 0 1"/>
+    <limit effort="1" velocity="20" lower="-0.29670597283903604735" upper="0.29670597283903604735"/>
+    <joint_properties friction="0.0"/>
+    </joint>
+    
+    
+</robot>
+    
