@@ -4,6 +4,10 @@ This repository contains the Python API for controlling the Artus Lite Robotic H
 
 The `artus_lite_api` folder is required to be copied into your project for use. 
 
+<video width="854" height="480" controls>
+    <source src=./public/Artus_Lite_API_Getting_Started.mp4 type="video/mp4">
+</video>
+
 ## Table of Contents
 * [Requirements & Install](#requirements--install)
     * [USB Driver](#usb-driver)
