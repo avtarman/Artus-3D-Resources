@@ -4,6 +4,12 @@ This repository contains the Python API for controlling the Artus Lite Robotic H
 
 The `artus_lite_api` folder is required to be copied into your project for use. 
 
+## Video Intro
+
+[![Getting Started Video](./public/thumbnail.png)](https://sarcomere-my.sharepoint.com/:v:/g/personal/ryan_lee_sarcomeredynamics_com/EY_UR4HaeHpEpnJB4n_dzHsBXcxdkdTEQWbrUFWpzqpXPw)
+
+Video is available [here](./public/Artus_Lite_API_Getting_Started.mp4)
+
 ## Table of Contents
 * [Requirements & Install](#requirements--install)
     * [USB Driver](#usb-driver)
