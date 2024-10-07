@@ -6,11 +6,13 @@ The Artus Lite is our entry-level hand for __Dull, Dirty and Dangerous__ tasks w
 
 ## Power Requirement
 
-The Artus Lite should be connected to a 12 VDC power supply, requiring a maximum instantaneous draw of 196W.
+The Artus Lite should be connected to a 24 VDC power supply, requiring a maximum instantaneous draw of 160W, minimum 48W and typical 100W.
 
 ## Communication Methods
 
-The Artus Lite is equipped with Serial over USB, WiFi and CANbus.
+The Artus Lite is equipped with Serial over USB, RS485, and CANbus.
+
+Hands are shipped at default with USB communication enabled unless otherwise specified.
 
 ## Hand Joint Map
 Below is a Joint index guide mapped to a normal human hand with the naming convention and joint indices of the hand for control purposes.

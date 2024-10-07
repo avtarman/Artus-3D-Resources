@@ -29,7 +29,8 @@ class ArtusAPI:
                 stream = False,
                 communication_frequency = 400, # hz
                 logger = None,
-                reset_on_start = 0
+                reset_on_start = 0,
+                baudrate = 921600
                 ):
         """
         ArtusAPI class controls the communication and control of between a system and an Artus Hand by Sarcomere Dynamics Inc.
@@ -43,7 +44,7 @@ class ArtusAPI:
         """
 
         self._communication_handler = Communication(communication_method=communication_method,
-                                                  communication_channel_identifier=communication_channel_identifier)
+                                                  communication_channel_identifier=communication_channel_identifier,baudrate=baudrate)
         self._command_handler = Commands(reset_on_start=reset_on_start)
         self._robot_handler = Robot(robot_type = robot_type,
                                    hand_type = hand_type)

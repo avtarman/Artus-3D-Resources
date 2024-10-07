@@ -29,11 +29,12 @@ class Communication:
     """
     def __init__(self,
                  communication_method='UART',
-                 communication_channel_identifier='COM9',logger = None):
+                 communication_channel_identifier='COM9',logger = None,baudrate = 921600):
         # initialize communication
         self.communication_method = communication_method
         self.communication_channel_identifier = communication_channel_identifier
         self.communicator = None
+        self.baudrate = baudrate
         # setup communication
         self._setup_communication()
         # params
@@ -53,7 +54,7 @@ class Communication:
         """
         # setup communication based on the method
         if self.communication_method == 'UART':
-            self.communicator = UART(port=self.communication_channel_identifier)
+            self.communicator = UART(port=self.communication_channel_identifier,baudrate=self.baudrate)
         elif self.communication_method == 'WiFi':
             self.communicator = WiFiServer(target_ssid=self.communication_channel_identifier)
         elif self.communication_method == 'None':

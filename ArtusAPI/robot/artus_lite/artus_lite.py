@@ -2,16 +2,16 @@
 class ArtusLite:
 
     def __init__(self,
-                joint_max_angles=[35, 90, 90, 90, # thumb
-                                10, 90, 90, # index
-                                10, 90, 90, # middle
-                                10, 90, 90, # ring
-                                10, 90, 90], # pinky
-                joint_min_angles=[-35, 0, 0, 0, # thumb
-                                -10, 0, 0, # index
-                                -10, 0, 0, # middle
-                                -10, 0, 0, # ring
-                                -10, 0, 0], # pinky
+                joint_max_angles=[25, 90, 90, 90, # thumb
+                                12, 90, 90, # index
+                                12, 90, 90, # middle
+                                12, 90, 90, # ring
+                                12, 90, 90], # pinky
+                joint_min_angles=[-25, 0, 0, 0, # thumb
+                                -12, 0, 0, # index
+                                -12, 0, 0, # middle
+                                -12, 0, 0, # ring
+                                -12, 0, 0], # pinky
 
                 joint_default_angles=[0, 0, 0, 0, # thumb
                                     0, 0, 0, # index

@@ -1,12 +1,35 @@
 <img src='data/images/SarcomereLogoHorizontal.svg'>
 
 # Python Artus Robotic Hand API
-This repository contains a Python API for controlling the Artus robotic hands by Sarcomere Dynamics Inc. 
+This repository contains a Python API for controlling the Artus robotic hands by Sarcomere Dynamics Inc.
+
+Please contact the team if there are any issues that arise through the use of the API.
+
+## Table of Contents
+* [Getting Started](#getting-started)
+    * [Video Introduction](#video-introduction)
+    * [Requirements](#requirements)
+    * [USB Driver](#usb-driver)
+    * [Installation](#installation)
+* [Usage](#usage)
+    * [Running example.py](#running-examplepy)
+    * [Creating an ArtusAPI Class Object](#creating-an-artusapi-class-object)
+    * [Serial Example](#serial-example)
+    * [Normal Startup Procedure](#normal-startup-procedure)
+* [Interacting with the API](#interacting-with-the-api)
+    * [Setting Joints](#setting-joints)
+    * [Getting Feedback](#getting-feedback)
+* [Directory Structure](#directory-structure)
 
 ## Getting Started
+### Video Introduction
+[![Getting Started Video](/data/images/thumbnail.png)](https://www.youtube.com/watch?v=30BkuA0EkP4)
 
 ### Requirements
-Requires Python version >= 3.10 installed on the host system
+Requires Python version >= 3.10 installed on the host system. Please visit the [Python website](https://www.python.org/downloads/) to install Python.
+
+#### USB Driver
+If the host system cannot find the Artus Lite as a USB device once it is connected over USBC, go to [FTDI Driver Download](https://ftdichip.com/drivers/vcp-drivers/) to install the virtual COM port driver (usually only required for Windows). 
 
 ### Installation
 Using pip:
@@ -18,6 +41,17 @@ pip install ArtusAPI
 
 ## Usage
 
+### Running example.py
+Before running the example script, determine whether your Artus Lite is running USB Serial or WiFi, and edit the following line with the name of the port over UART or target SSID for WiFi
+
+* On Windows, find the port name by navigating to "Device Manager">"Ports". It should show up as a COM port. (e.g. COM3)
+* On Linux, use the command `dmesg | grep ttyUSB` to find the usb device. (e.g. /dev/ttyUSB1)
+    * If a permission error is encountered, use the command `sudo chmod 777 /dev/ttyUSB1` 
+
+```python
+artusapi = ArtusAPI(communication_method='UART',hand_type='right',communication_channel_identifier='/dev/ttyUSB1')
+```
+
 ### Creating an ArtusAPI Class Object
 Below are some examples of instantiating the ArtusAPI class to control a single hand. Below is a description of the parameters and what they mean.
 
@@ -28,18 +62,14 @@ Below are some examples of instantiating the ArtusAPI class to control a single 
 * `__stream__` : whether streaming feedback data is required or not. Default: `False`
 * `__communication_frequency__` : The frequency of the feedback and command communication. Default: `400` Hz
 * `__logger__` : If integrating the API into control code, you may already have a logger. THis will allow for homogeneous logging to the same files as what you currently have. Default: `None`
-
-#### WiFi Example
-```python
-from ArtusAPI.artus_api import ArtusAPI
-artus_lite = ArtusAPI(robot_type='artus_lite', communication_type='WiFi',hand_type='left',communication_channel_identifier='Artus_Lite')
-artus_lite.connect()
-```
+* `__reset_on_start__` : If the hand is not in a closed state when last powered off, setting to `1` will open the hand before ready to receive commands. This _MUST_ be set if powered off in a closed state, or a calibrate must be run before sending target commands
+* `__baudrate__` : required to differentiate between Serial over USB-C and Serial over RS485, default `921600` for SUBC, `115200` for RS485
 
 #### Serial Example
 ```python
 from ArtusAPI.artus_api import ArtusAPI
 artus_lite = ArtusAPI(robot_type='artus_lite', communication_type='UART',hand_type='right',communication_channel_identifier='COM7')
+
 artus_lite.connect()
 ```
 
@@ -96,8 +126,6 @@ There are two ways to get feedback data depending on how the class is instantiat
 │   │   │   ├── UART.py # UART communication class
 │   │   ├── communication.py # Communication class for the API
 │   ├── robot
-│   │   ├── artus_3d
-│   │   │   ├── artus_3d.py # Artus 3D Hand class
 │   │   ├── artus_lite
 │   │   │   ├── artus_lite.py # Artus Lite Hand class
 │   │   ├── robot.py # Robot Hand class for the API
