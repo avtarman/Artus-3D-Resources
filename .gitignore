@@ -5,3 +5,6 @@ test/
 # pycache
 artus_lite_api/__pycache__/
 artus_lite_api/src/__pycache__/
+dist/
+build/
+ArtusAPI.egg-info/
