@@ -64,7 +64,12 @@ class ArtusAPI:
         """
         Open a connection to the Artus Hand
         """
-        return self._communication_handler.open_connection()
+        self._communication_handler.open_connection()
+
+        time.sleep(1)
+        # send wake command with it
+        return self.wake_up()
+    
     def disconnect(self):
         """
         Close a connection to the Artus Hand
@@ -87,7 +92,7 @@ class ArtusAPI:
         if self._communication_handler.wait_for_ack():
             self.logger.info(f'Finished calibration')
         else:
-            self.logger.warn(f'Error in calibration')
+            self.logger.warning(f'Error in calibration')
 
     def sleep(self):
         """
@@ -106,7 +111,7 @@ class ArtusAPI:
         if self._communication_handler.wait_for_ack():
             self.logger.info(f'Finished calibration')
         else:
-            self.logger.warn(f'Error in calibration')
+            self.logger.warning(f'Error in calibration')
     
 
     # robot control
@@ -220,6 +225,17 @@ class ArtusAPI:
         m = int(input(f'Enter Motor to reset: '))
         hard_close = self._command_handler.get_hard_close_command(j,m)
         self._communication_handler.send_data(hard_close)
+
+    def update_param(self):
+        com = input('Enter Communication Protocol you would like to change to (default: UART, CAN, RS485): ')
+        if com == 'CAN':
+            feed = None
+            while feed not in ['P','C','ALL']:
+                feed = input('Enter feedback information (P: Positions only, C: Positions and Force, ALL: Position, force and temperature): ')
+        else:
+            feed = None
+        command = self._command_handler.update_param_command(com,feed)
+        self._communication_handler.send_data(command)
 
 def test_artus_api():
     artus_api = ArtusAPI()

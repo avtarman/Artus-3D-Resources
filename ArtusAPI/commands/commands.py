@@ -13,6 +13,7 @@ class Commands:
 
     target_command = 0x66,
     get_feedback_command = 0x68,
+    update_param_command = 0x44,
 
     save_grasp_onboard_command = 0xC8,
     return_grasps_command = 0xD2,
@@ -30,7 +31,8 @@ class Commands:
             'get_feedback_command': get_feedback_command,
             'save_grasp_onboard_command': save_grasp_onboard_command,
             'return_grasps_command': return_grasps_command,
-            'execute_grasp_command': execute_grasp_command
+            'execute_grasp_command': execute_grasp_command,
+            'update_param_command' : update_param_command
         }
         self.reset_on_start = reset_on_start
 
@@ -128,6 +130,40 @@ class Commands:
             # TODO logging
             None
             
+        return command_list
+    
+    def update_param_command(self,communication='UART', feedback=None):
+        """
+        Communication Options:
+            'UART' - USBC
+            'RS485' - RS485
+            'CAN' - CAN
+        Feedback Options (only if CAN):
+            'ALL' - Positions,Currents,Temperatures
+            'PC' - Positions,Currentns
+            'P' - Positions
+        """
+        command_list = [0]*32
+        command_list.insert(0,self.commands['update_param_command'])
+
+        if communication:
+            command_list[1] = 1
+            if communication == 'UART':
+                command_list[1+16] = 1
+            elif communication == 'CAN':
+                command_list[1+16] = 2
+            elif communication == 'RS485':
+                command_list[1+16] = 3
+
+        if feedback:
+            command_list[2] = 1
+            if feedback == 'ALL':
+                command_list[2+16] = 2
+            elif feedback == 'PC':
+                command_list[2+16] = 1
+            elif feedback == 'P':
+                command_list[2+16] = 0
+
         return command_list
 
 
