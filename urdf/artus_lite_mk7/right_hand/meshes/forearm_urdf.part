@@ -1,14 +1,14 @@
 {
     "configuration": "default",
     "documentId": "aec3e5c812de051a5a389dd7",
-    "documentMicroversion": "37541a48fb3555c35ed2af7f",
-    "documentVersion": "98f16b2376362c53f9a1b884",
+    "documentMicroversion": "b6d15e70b15913bfffb481a4",
+    "documentVersion": "1eb5cd1af234b5b30d09f1b7",
     "elementId": "74d932b909a1c16ab52ea653",
     "fullConfiguration": "default",
     "id": "MBakJJNC+DCUM8PjY",
     "isStandardContent": false,
     "name": "Forearm URDF <1>",
-    "partId": "RMHD",
+    "partId": "RPGD",
     "suppressed": false,
     "type": "Part"
 }
