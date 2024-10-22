@@ -1,9 +1,20 @@
 <img src='data/images/SarcomereLogoHorizontal.svg'>
 
 # Python Artus Robotic Hand API
+
 This repository contains a Python API for controlling the Artus robotic hands by Sarcomere Dynamics Inc.
 
 Please contact the team if there are any issues that arise through the use of the API.
+
+## Introduction
+__Please read through the entire README before using the Artus hand__
+
+Below are some critical information while using the Artus hand.
+* Power On/Off: When powering off the hand, or closing the control script, the hand needs to be in an __OPEN__ state to reduce amount of calibration and jamming. If the script is closed while the hand is operational, or the hand is closed when powered off, the `__reset_on_start__` parameter needs to be set to `1` to open the hand before starting
+
+* Ready State: The Artus Lite has an indicator LED that indicates the state of the hand. If the hand is blue, the hand is __NOT READY FOR TARGET, CALIBRATE COMMANDS__. The hand is only ready for these commands when the LED is __GREEN__. 
+
+* Artus Lite specific technical details are available within the [robot folder](/ArtusAPI/robot/artus_lite/)
 
 ## Table of Contents
 * [Getting Started](#getting-started)
@@ -18,6 +29,7 @@ Please contact the team if there are any issues that arise through the use of th
     * [Normal Startup Procedure](#normal-startup-procedure)
 * [Interacting with the API](#interacting-with-the-api)
     * [Setting Joints](#setting-joints)
+        * [Input Units](#input-units)
     * [Getting Feedback](#getting-feedback)
     * [Controlling Multiple Hands](#controlling-multiple-hands)
     * [Teleoperation Considerations](#teleoperation-considerations)
@@ -50,8 +62,14 @@ Before running the example script, determine whether your Artus Lite is running 
 * On Linux, use the command `dmesg | grep ttyUSB` to find the usb device. (e.g. /dev/ttyUSB1)
     * If a permission error is encountered, use the command `sudo chmod 777 /dev/ttyUSB1` 
 
+Linux: 
 ```python
-artusapi = ArtusAPI(communication_method='UART',hand_type='right',communication_channel_identifier='/dev/ttyUSB1')
+artusapi = ArtusAPI(communication_method='UART',hand_type='right',communication_channel_identifier='/dev/ttyUSB1',reset_on_start=0)
+```
+
+Windows:
+```python
+artusapi = ArtusAPI(communication_method='UART',hand_type='right',communication_channel_identifier='COM3')
 ```
 
 ### Creating an ArtusAPI Class Object
@@ -62,15 +80,15 @@ Below are some examples of instantiating the ArtusAPI class to control a single 
 * `__robot_type__` : The Artus robot hand name 
 * `__hand_type__` : left or right hand
 * `__stream__` : whether streaming feedback data is required or not. Default: `False`
-* `__communication_frequency__` : The frequency of the feedback and command communication. Default: `400` Hz
+* `__communication_frequency__` : The frequency of the feedback and command communication. Default: `200` Hz
 * `__logger__` : If integrating the API into control code, you may already have a logger. THis will allow for homogeneous logging to the same files as what you currently have. Default: `None`
-* `__reset_on_start__` : If the hand is not in a closed state when last powered off, setting to `1` will open the hand before ready to receive commands. This _MUST_ be set if powered off in a closed state, or a calibrate must be run before sending target commands
+* `__reset_on_start__` : If the hand is not in a closed state when last powered off, setting to `1` will open the hand before ready to receive commands. This _MUST_ be set if powered off in a closed state, and a calibrate may need to be run before sending accurate target commands
 * `__baudrate__` : required to differentiate between Serial over USB-C and Serial over RS485, default `921600` for SUBC, `115200` for RS485
 
 #### Serial Example
 ```python
 from ArtusAPI.artus_api import ArtusAPI
-artus_lite = ArtusAPI(robot_type='artus_lite', communication_type='UART',hand_type='right',communication_channel_identifier='COM7')
+artus_lite = ArtusAPI(robot_type='artus_lite', communication_type='UART',hand_type='right',communication_channel_identifier='COM7',reset_on_start=0)
 
 artus_lite.connect()
 ```
@@ -86,11 +104,19 @@ Second, the `ArtusAPI.wake_up()` function must be run to allow the hand to load 
 
 Once these two steps are complete, optionally, you can run `ArtusAPI.calibrate()` to calibrate the finger joints. Otherwise, the system is now ready to start sending and receiving data!
 
+**_Note: If running version v1.0.1, `wake_up` is called inside the `connect()` function_**
+
 ## Interacting with the API
 To get the most out of the Artus hands, the functions that will likely be most interacted with are `set_joint_angles(self, joint_angles:dict)` and `get_joint_angles(self)`. The `set_joint_angles` function allows the user to set 16 independent joint values with a desired velocity/force value in the form of a dictionary. See the [grasp_close file](data/hand_poses/grasp_close.json) for an example of a full 16 joint dictionary for the Artus Lite. See the [Artus Lite README](ArtusAPI/robot/artus_lite/README.md) for joint mapping.
 
+e.g. 
+```python
+artusapi.set_joint_angles(pinky_dict)
+```
+
 ### Setting Joints
 As mentioned above, there are 16 independent degrees of freedom for the Artus Lite, which can be set simultaneously or independently. If, for example, a user need only curl the pinky, a shorter dictionary like the following could be used as a parameter to the function:
+
 ```
 pinky_dict = {"pinky_flex" : 
                             {
@@ -109,6 +135,10 @@ ArtusAPI.set_joint_angles(pinky_dict)
 
 Notice that the above example does not include the `"input_speed"` field that the json file has. The `"input_speed"` field is optional and will default to the nominal speed.
 
+### Input Units
+* Input Angle: the input angle is an integer value in degrees
+* velocity: the velocity is in a percentage unit 0-100. Minimum movement requirement is around 30. This value pertains also to the gripping force of the movement. 
+
 ### Getting Feedback
 There are two ways to get feedback data depending on how the class is instantiated.
 
@@ -124,7 +154,11 @@ artusHands = [artus_liteLeft,artus_liteRight]
 ``` 
 
 ## Teleoperation Considerations
-** **IT IS IMPORTANT TO ADD A DELAY BETWEEN SENDING MESSAGES, CURRENT SUGGESTED FREQUENCY FOR BEST USE IS 10 Hz OR DELAY OF 0.1s** **
+For teleoperation, there is a parameter for the class that lets the user set the `communication frequency` without adding delays into the communication.
+
+```python
+artus_liteLeft = Artus3DAPI(target_ssid='Artus3DLH',port='COM5',communication_method='UART',communication_frequency = 100)
+``` 
 
 ## Directory Structure
 ```bash

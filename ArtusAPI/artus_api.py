@@ -27,20 +27,22 @@ class ArtusAPI:
                 robot_type='artus_lite',
                 hand_type ='left',
                 stream = False,
-                communication_frequency = 400, # hz
+                communication_frequency = 200, # hz
                 logger = None,
                 reset_on_start = 0,
                 baudrate = 921600
                 ):
         """
         ArtusAPI class controls the communication and control of between a system and an Artus Hand by Sarcomere Dynamics Inc.
-        :communication_method: communication method that is supported on the Artus Hand
-        :communication_channel_identifier: channel identifier for the communication method
-        :robot_type: name of the series of robot hand
+        :communication_method: communication method that is supported on the Artus Hand, see Robot folder for supported methods. Default is UART over USBC
+        :communication_channel_identifier: channel identifier for the communication method. Usually a COM Port
+        :robot_type: name of the series of robot hand. See Robot folder for list of robots
         :hand_type: left or right
-        :stream: streaming feedback data
-        :communication_frequency: maximum frequency to stream data
+        :stream: Whether feedback data should be streamed (True) or require polling (False)
+        :communication_frequency: maximum frequency to stream data to the device and feedback data from the device
         :logger: python logger settings to inherit
+        :reset_on_start: If hand is powered off in a non-opened state, or software is stopped in a non-opened state, this value should be set to `1` to reduce risk of jamming. May require a calibration.
+        "baudrate: Required for difference between serial over USBC (921600) and serial over RS485 (115200)
         """
 
         self._communication_handler = Communication(communication_method=communication_method,
