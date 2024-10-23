@@ -5,9 +5,9 @@ import sys
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))))
 print("Project Root", PROJECT_ROOT)
 sys.path.append(PROJECT_ROOT)
-from Sarcomere_Dynamics_Resoruces.Control.configuration.configuration import ArtusLiteConfig
-from Isaac_Sim_Work.Control.ArtusLiteControl.ArtusLiteJointStreamer.artusLite_jointStreamer import ArtusLiteJointStreamer
-from Isaac_Sim_Work.Tracking.hand_tracking.hand_tracking_data import HandTrackingData
+from Sarcomere_Dynamics_Resources.examples.Control.configuration.configuration import ArtusLiteConfig
+from Sarcomere_Dynamics_Resources.examples.Control.ArtusLiteControl.ArtusLiteJointStreamer.artusLite_jointStreamer import ArtusLiteJointStreamer
+from Sarcomere_Dynamics_Resources.examples.Control.Tracking.hand_tracking_data import HandTrackingData
 
 
 class ArtusGUIController:

@@ -36,15 +36,16 @@ Before running the GUI, ensure that the configuration file is updated with the c
 
 To start the GUI for controlling the Artus Lite hand robot, follow these steps:
 
-1. Navigate to the directory containing the `gui_controller.py` script:
+1. Navigate to the directory containing the `gui.bat` script:
     ```sh
-    cd Sarcomere_Dynamics_Resources/examples/Control/ArtusLiteControl/GUIControl
+    Sarcomere_Dynamics_Resources/examples/Control/ArtusLiteControl/GUIControl
     ```
 
-2. Run the script:
+2. Run the `gui.bat` script:
     ```sh
-    python gui_controller.py
+    gui.bat
     ```
+
 
 ## Usage
 
