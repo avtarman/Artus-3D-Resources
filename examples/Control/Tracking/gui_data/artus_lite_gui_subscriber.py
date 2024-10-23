@@ -6,7 +6,7 @@ import ast
 
 import sys
 import os
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))))
 print("Root: ",PROJECT_ROOT)
 
 class ArtusLiteGUISubscriber:
@@ -19,7 +19,7 @@ class ArtusLiteGUISubscriber:
 
     def _initialize_zmq_subscriber(self, address="tcp://127.0.0.1:5556"):
         sys.path.append(str(PROJECT_ROOT))
-        from Isaac_Sim_Work.Communication.ZMQ.zmq_class import ZMQSubscriber
+        from Sarcomere_Dynamics_Resources.examples.Control.Tracking.zmq_class.zmq_class import ZMQSubscriber
         self.zmq_subscriber = ZMQSubscriber(address=address)
 
 
