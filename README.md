@@ -190,9 +190,9 @@ artus_liteLeft = Artus3DAPI(target_ssid='Artus3DLH',port='COM5',communication_me
 ```
 
 ## Revision Control
-| Date  | Revision | Description | 
+| Date  | Revision | Description | Pip Release |
 | :---: | :------: | :---------: |
-| Nov. 14, 2023 | v1.0b | Initial release - Artus Lite Mk 5 |
-| Apr. 23, 2024 | v1.1b | Beta release - Artus Lite Mk 6 |
-| Oct. 9, 2024 | v1.0 | Artus Lite Release | 
-| Oct. 23, 2024 | v1.0.1 | awake parameter added, wake up function in connect |
+| Nov. 14, 2023 | v1.0b | Initial release - Artus Lite Mk 5 | NA |
+| Apr. 23, 2024 | v1.1b | Beta release - Artus Lite Mk 6 | NA |
+| Oct. 9, 2024 | v1.0 | Artus Lite Release | v1.0 |
+| Oct. 23, 2024 | v1.0.2 | awake parameter added, wake up function in connect | v1.0.1 |
