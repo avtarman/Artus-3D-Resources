@@ -1,0 +1,54 @@
+# Artus Lite GUI Control
+
+This guide provides instructions on how to use the GUI to control the Artus Lite hand robot.
+
+## Table of Contents
+
+- [Artus Lite GUI Control](#artus-lite-gui-control)
+  - [Table of Contents](#table-of-contents)
+  - [Requirements](#requirements)
+  - [Installation](#installation)
+  - [Configuration](#configuration)
+  - [Running the GUI](#running-the-gui)
+  - [Usage](#usage)
+
+## Requirements
+
+- Python >= 3.10
+- Required Python packages: `pyzmq`, `PyQt5`
+- Artus Lite hand robot
+- Windows OS (for running the GUI executable)
+
+## Installation
+
+
+1. Install the required Python packages:
+    ```sh
+    pip install pyzmq
+    pip install PyQt5
+    ```
+
+## Configuration
+
+Before running the GUI, ensure that the configuration file is updated with the correct settings for your Artus Lite hand robot. The configuration file is located at `Sarcomere_Dynamics_Resources/Control/configuration/configuration.py`.
+
+## Running the GUI
+
+To start the GUI for controlling the Artus Lite hand robot, follow these steps:
+
+1. Navigate to the directory containing the `gui_controller.py` script:
+    ```sh
+    cd Sarcomere_Dynamics_Resources/examples/Control/ArtusLiteControl/GUIControl
+    ```
+
+2. Run the script:
+    ```sh
+    python gui_controller.py
+    ```
+
+## Usage
+
+Once the GUI is running, you can control the Artus Lite hand robot using the following features:
+
+- **Start Streaming**: Begin streaming joint angles from the GUI in continuous mode.
+- **Send Joint Angles**: Send the joint angles to the Artus Lite hand robot once.
