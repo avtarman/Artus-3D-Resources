@@ -1,249 +1,442 @@
 
 import re
+import numpy as np
+import threading
+from collections import deque
 
-import os
-import sys
+
 import time
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# TCPServer used for receiving data from unity
-from tcp_server.tcp_server import TCPServer
 
-class ManusGlovesHandTrackingData:
+
+from pathlib import Path
+import sys
+current_file_path = Path(__file__).resolve()
+PROJECT_ROOT = current_file_path.parents[4]
+print("Root: ",PROJECT_ROOT)
+sys.path.append(PROJECT_ROOT)
+from RMD_Actuator_Control.RMD_Actuator_Control.Application.helpers.Path_Smoothener.moving_average import MultiMovingAverage
+
+class ManusHandTrackingData:
+
     def __init__(self,
                  port=65432):
-        self.tcp_server = TCPServer(port=port)
-        self.tcp_server.create()
+        
+        self.port = port
 
-        self.joint_angles_dict_R = {'index':[0,0,0,0],
-                                  'middle':[0,0,0,0],
-                                  'ring':[0,0,0,0],
-                                  'pinky':[0,0,0,0],
-                                  'thumb':[0,0,0,0],
-                                  }
+
+        self.order_of_joints = ['index', 'middle', 'ring', 'pinky', 'thumb']
+        self.running = False
+        self.data_queue = {'index': deque(maxlen=20), 'middle': deque(maxlen=20), 'ring': deque(maxlen=20), 'pinky': deque(maxlen=20), 'thumb': deque(maxlen=20)}
+        self.user_hand_min_max_left = {'index': [-15,15,0,90,0,90], 'middle': [-15,15,0,90,0,90], 'ring': [-15,15,0,90,0,90], 'pinky': [-15,15,0,90,0,90], 'thumb': [-25,25,0,90,0,90,0,90]}
+        self.user_hand_min_max_right = {'index': [-15,15,0,90,0,90], 'middle': [-15,15,0,90,0,90], 'ring': [-15,15,0,90,0,90], 'pinky': [-15,15,0,90,0,90], 'thumb': [-25,25,0,90,0,90,0,90]}
+        self.artus_min_max = {'index': [-15,15,0,90,0,90], 'middle': [-15,15,0,90,0,90], 'ring': [-15,15,0,90,0,90], 'pinky': [-15,15,0,90,0,90], 'thumb': [-25,25,0,90,0,90,0,90]}
+
         
-        self.joint_angles_dict_L = {'index':[0,0,0,0],
-                                  'middle':[0,0,0,0],
-                                  'ring':[0,0,0,0],
-                                  'pinky':[0,0,0,0],
-                                  'thumb':[0,0,0,0],
-                                  }
+        self.moving_average_righthand = MultiMovingAverage(window_size=10, num_windows=20)
+        self.moving_average_lefthand = MultiMovingAverage(window_size=10, num_windows=20)
+
+
+        self.hand_tracking
+
+        self.joint_angles_left = None # [thumb_1, thumb_2, thumb_3, thumb4, index_1, index_2, index_3, middle_1, middle_2, middle_3, ring, pinky]
+        self.joint_angles_right = None
+
+    # def get_tcp_port_handle(self):
+    #     pass
+
+    
+    def receive_joint_angles(self):
+        """
+        Receive joint angles from the hand tracking method
+        """
+        joint_angles = self.tcp.receive() # receive encoded data
+        if joint_angles == None:
+            return None
+        self._joint_angles_gui_to_joint_streamer(joint_angles)
+        return joint_angles
+    
+    def get_left_hand_joint_angles(self):
+        return self.joint_angles_left
+    
+    def get_right_hand_joint_angles(self):
+        return self.joint_angles_right
+    
+    def _joint_angles_manus_to_joint_streamer(joint_angles)
         
-        self.data_l = None
-        self.data_r =  None
-           
-    def get_finger_joint_rotations(self, hand="L"):
-            
+        # decode left and right  and put it in the joint_angles_left variable
+        self.joint_angles_left = 
+        self.joint_angles_right = 
+        
+        return self.joint_angles_left, self.joint_angles_right
+
+        
+
+    def get_finger_joint_rotations_dict(self, hand):
+        # time.sleep(0.01)
+        return self.hand_tracking.get_finger_joint_rotations(hand)
+    
+    # def get_finger_joint_rotations_list(self):
+    #     joint_rotations_dict = self.get_finger_joint_rotations_dict()
+    #     joint_rotations_list = []
+    #     for finger in self.order_of_joints:
+    #         joint_rotations_list += joint_rotations_dict[finger]
+    #     return joint_rotations_list
+    
+    def get_finger_joint_rotations_list_rad(self, hand="L"):
+
         # Hand can take these values: L, R, LR
-
-        # Make sure we are not accessing outside of data range
-        data = []
-        # received_data = self.tcp_server.receive()
-        # data = self._extract_data_cpp_api(data_raw=received_data)
-        
-        # while len(data) < 40:
-        received_data = self.tcp_server.receive()
-        
-        # print(received_data)
-        # self.data_l = None
-        # self.data_r =  None
-
-
-        
-        
-        # print("Received Data: ")
-        # print(received_data)
-        # while self.data_l == None or self.data_r == None:
-            # print("getting data ...")
-        # received_data = self.tcp_server.receive()
-        if received_data == None:
-            # print("left hand: ", self.joint_angles_dict_L)
-            # print("right hand: ", self.joint_angles_dict_R)
-            return self.joint_angles_dict_L, self.joint_angles_dict_R
-         
-        temp_l, temp_r = self._extract_between_L_R_manus(s=received_data)
-        # print(f"temp_l: {temp_l}")
-        # print(f"temp_r: {temp_r}")
-        if temp_l != None:
-            self.data_l = temp_l
-        if temp_r != None:
-            self.data_r = temp_r
-        print("DataL: ", self.data_l)
-        print("self.data_r:", self.data_r)
-
-        extracted_data = self._extract_data_cpp_api(data_raw=self.data_l)
-        # print("1")
-
-        # print(f"Extracted data: {extracted_data}")
-        # print(extracted_data)
-        data.extend(extracted_data)  # Append the extracted data to the data list
-        # print("2")
-
-        # print(f"data1: {data}")
-        
-        extracted_data = self._extract_data_cpp_api(data_raw=self.data_r)
-        # print(extracted_data)
-        data.extend(extracted_data)  # Append the extracted data to the data list
-        # print("3")
-
-        # print(data)
-
-            # print(f"data2: {data}")
-
-        # # data = data.replace(")", "")
-        # data = data.split(",")
-        # # convert string to int list, ignore the last element
-        # data = self._string_to_int_list(data[0:-1])
-        # check joint limits
-        # data = self._check_joint_limits(data)
-        # fill joint angles dict for cpp api
-        # print(data)
-        self.joint_angles_dict_L['thumb'] = data[0:4]
-        self.joint_angles_dict_L['index'] = data[4:8]
-        self.joint_angles_dict_L['middle'] = data[8:12]
-        self.joint_angles_dict_L['ring'] = data[12:16]
-        self.joint_angles_dict_L['pinky'] = data[16:20]
-        # self.joint_angles_dict['thumb'] = data[16:20]
-        # print(self.joint_angles_dict_L['thumb'])
-        
-        self.joint_angles_dict_L['thumb'][1] = (70-self.joint_angles_dict_L['thumb'][1])
-
-        # map joint angles
-        self.joint_angles_dict_L['index'] = self.joint_angles_mapper(self.joint_angles_dict_L['index'])
-        self.joint_angles_dict_L['middle'] = self.joint_angles_mapper(self.joint_angles_dict_L['middle'])
-        self.joint_angles_dict_L['pinky'] = self.joint_angles_mapper(self.joint_angles_dict_L['pinky'])
-        self.joint_angles_dict_L['ring'] = self.joint_angles_mapper(self.joint_angles_dict_L['ring'])
-        self.joint_angles_dict_L['thumb'] = self.joint_angles_mapper(self.joint_angles_dict_L['thumb'])
-
-        # switch angles for thumb abduction
-        # temp = self.joint_angles_dict['thumb'][0]
-        # self.joint_angles_dict['thumb'][0] = self.joint_angles_dict['thumb'][1]
-        # # self.joint_angles_dict['thumb'][1] = temp
-        # self.joint_angles_dict['thumb'][1] = self.joint_angles_dict['thumb'][2]
-        # self.joint_angles_dict['thumb'][2] = self.joint_angles_dict['thumb'][3]
-
-        self.joint_angles_dict_R['thumb'] = data[20:24]
-        self.joint_angles_dict_R['index'] = data[24:28]
-        self.joint_angles_dict_R['middle'] = data[28:32]
-        self.joint_angles_dict_R['ring'] = data[32:36]
-        self.joint_angles_dict_R['pinky'] = data[36:40]
-        # self.joint_angles_dict['thumb'] = data[16:20]
-        self.joint_angles_dict_R['thumb'][1] = (70-self.joint_angles_dict_R['thumb'][1])
-
-        # map joint angles
-        self.joint_angles_dict_R['index'] = self.joint_angles_mapper(self.joint_angles_dict_R['index'])
-        self.joint_angles_dict_R['middle'] = self.joint_angles_mapper(self.joint_angles_dict_R['middle'])
-        self.joint_angles_dict_R['pinky'] = self.joint_angles_mapper(self.joint_angles_dict_R['pinky'])
-        self.joint_angles_dict_R['ring'] = self.joint_angles_mapper(self.joint_angles_dict_R['ring'])
-        self.joint_angles_dict_R['thumb'] = self.joint_angles_mapper(self.joint_angles_dict_R['thumb'])
+    
+        joint_rotations_dict_L = []
+        joint_rotations_dict_R = []
+        joint_rotations_list_L = []
+        joint_rotations_list_R = []
 
         if hand == "L":
-                return self.joint_angles_dict_L
-        elif hand == "R":
-                return self.joint_angles_dict_R
-        elif hand == "LR":
-                # print("left hand out: ", self.joint_angles_dict_L)
-                # print("right hand out: ", self.joint_angles_dict_R)
-                return self.joint_angles_dict_L, self.joint_angles_dict_R
-                
+            joint_rotations_dict_L = self.get_finger_joint_rotations_dict(hand)
+            self.interpolate_data_L(joint_rotations_dict_L)
+            self.append_list_L(joint_rotations_dict_L, joint_rotations_list_L)
 
-    def _extract_between_orientation_and_end(self,s):
-        '''
-        example data -> SkeletonType: ManusHand_R orientation: 0,0,0,360,0,0,0,0,0,0,0,360,0,0,0,0,0,359,0,0,0,360,0,0,0,360,0,360,0,0,0,0,0,290,0,360,0,360,end
-        '''
-        pattern = r'orientation:(.*?)end'
-        match = re.search(pattern, s, re.DOTALL)
-        if match:
-            return match.group(1).strip()
-        return None
-    
-    def _extract_between_L_R_manus(self,s):
-        '''
-        example data -> SkeletonType: ManusHand_R orientation: 0,0,0,360,0,0,0,0,0,0,0,360,0,0,0,0,0,359,0,0,0,360,0,0,0,360,0,360,0,0,0,0,0,290,0,360,0,360,end
-        '''
-        pattern_L = None
-        pattern_R = None
-        pattern_L_pattern = r'L\[(.*?)\]'
-        pattern_R_pattern = r'R\[(.*?)\]'
+            joint_rotations_list_L = np.deg2rad(joint_rotations_list_L)
 
-        match_L = re.search(pattern_L_pattern, s, re.DOTALL)
-        if match_L:
-            pattern_L = match_L.group(1).strip()
-        match_R = re.search(pattern_R_pattern, s, re.DOTALL)
-        if match_R:
-            pattern_R = match_R.group(1).strip()
-
-        return pattern_L, pattern_R
-    
-    def _extract_data_cpp_api(self, data_raw):
-        """
-        format: [10.98 57.29 56.76 82.16 -4.91 99.94 55.7 34.87 -9.36 69.46 97.08 61.7 11.68 -18.59 13.95 8.53 18.3 -5.36 0 0 ]
-        """
-        # print(data_raw
-        # data = data_raw.replace("[","").replace("]","").split(" ")[0:-1]
-        data = data_raw.replace("[","").replace("]","").split()
-        # print(data)
-        # data = [int(float(angle)) for angle in data]
-
-        try:
-            data = [int(float(angle)) for angle in data]
-        except ValueError as e:
-            print(f"Error converting data: {e}")
-            data = []
-        # print(data)
-        return data
-    
-    def _string_to_int_list(self, string_list):
-        return [int(element) for element in string_list]
-    
-
-    def _check_joint_limits(self, data):
-
-        for i in range(len(data)):
-            if (data[i] > 270):
-                data[i] = 0
-            if (data[i] > 90):
-                data[i] = 90
-        return data
-    
-    
-    def joint_angles_mapper(self, joint_angles=None):
-        # # Ensure joint_angles is not None and is a list
-        # if joint_angles is None:
-        #     return []
+            return joint_rotations_list_L
         
-        # for i in range(len(joint_angles)):
-        #     # Normalize angle to range [-180, 180]
-        #     angle = joint_angles[i] % 360
-        #     if angle > 180:  # Adjust angles greater than 180 to be in the range of [-180, 0)
-        #         angle -= 360
+        elif hand == "R":
+            joint_rotations_dict_R = self.get_finger_joint_rotations_dict(hand)
+            self.interpolate_data_R(joint_rotations_dict_R)
+            self.append_list_R(joint_rotations_dict_R, joint_rotations_list_R)
 
-        #     # if i!=0:
-        #     angle = -angle
-        #     joint_angles[i] = angle
+            joint_rotations_list_R = np.deg2rad(joint_rotations_list_R)
 
-        return joint_angles
+            return joint_rotations_list_R
+        elif hand == "LR":
+            joint_rotations_dict_L, joint_rotations_dict_R = self.get_finger_joint_rotations_dict(hand)
+            self.interpolate_data_L(joint_rotations_dict_L)
+            self.interpolate_data_R(joint_rotations_dict_R)
+            self.append_list_L(joint_rotations_dict_L, joint_rotations_list_L)
+            self.append_list_R(joint_rotations_dict_R, joint_rotations_list_R)
+
+            joint_rotations_list_L = np.deg2rad(joint_rotations_list_L)
+            joint_rotations_list_R = np.deg2rad(joint_rotations_list_R)
+            
+            print("joint rotations isaac sim: ", joint_rotations_list_L, joint_rotations_list_R)
+
+            return joint_rotations_list_L, joint_rotations_list_R
+    
+    def append_list_L(self, joint_rotations_dict, joint_rotations_list):
+        joint_rotations_list.append(joint_rotations_dict['index'][0])
+        joint_rotations_list.append(joint_rotations_dict['middle'][0])
+        joint_rotations_list.append(joint_rotations_dict['pinky'][0])
+        joint_rotations_list.append(joint_rotations_dict['ring'][0])
+        joint_rotations_list.append(-joint_rotations_dict['thumb'][0])
+
+        joint_rotations_list.append(joint_rotations_dict['index'][1])
+        joint_rotations_list.append(joint_rotations_dict['middle'][1])
+        joint_rotations_list.append(joint_rotations_dict['pinky'][1])
+        joint_rotations_list.append(joint_rotations_dict['ring'][1])
+        joint_rotations_list.append(joint_rotations_dict['thumb'][1])
+        
+        joint_rotations_list.append(joint_rotations_dict['index'][2])
+        joint_rotations_list.append(joint_rotations_dict['middle'][2])
+        joint_rotations_list.append(joint_rotations_dict['pinky'][2])
+        joint_rotations_list.append(joint_rotations_dict['ring'][2])
+        joint_rotations_list.append(joint_rotations_dict['thumb'][2])
+        
+        joint_rotations_list.append(joint_rotations_dict['index'][2])
+        joint_rotations_list.append(joint_rotations_dict['middle'][2])
+        joint_rotations_list.append(joint_rotations_dict['pinky'][2])
+        joint_rotations_list.append(joint_rotations_dict['ring'][2])
+        joint_rotations_list.append(joint_rotations_dict['thumb'][3])
+
+        # add joint positions to moving average handler
+        self.moving_average_lefthand.add_values(joint_rotations_list.copy())
+        # get the average of the joint positions
+        joint_rotations_list = self.moving_average_lefthand.get_averages()
+
+    def append_list_R(self, joint_rotations_dict, joint_rotations_list):
+        joint_rotations_list.append(joint_rotations_dict['index'][0])
+        joint_rotations_list.append(joint_rotations_dict['middle'][0])
+        joint_rotations_list.append(joint_rotations_dict['pinky'][0])
+        joint_rotations_list.append(joint_rotations_dict['ring'][0])
+        joint_rotations_list.append(-joint_rotations_dict['thumb'][0])
+
+        joint_rotations_list.append(joint_rotations_dict['index'][1])
+        joint_rotations_list.append(joint_rotations_dict['middle'][1])
+        joint_rotations_list.append(joint_rotations_dict['pinky'][1])
+        joint_rotations_list.append(joint_rotations_dict['ring'][1])
+        joint_rotations_list.append(joint_rotations_dict['thumb'][1])
+        
+        joint_rotations_list.append(joint_rotations_dict['index'][2])
+        joint_rotations_list.append(joint_rotations_dict['middle'][2])
+        joint_rotations_list.append(joint_rotations_dict['pinky'][2])
+        joint_rotations_list.append(joint_rotations_dict['ring'][2])
+        joint_rotations_list.append(joint_rotations_dict['thumb'][2])
+        
+        joint_rotations_list.append(joint_rotations_dict['index'][2])
+        joint_rotations_list.append(joint_rotations_dict['middle'][2])
+        joint_rotations_list.append(joint_rotations_dict['pinky'][2])
+        joint_rotations_list.append(joint_rotations_dict['ring'][2])
+        joint_rotations_list.append(joint_rotations_dict['thumb'][3])
+        
+        # add joint positions to moving average handler
+        self.moving_average_righthand.add_values(joint_rotations_list.copy())
+        # get the average of the joint positions
+        joint_rotations_list = self.moving_average_righthand.get_averages()
+    
+    
+    # def get_hand_orientation(self):
+    #     return self.hand_tracking.get_hand_orientation()
+    
+    # def get_hand_position(self):
+    #     return self.hand_tracking.get_hand_position()
+    
+    def scale_value(self, value, min_val, max_val, arm_min_val, arm_max_val):
+        # Ensure the value is within the min_max range
+        value = max(min_val, min(value, max_val))
+
+        # Map the value to the artus
+        if max_val - min_val == 0:
+            return arm_min_val  # Avoid division by zero if min_val == max_val
+
+        scaled_value = ((value - min_val) / (max_val - min_val)) * (arm_max_val - arm_min_val) + arm_min_val
+        return scaled_value
+    
+    def interpolate_data_L(self, joint_rotations_list):
+        for finger in self.order_of_joints:
+            num_joints = 0
+            if finger == "thumb":
+                num_joints = 4
+            else:
+                num_joints = 3
+
+            for joint_index in range(num_joints):
+                value = joint_rotations_list[finger][joint_index]
+                min_index = joint_index * 2
+                max_index = min_index + 1
+
+                min_val = self.min_max_L[finger][min_index]
+                max_val = self.min_max_L[finger][max_index]
+                arm_min_val = self.artus_min_max[finger][min_index]
+                arm_max_val = self.artus_min_max[finger][max_index]
+
+                scaled_value = self.scale_value(value, min_val, max_val, arm_min_val, arm_max_val)
+                joint_rotations_list[finger][joint_index] = scaled_value
+
+        return joint_rotations_list
+    
+    def interpolate_data_R(self, joint_rotations_list):
+        for finger in self.order_of_joints:
+            num_joints = 0
+            if finger == "thumb":
+                num_joints = 4
+            else:
+                num_joints = 3
+
+            for joint_index in range(num_joints):
+                value = joint_rotations_list[finger][joint_index]
+                min_index = joint_index * 2
+                max_index = min_index + 1
+
+                min_val = self.min_max_R[finger][min_index]
+                max_val = self.min_max_R[finger][max_index]
+                arm_min_val = self.artus_min_max[finger][min_index]
+                arm_max_val = self.artus_min_max[finger][max_index]
+
+                scaled_value = self.scale_value(value, min_val, max_val, arm_min_val, arm_max_val)
+                joint_rotations_list[finger][joint_index] = scaled_value
+
+        return joint_rotations_list
+    
+    def gather_data_L(self):
+        while self.running:
+            current_data = self.get_finger_joint_rotations_dict(hand="L")
+            for finger in self.order_of_joints:
+                self.temp[finger] = current_data[finger]
+            time.sleep(0.1)
+
+    def gather_data_R(self):
+        while self.running:
+            current_data = self.get_finger_joint_rotations_dict(hand="R")
+            # print("Current data: ", current_data)
+            for finger in self.order_of_joints:
+                self.temp[finger] = current_data[finger]
+            time.sleep(0.1)
+
+    def get_data(self, hand):
+        self.running = True
+        if hand == "L":
+            thread = threading.Thread(target=self.gather_data_L)
+        elif hand == "R":
+            thread = threading.Thread(target=self.gather_data_R)            
+        thread.start()
+
+        print()
+        input("Press Enter to record value")
+        print()
+
+        self.running = False
+        thread.join()  # Wait for the thread to finish
+
+    def calibrate_L(self):
+
+        ############# Calibrating Finger Spread ###########################
+        for finger in self.order_of_joints:
+
+            ###################### MIN ############################
+
+            print(f"Calibrating LEFT {finger} SPREAD MIN")
+            self.get_data("L")
+            self.min_max_L[finger][0] = self.temp[finger][0]
+
+            ###################### MAX ############################
+
+            print(f"Calibrating LEFT {finger} SPREAD MAX")
+            self.get_data("L")
+            self.min_max_L[finger][1] = self.temp[finger][0]
 
 
-def main():
-    hand_tracking_data = ManusGlovesHandTrackingData()
+        ############# Calibrating Finger Flex ###########################
+        print(f"Put LEFT fingers together flat on table, thumb outwards (Making L shape)")
+        self.get_data("L")
+
+        # self.order_of_joints = ['index', 'middle', 'ring', 'pinky', 'thumb']
+
+        self.min_max_L["index"][2] = self.temp["index"][1]
+        self.min_max_L["middle"][2] = self.temp["middle"][1]
+        self.min_max_L["ring"][2] = self.temp["ring"][1]
+        self.min_max_L["pinky"][2] = self.temp["pinky"][1]
+        self.min_max_L["thumb"][2] = self.temp["thumb"][1]
+
+        self.min_max_L["index"][4] = self.temp["index"][2]
+        self.min_max_L["middle"][4] = self.temp["middle"][2]
+        self.min_max_L["ring"][4] = self.temp["ring"][2]
+        self.min_max_L["pinky"][4] = self.temp["pinky"][2]
+        self.min_max_L["thumb"][4] = self.temp["thumb"][2]
+
+        self.min_max_L["thumb"][6] = self.temp["thumb"][3]
+
+        print(f"Bend fingers 90 degrees")
+        self.get_data("L")
+
+        # self.order_of_joints = ['index', 'middle', 'ring', 'pinky', 'thumb']
+
+        self.min_max_L["index"][3] = self.temp["index"][1]
+        self.min_max_L["middle"][3] = self.temp["middle"][1]
+        self.min_max_L["ring"][3] = self.temp["ring"][1]
+        self.min_max_L["pinky"][3] = self.temp["pinky"][1]
+
+        print(f"Fully bend four fingers")
+        self.get_data("L")
+
+        self.min_max_L["index"][5] = self.temp["index"][2]
+        self.min_max_L["middle"][5] = self.temp["middle"][2]
+        self.min_max_L["ring"][5] = self.temp["ring"][2]
+        self.min_max_L["pinky"][5] = self.temp["pinky"][2]
+
+        ############# Calibrating Thumb Flex ###########################
+        print(f"Move thumb to the bottom of pinky")
+        self.get_data("L")
+
+        self.min_max_L["thumb"][3] = self.temp["thumb"][1]
+
+        print(f"Curl Thumb")
+        self.get_data("L")
+
+        self.min_max_L["thumb"][5] = self.temp["thumb"][2]
+        self.min_max_L["thumb"][7] = self.temp["thumb"][3]
+
+        # print(self.min_max_L)
+        return self.min_max_L
+     
+
+    def calibrate_R(self):
+
+        ############# Calibrating Finger Spread ###########################
+        for finger in self.order_of_joints:
+
+            ###################### MIN ############################
+
+            print(f"Calibrating RIGHT {finger} SPREAD MIN")
+            self.get_data("R")
+            self.min_max_R[finger][0] = self.temp[finger][0]
+
+            ###################### MAX ############################
+
+            print(f"Calibrating RIGHT {finger} SPREAD MAX")
+            self.get_data("R")
+            self.min_max_R[finger][1] = self.temp[finger][0]
+
+
+        ############# Calibrating Finger Flex ###########################
+        print(f"Put RIGHT fingers together flat on table, thumb outwards (Making L shape)")
+        self.get_data("R")
+
+        self.min_max_R["index"][2] = self.temp["index"][1]
+        self.min_max_R["middle"][2] = self.temp["middle"][1]
+        self.min_max_R["ring"][2] = self.temp["ring"][1]
+        self.min_max_R["pinky"][2] = self.temp["pinky"][1]
+        self.min_max_R["thumb"][2] = self.temp["thumb"][1]
+
+        self.min_max_R["index"][4] = self.temp["index"][2]
+        self.min_max_R["middle"][4] = self.temp["middle"][2]
+        self.min_max_R["ring"][4] = self.temp["ring"][2]
+        self.min_max_R["pinky"][4] = self.temp["pinky"][2]
+        self.min_max_R["thumb"][4] = self.temp["thumb"][2]
+
+        self.min_max_R["thumb"][6] = self.temp["thumb"][3]
+
+        print(f"Bend fingers 90 degrees")
+        self.get_data("R")
+
+        self.min_max_R["index"][3] = self.temp["index"][1]
+        self.min_max_R["middle"][3] = self.temp["middle"][1]
+        self.min_max_R["ring"][3] = self.temp["ring"][1]
+        self.min_max_R["pinky"][3] = self.temp["pinky"][1]
+
+        print(f"Fully bend four fingers")
+        self.get_data("R")
+
+        self.min_max_R["index"][5] = self.temp["index"][2]
+        self.min_max_R["middle"][5] = self.temp["middle"][2]
+        self.min_max_R["ring"][5] = self.temp["ring"][2]
+        self.min_max_R["pinky"][5] = self.temp["pinky"][2]
+
+        ############# Calibrating Thumb Flex ###########################
+        print(f"Move thumb to the bottom of pinky")
+        self.get_data("R")
+
+        self.min_max_R["thumb"][3] = self.temp["thumb"][1]
+
+        print(f"Curl Thumb")
+        self.get_data("R")
+
+        self.min_max_R["thumb"][5] = self.temp["thumb"][2]
+        self.min_max_R["thumb"][7] = self.temp["thumb"][3]
+
+        # print(self.min_max_R)
+        return self.min_max_R
+
+    def use_calibrated_data(self, data, hand):
+        if hand == 'L':
+            self.min_max_L = data
+        else:
+            self.min_max_R = data
+
+
+
+def test_hand_tracking_data():
+    hand_tracking_data = ManusGlovesHandTrackingData(port=65432)
     while True:
-        try:
-            data = hand_tracking_data.get_finger_joint_rotations(hand="LR")
-            # print("Dictionary: ")
-            # print(data)
-            if data:
-                # print("index: ", data['index'])
-                # print("middle: ", data['middle'])
-                # print("ring: ", data['ring'])
-                # print("pinky: ", data['pinky'])
-                # print("thumb: ", data['thumb'])
-                print()
+        # Receive joint angles from Manus core exe
+        joint_angles = hand_tracking_data.receive_joint_angles()
 
-        except:
-            pass
-        time.sleep(0.1)
+        if joint_angles is not None:
+            # left and right hand joitn angles for the application 
+            joint_angles_left = hand_tracking_data.get_left_hand_joint_angles()
+            joint_angles_right = hand_tracking_data.get_right_hand_joint_angles()
+            print("Left Hand Data: ", joint_angles_left)
+            print("Right Hand Data: ", joint_angles_right)
 
 
 if __name__ == "__main__":
-    main()
+    test_hand_tracking_data()
