@@ -30,7 +30,8 @@ class ArtusAPI:
                 communication_frequency = 200, # hz
                 logger = None,
                 reset_on_start = 0,
-                baudrate = 921600
+                baudrate = 921600,
+                awake = False
                 ):
         """
         ArtusAPI class controls the communication and control of between a system and an Artus Hand by Sarcomere Dynamics Inc.
@@ -42,7 +43,8 @@ class ArtusAPI:
         :communication_frequency: maximum frequency to stream data to the device and feedback data from the device
         :logger: python logger settings to inherit
         :reset_on_start: If hand is powered off in a non-opened state, or software is stopped in a non-opened state, this value should be set to `1` to reduce risk of jamming. May require a calibration.
-        "baudrate: Required for difference between serial over USBC (921600) and serial over RS485 (115200)
+        :baudrate: Required for difference between serial over USBC (921600) and serial over RS485 (115200)
+        :awake: False by default - if the hand is already in a ready state (LED is green) when starting or restarting a control script, set awake to `True` to bypass resending the `wake_up` function. Sending the `wake_up` function when the hand IS NOT in an open state will cause it to lose calibration
         """
 
         self._communication_handler = Communication(communication_method=communication_method,
@@ -55,6 +57,7 @@ class ArtusAPI:
         self._communication_frequency = 1 / communication_frequency
         self._communication_frequency_us = int(self._communication_frequency * 1000000)
         self.stream = stream
+        self.awake = awake
 
         if not logger:
             self.logger = logging.getLogger(__name__)
@@ -70,7 +73,10 @@ class ArtusAPI:
 
         time.sleep(1)
         # send wake command with it
-        return self.wake_up()
+        if not self.awake:
+            self.wake_up()
+            self.awake = True
+        return
     
     def disconnect(self):
         """
@@ -78,9 +84,6 @@ class ArtusAPI:
         """
         return self._communication_handler.close_connection()
     
-
-    
-
     # robot states
     def wake_up(self):
         """
@@ -106,6 +109,9 @@ class ArtusAPI:
         """
         Calibrate the Artus Hand
         """
+        if not self.awake:
+            self.logger.warning(f'Hand not ready, send `wake_up` command')
+            return
         robot_calibrate_command = self._command_handler.get_calibration_command()
         self._communication_handler.send_data(robot_calibrate_command)
 
@@ -122,6 +128,9 @@ class ArtusAPI:
         Set joint angle targets and speed values to the Artus Hand
         :joint_angles: dictionary of input angles and input speeds
         """
+        if not self.awake:
+            self.logger.warning(f'Hand not ready, send `wake_up` command')
+            return
         self._robot_handler.set_joint_angles(joint_angles=joint_angles,name=False)
         robot_set_joint_angles_command = self._command_handler.get_target_position_command(self._robot_handler.robot.hand_joints)
         # check communication frequency
@@ -133,6 +142,10 @@ class ArtusAPI:
         """
         sends the joints to home positions (0) which opens the Artus Hand
         """
+        if not self.awake:
+            self.logger.warning(f'Hand not ready, send `wake_up` command')
+            return
+        
         self._robot_handler.set_home_position()
         robot_set_home_position_command = self._command_handler.get_target_position_command(hand_joints=self._robot_handler.robot.hand_joints)
         # check communication frequency
@@ -153,6 +166,13 @@ class ArtusAPI:
 
     # robot feedback
     def _receive_feedback(self):
+        """
+        Send a request for feedback data and receive feedback data
+        """
+        if not self.awake:
+            self.logger.warning(f'Hand not ready, send `wake_up` command')
+            return
+        
         feedback_command = self._command_handler.get_states_command()
         self._communication_handler.send_data(feedback_command)
         # test
@@ -163,6 +183,10 @@ class ArtusAPI:
         """
         Populate feedback fields in self._robot_handler.hand_joints dict
         """
+        if not self.awake:
+            self.logger.warning(f'Hand not ready, send `wake_up` command')
+            return
+        
         feedback_command = self._receive_feedback()
         joint_angles = self._robot_handler.get_joint_angles(feedback_command)
         print(joint_angles)
@@ -173,6 +197,10 @@ class ArtusAPI:
         """
         Populate feedback fields in self._robot_handler.hand_joints dict
         """
+        if not self.awake:
+            self.logger.warning(f'Hand not ready, send `wake_up` command')
+            return
+        
         if not self._check_communication_frequency():
             return False
         feedback_command = self._communication_handler.receive_data()
@@ -182,6 +210,9 @@ class ArtusAPI:
         return joint_angles
 
     def update_firmware(self):
+        """
+        send firmware update to the actuators
+        """
         file_path = None
         fw_size  = 0
         # input to upload a new file
@@ -217,18 +248,35 @@ class ArtusAPI:
         print(f'Power Cycle the device to take effect')
 
     def reset(self):
+        """
+        Reset a joint back to it's open state, used if finger is "jammed" in close state
+        """
+        if not self.awake:
+            self.logger.warning(f'Hand not ready, send `wake_up` command')
+            return
+        
         j = int(input(f'Enter Joint to reset: '))
         m = int(input(f'Enter Motor to reset: '))
         reset_command = self._command_handler.get_locked_reset_low_command(j,m)
         self._communication_handler.send_data(reset_command)
     
     def hard_close(self):
+        """
+        drive a joint partially closed - used if finger is "jammed" in open state
+        """
+        if not self.awake:
+            self.logger.warning(f'Hand not ready, send `wake_up` command')
+            return
+
         j = int(input(f'Enter Joint to reset: '))
         m = int(input(f'Enter Motor to reset: '))
         hard_close = self._command_handler.get_hard_close_command(j,m)
         self._communication_handler.send_data(hard_close)
 
     def update_param(self):
+        """
+        Parameter update, used to change the communication method
+        """
         com = input('Enter Communication Protocol you would like to change to (default: UART, CAN, RS485): ')
         if com == 'CAN':
             feed = None

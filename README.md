@@ -10,9 +10,17 @@ Please contact the team if there are any issues that arise through the use of th
 __Please read through the entire README before using the Artus hand__
 
 Below are some critical information while using the Artus hand.
-* Power On/Off: When powering off the hand, or closing the control script, the hand needs to be in an __OPEN__ state to reduce amount of calibration and jamming. If the script is closed while the hand is operational, or the hand is closed when powered off, the `__reset_on_start__` parameter needs to be set to `1` to open the hand before starting
 
-* Ready State: The Artus Lite has an indicator LED that indicates the state of the hand. If the hand is blue, the hand is __NOT READY FOR TARGET, CALIBRATE COMMANDS__. The hand is only ready for these commands when the LED is __GREEN__. 
+### Note about Calibration & Power Cycling
+
+Below are some some notes about some key fields that are required in different situations to reduce the number of calibration sequences needed to run.
+
+* When powering off the hand, or closing the control script, the hand needs to be in an __OPEN__ state to reduce amount of calibration and jamming. If the hand is closed when powered off, the `__reset_on_start__` parameter needs to be set to `1` to open the hand before starting
+
+* Using the `__awake__` parameter: if the hand is already in a ready state (LED is green) when starting or restarting a control script, set awake to `True` to bypass resending the `wake_up` function, which could lead to lost calibration.
+
+* Ready State: The Artus Lite has an indicator LED that indicates the state of the hand. If the hand is __BLUE__, the hand is __NOT READY FOR TARGET, CALIBRATE COMMANDS__. The hand is only ready for these commands when the LED is __GREEN__. 
+
 
 * Artus Lite specific technical details are available within the [robot folder](/ArtusAPI/robot/artus_lite/)
 
@@ -53,6 +61,8 @@ pip install pyserial
 pip install ArtusAPI
 ```
 
+__Alternatively, cloning the repository and using the repository locally in a project scope is another option, it may be more up-to-date than the pip stable release.__
+
 ## Usage
 
 ### Running example.py
@@ -84,6 +94,7 @@ Below are some examples of instantiating the ArtusAPI class to control a single 
 * `__logger__` : If integrating the API into control code, you may already have a logger. THis will allow for homogeneous logging to the same files as what you currently have. Default: `None`
 * `__reset_on_start__` : If the hand is not in a closed state when last powered off, setting to `1` will open the hand before ready to receive commands. This _MUST_ be set if powered off in a closed state, and a calibrate may need to be run before sending accurate target commands
 * `__baudrate__` : required to differentiate between Serial over USB-C and Serial over RS485, default `921600` for SUBC, `115200` for RS485
+* `__awake__` : False by default - if the hand is already in a ready state (LED is green) when starting or restarting a control script, set woken to `True` to bypass resending the `wake_up` function, which could lead to lost calibration.
 
 #### Serial Example
 ```python
@@ -137,7 +148,7 @@ Notice that the above example does not include the `"input_speed"` field that th
 
 ### Input Units
 * Input Angle: the input angle is an integer value in degrees
-* velocity: the velocity is in a percentage unit 0-100. Minimum movement requirement is around 30. This value pertains also to the gripping force of the movement. 
+* velocity: the velocity is in a percentage unit 0-100. Minimum movement requirement is around 30. This value pertains to the gripping force of the movement. 
 
 ### Getting Feedback
 There are two ways to get feedback data depending on how the class is instantiated.
@@ -183,4 +194,5 @@ artus_liteLeft = Artus3DAPI(target_ssid='Artus3DLH',port='COM5',communication_me
 | :---: | :------: | :---------: |
 | Nov. 14, 2023 | v1.0b | Initial release - Artus Lite Mk 5 |
 | Apr. 23, 2024 | v1.1b | Beta release - Artus Lite Mk 6 |
-| Oct. 9, 2024 | v1.0 | Artus Lite Release |
+| Oct. 9, 2024 | v1.0 | Artus Lite Release | 
+| Oct. 23, 2024 | v1.0.1 | awake parameter added, wake up function in connect |
