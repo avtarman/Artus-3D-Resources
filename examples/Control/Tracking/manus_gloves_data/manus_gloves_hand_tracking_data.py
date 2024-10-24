@@ -12,13 +12,8 @@ import os
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))))
 print("Root: ",PROJECT_ROOT)
 
-from pathlib import Path
-import sys
-current_file_path = Path(__file__).resolve()
-PROJECT_ROOT = current_file_path.parents[4]
-print("Root: ",PROJECT_ROOT)
-sys.path.append(PROJECT_ROOT)
-from RMD_Actuator_Control.RMD_Actuator_Control.Application.helpers.Path_Smoothener.moving_average import MultiMovingAverage
+sys.path.append(str(PROJECT_ROOT))
+from Sarcomere_Dynamics_Resources.examples.Control.Tracking.manus_gloves_data.moving_average import MultiMovingAverage
 
 class ManusHandTrackingData:
 
@@ -39,8 +34,6 @@ class ManusHandTrackingData:
         self.moving_average_righthand = MultiMovingAverage(window_size=10, num_windows=20)
 
 
-        self.hand_tracking
-
         self.joint_angles_left = None # [thumb_1, thumb_2, thumb_3, thumb4, index_1, index_2, index_3, middle_1, middle_2, middle_3, ring, pinky]
         self.joint_angles_right = None
 
@@ -57,7 +50,11 @@ class ManusHandTrackingData:
         from Sarcomere_Dynamics_Resources.examples.Control.Tracking.zmq_class.zmq_class import ZMQSubscriber
         self.zmq_subscriber = ZMQSubscriber(address=address)
 
-    
+
+
+    ## ------------------------------------------------------------------ ##
+    ## ---------------------- Data for Application ---------------------- ##
+    ## ------------------------------------------------------------------ ##
     def receive_joint_angles(self):
         """
         Receive joint angles from the hand tracking method
@@ -75,6 +72,9 @@ class ManusHandTrackingData:
         return self.joint_angles_right
     
     def _joint_angles_manus_to_joint_streamer(self, joint_angles):
+        """
+        Decodes input data from manus core executable to desired format for application
+        """
 
         # decode received data and split to left and right
 
@@ -129,6 +129,10 @@ class ManusHandTrackingData:
         
         return self.joint_angles_left, self.joint_angles_right
     
+
+    ## ------------------------------------------------------------------ ##
+    ## ---------------------- User Hand Calibration --------------------- ##
+    ## ------------------------------------------------------------------ ##
     def calibrate(self, calibrate):
         if calibrate:
             # do calibration here
@@ -155,8 +159,14 @@ class ManusHandTrackingData:
     #         joint_rotations_list += joint_rotations_dict[finger]
     #     return joint_rotations_list
     
-    def get_finger_joint_rotations_list_rad(self, hand="L"):
 
+    ## ------------------------------------------------------------------ ##
+    ## --------------------- Map User Hand to Artus Hand ---------------- ##
+    ## ------------------------------------------------------------------ ##
+    def map_user_hand_to_artus_hand(self, hand="L"):
+        """
+        Maps data from user hand to artus hand using the calibration data
+        """
         # Hand can take these values: L, R, LR
     
         joint_rotations_dict_L = []
@@ -166,36 +176,29 @@ class ManusHandTrackingData:
 
         if hand == "L":
             joint_rotations_dict_L = self.get_finger_joint_rotations_dict(hand)
-            self.interpolate_data_L(joint_rotations_dict_L)
-            self.append_list_L(joint_rotations_dict_L, joint_rotations_list_L)
-
-            joint_rotations_list_L = np.deg2rad(joint_rotations_list_L)
+            self._interpolate_data_L(joint_rotations_dict_L)
+            self._append_list_L(joint_rotations_dict_L, joint_rotations_list_L)
 
             return joint_rotations_list_L
         
         elif hand == "R":
             joint_rotations_dict_R = self.get_finger_joint_rotations_dict(hand)
             self.interpolate_data_R(joint_rotations_dict_R)
-            self.append_list_R(joint_rotations_dict_R, joint_rotations_list_R)
-
-            joint_rotations_list_R = np.deg2rad(joint_rotations_list_R)
+            self._append_list_R(joint_rotations_dict_R, joint_rotations_list_R)
 
             return joint_rotations_list_R
         elif hand == "LR":
             joint_rotations_dict_L, joint_rotations_dict_R = self.get_finger_joint_rotations_dict(hand)
-            self.interpolate_data_L(joint_rotations_dict_L)
-            self.interpolate_data_R(joint_rotations_dict_R)
-            self.append_list_L(joint_rotations_dict_L, joint_rotations_list_L)
-            self.append_list_R(joint_rotations_dict_R, joint_rotations_list_R)
-
-            joint_rotations_list_L = np.deg2rad(joint_rotations_list_L)
-            joint_rotations_list_R = np.deg2rad(joint_rotations_list_R)
+            self._interpolate_data_L(joint_rotations_dict_L)
+            self._interpolate_data_R(joint_rotations_dict_R)
+            self._append_list_L(joint_rotations_dict_L, joint_rotations_list_L)
+            self._append_list_R(joint_rotations_dict_R, joint_rotations_list_R)
             
             print("joint rotations isaac sim: ", joint_rotations_list_L, joint_rotations_list_R)
 
             return joint_rotations_list_L, joint_rotations_list_R
     
-    def append_list_L(self, joint_rotations_dict, joint_rotations_list):
+    def _append_list_L(self, joint_rotations_dict, joint_rotations_list):
         joint_rotations_list.append(joint_rotations_dict['index'][0])
         joint_rotations_list.append(joint_rotations_dict['middle'][0])
         joint_rotations_list.append(joint_rotations_dict['pinky'][0])
@@ -225,7 +228,7 @@ class ManusHandTrackingData:
         # get the average of the joint positions
         joint_rotations_list = self.moving_average_lefthand.get_averages()
 
-    def append_list_R(self, joint_rotations_dict, joint_rotations_list):
+    def _append_list_R(self, joint_rotations_dict, joint_rotations_list):
         joint_rotations_list.append(joint_rotations_dict['index'][0])
         joint_rotations_list.append(joint_rotations_dict['middle'][0])
         joint_rotations_list.append(joint_rotations_dict['pinky'][0])
@@ -262,7 +265,7 @@ class ManusHandTrackingData:
     # def get_hand_position(self):
     #     return self.hand_tracking.get_hand_position()
     
-    def scale_value(self, value, min_val, max_val, arm_min_val, arm_max_val):
+    def _scale_value(self, value, min_val, max_val, arm_min_val, arm_max_val):
         # Ensure the value is within the min_max range
         value = max(min_val, min(value, max_val))
 
@@ -273,7 +276,7 @@ class ManusHandTrackingData:
         scaled_value = ((value - min_val) / (max_val - min_val)) * (arm_max_val - arm_min_val) + arm_min_val
         return scaled_value
     
-    def interpolate_data_L(self, joint_rotations_list):
+    def _interpolate_data_L(self, joint_rotations_list):
         for finger in self.order_of_joints:
             num_joints = 0
             if finger == "thumb":
@@ -296,7 +299,7 @@ class ManusHandTrackingData:
 
         return joint_rotations_list
     
-    def interpolate_data_R(self, joint_rotations_list):
+    def _interpolate_data_R(self, joint_rotations_list):
         for finger in self.order_of_joints:
             num_joints = 0
             if finger == "thumb":
@@ -318,6 +321,10 @@ class ManusHandTrackingData:
                 joint_rotations_list[finger][joint_index] = scaled_value
 
         return joint_rotations_list
+    
+
+    ## ------------------------------------------------------------------ ##
+    ## ------------------------------------------------------------------ ##
     
     def gather_data_L(self):
         while self.running:
@@ -497,7 +504,7 @@ class ManusHandTrackingData:
 
 
 def test_hand_tracking_data():
-    hand_tracking_data = ManusHandTrackingData(port=65432)
+    hand_tracking_data = ManusHandTrackingData(port="65432")
     while True:
         # Receive joint angles from Manus core exe
         joint_angles = hand_tracking_data.receive_joint_angles()
