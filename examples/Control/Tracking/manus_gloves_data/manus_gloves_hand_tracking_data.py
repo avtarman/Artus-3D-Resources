@@ -32,9 +32,8 @@ class ManusHandTrackingData:
         self.user_hand_min_max_right = {'index': [-15,15,0,90,0,90], 'middle': [-15,15,0,90,0,90], 'ring': [-15,15,0,90,0,90], 'pinky': [-15,15,0,90,0,90], 'thumb': [-25,25,0,90,0,90,0,90]}
         self.artus_min_max = {'index': [-15,15,0,90,0,90], 'middle': [-15,15,0,90,0,90], 'ring': [-15,15,0,90,0,90], 'pinky': [-15,15,0,90,0,90], 'thumb': [-25,25,0,90,0,90,0,90]}
 
-        
-        self.moving_average_righthand = MultiMovingAverage(window_size=10, num_windows=20)
         self.moving_average_lefthand = MultiMovingAverage(window_size=10, num_windows=20)
+        self.moving_average_righthand = MultiMovingAverage(window_size=10, num_windows=20)
 
 
         self.hand_tracking
@@ -62,14 +61,74 @@ class ManusHandTrackingData:
     def get_right_hand_joint_angles(self):
         return self.joint_angles_right
     
-    def _joint_angles_manus_to_joint_streamer(joint_angles)
-        
-        # decode left and right  and put it in the joint_angles_left variable
-        self.joint_angles_left = 
-        self.joint_angles_right = 
+    def _joint_angles_manus_to_joint_streamer(self, joint_angles):
+
+        # decode received data and split to left and right
+
+        data_L = None
+        data_R = None
+        pattern_L = r'L\[(.*?)\]'
+        pattern_R = r'R\[(.*?)\]'
+
+        match_L = re.search(pattern_L, joint_angles, re.DOTALL)
+        if match_L:
+            data_L = match_L.group(1).strip()
+        match_R = re.search(pattern_R, joint_angles, re.DOTALL)
+        if match_R:
+            data_R = match_R.group(1).strip()
+
+        data_L = data_L.replace("[","").replace("]","").split()
+
+        try:
+            data_L = [int(float(angle)) for angle in data_L]
+        except ValueError as e:
+            print(f"Error converting data: {e}")
+            data_L = []
+
+        data_R = data_R.replace("[","").replace("]","").split()
+
+        try:
+            data_R = [int(float(angle)) for angle in data_R]
+        except ValueError as e:
+            print(f"Error converting data: {e}")
+            data_R = []
+
+        # Organizing Data
+        # [thumb_1,   thumb_2,   thumb_3,  thumb4, 
+        #  index_1,   index_2,   index_3, 
+        #  middle_1,  middle_2,  middle_3, 
+        #  ring_1,    ring_2,    ring_3,
+        #  pinky_1,   pinky_2,   pinky_3]
+
+        # thumb data
+        for index in range(4):
+            self.joint_angles_left[index] = data_L[index]
+            self.joint_angles_right[index] = data_R[index]
+
+        # rest data
+        shift = 0
+        for index in range(4,16):
+            if(index % 4 != 3):
+                self.joint_angles_left[index - shift] = data_L[index]
+                self.joint_angles_right[index - shift] = data_R[index]
+            else:
+                shift += 1
         
         return self.joint_angles_left, self.joint_angles_right
+    
+    def calibrate(self, calibrate):
+        if calibrate:
+            # do calibration here
+            print("Calibrating...")
+        else:
+            # load existing calibration
 
+            # ASK GAGAN TOMORROW
+
+            with open(file_path_L, 'r') as f:
+                self.user_hand_min_max_left = ast.literal_eval(f.read())
+            with open(file_path_R, 'r') as f:
+                self.user_hand_min_max_right = ast.literal_eval(f.read())
         
 
     def get_finger_joint_rotations_dict(self, hand):
@@ -214,8 +273,8 @@ class ManusHandTrackingData:
                 min_index = joint_index * 2
                 max_index = min_index + 1
 
-                min_val = self.min_max_L[finger][min_index]
-                max_val = self.min_max_L[finger][max_index]
+                min_val = self.user_hand_min_max_left[finger][min_index]
+                max_val = self.user_hand_min_max_left[finger][max_index]
                 arm_min_val = self.artus_min_max[finger][min_index]
                 arm_max_val = self.artus_min_max[finger][max_index]
 
@@ -237,8 +296,8 @@ class ManusHandTrackingData:
                 min_index = joint_index * 2
                 max_index = min_index + 1
 
-                min_val = self.min_max_R[finger][min_index]
-                max_val = self.min_max_R[finger][max_index]
+                min_val = self.user_hand_min_max_right[finger][min_index]
+                max_val = self.user_hand_min_max_right[finger][max_index]
                 arm_min_val = self.artus_min_max[finger][min_index]
                 arm_max_val = self.artus_min_max[finger][max_index]
 
@@ -286,13 +345,13 @@ class ManusHandTrackingData:
 
             print(f"Calibrating LEFT {finger} SPREAD MIN")
             self.get_data("L")
-            self.min_max_L[finger][0] = self.temp[finger][0]
+            self.user_hand_min_max_left[finger][0] = self.temp[finger][0]
 
             ###################### MAX ############################
 
             print(f"Calibrating LEFT {finger} SPREAD MAX")
             self.get_data("L")
-            self.min_max_L[finger][1] = self.temp[finger][0]
+            self.user_hand_min_max_left[finger][1] = self.temp[finger][0]
 
 
         ############# Calibrating Finger Flex ###########################
@@ -301,52 +360,52 @@ class ManusHandTrackingData:
 
         # self.order_of_joints = ['index', 'middle', 'ring', 'pinky', 'thumb']
 
-        self.min_max_L["index"][2] = self.temp["index"][1]
-        self.min_max_L["middle"][2] = self.temp["middle"][1]
-        self.min_max_L["ring"][2] = self.temp["ring"][1]
-        self.min_max_L["pinky"][2] = self.temp["pinky"][1]
-        self.min_max_L["thumb"][2] = self.temp["thumb"][1]
+        self.user_hand_min_max_left["index"][2] = self.temp["index"][1]
+        self.user_hand_min_max_left["middle"][2] = self.temp["middle"][1]
+        self.user_hand_min_max_left["ring"][2] = self.temp["ring"][1]
+        self.user_hand_min_max_left["pinky"][2] = self.temp["pinky"][1]
+        self.user_hand_min_max_left["thumb"][2] = self.temp["thumb"][1]
 
-        self.min_max_L["index"][4] = self.temp["index"][2]
-        self.min_max_L["middle"][4] = self.temp["middle"][2]
-        self.min_max_L["ring"][4] = self.temp["ring"][2]
-        self.min_max_L["pinky"][4] = self.temp["pinky"][2]
-        self.min_max_L["thumb"][4] = self.temp["thumb"][2]
+        self.user_hand_min_max_left["index"][4] = self.temp["index"][2]
+        self.user_hand_min_max_left["middle"][4] = self.temp["middle"][2]
+        self.user_hand_min_max_left["ring"][4] = self.temp["ring"][2]
+        self.user_hand_min_max_left["pinky"][4] = self.temp["pinky"][2]
+        self.user_hand_min_max_left["thumb"][4] = self.temp["thumb"][2]
 
-        self.min_max_L["thumb"][6] = self.temp["thumb"][3]
+        self.user_hand_min_max_left["thumb"][6] = self.temp["thumb"][3]
 
         print(f"Bend fingers 90 degrees")
         self.get_data("L")
 
         # self.order_of_joints = ['index', 'middle', 'ring', 'pinky', 'thumb']
 
-        self.min_max_L["index"][3] = self.temp["index"][1]
-        self.min_max_L["middle"][3] = self.temp["middle"][1]
-        self.min_max_L["ring"][3] = self.temp["ring"][1]
-        self.min_max_L["pinky"][3] = self.temp["pinky"][1]
+        self.user_hand_min_max_left["index"][3] = self.temp["index"][1]
+        self.user_hand_min_max_left["middle"][3] = self.temp["middle"][1]
+        self.user_hand_min_max_left["ring"][3] = self.temp["ring"][1]
+        self.user_hand_min_max_left["pinky"][3] = self.temp["pinky"][1]
 
         print(f"Fully bend four fingers")
         self.get_data("L")
 
-        self.min_max_L["index"][5] = self.temp["index"][2]
-        self.min_max_L["middle"][5] = self.temp["middle"][2]
-        self.min_max_L["ring"][5] = self.temp["ring"][2]
-        self.min_max_L["pinky"][5] = self.temp["pinky"][2]
+        self.user_hand_min_max_left["index"][5] = self.temp["index"][2]
+        self.user_hand_min_max_left["middle"][5] = self.temp["middle"][2]
+        self.user_hand_min_max_left["ring"][5] = self.temp["ring"][2]
+        self.user_hand_min_max_left["pinky"][5] = self.temp["pinky"][2]
 
         ############# Calibrating Thumb Flex ###########################
         print(f"Move thumb to the bottom of pinky")
         self.get_data("L")
 
-        self.min_max_L["thumb"][3] = self.temp["thumb"][1]
+        self.user_hand_min_max_left["thumb"][3] = self.temp["thumb"][1]
 
         print(f"Curl Thumb")
         self.get_data("L")
 
-        self.min_max_L["thumb"][5] = self.temp["thumb"][2]
-        self.min_max_L["thumb"][7] = self.temp["thumb"][3]
+        self.user_hand_min_max_left["thumb"][5] = self.temp["thumb"][2]
+        self.user_hand_min_max_left["thumb"][7] = self.temp["thumb"][3]
 
-        # print(self.min_max_L)
-        return self.min_max_L
+        # print(self.user_hand_min_max_left)
+        return self.user_hand_min_max_left
      
 
     def calibrate_R(self):
@@ -358,74 +417,74 @@ class ManusHandTrackingData:
 
             print(f"Calibrating RIGHT {finger} SPREAD MIN")
             self.get_data("R")
-            self.min_max_R[finger][0] = self.temp[finger][0]
+            self.user_hand_min_max_right[finger][0] = self.temp[finger][0]
 
             ###################### MAX ############################
 
             print(f"Calibrating RIGHT {finger} SPREAD MAX")
             self.get_data("R")
-            self.min_max_R[finger][1] = self.temp[finger][0]
+            self.user_hand_min_max_right[finger][1] = self.temp[finger][0]
 
 
         ############# Calibrating Finger Flex ###########################
         print(f"Put RIGHT fingers together flat on table, thumb outwards (Making L shape)")
         self.get_data("R")
 
-        self.min_max_R["index"][2] = self.temp["index"][1]
-        self.min_max_R["middle"][2] = self.temp["middle"][1]
-        self.min_max_R["ring"][2] = self.temp["ring"][1]
-        self.min_max_R["pinky"][2] = self.temp["pinky"][1]
-        self.min_max_R["thumb"][2] = self.temp["thumb"][1]
+        self.user_hand_min_max_right["index"][2] = self.temp["index"][1]
+        self.user_hand_min_max_right["middle"][2] = self.temp["middle"][1]
+        self.user_hand_min_max_right["ring"][2] = self.temp["ring"][1]
+        self.user_hand_min_max_right["pinky"][2] = self.temp["pinky"][1]
+        self.user_hand_min_max_right["thumb"][2] = self.temp["thumb"][1]
 
-        self.min_max_R["index"][4] = self.temp["index"][2]
-        self.min_max_R["middle"][4] = self.temp["middle"][2]
-        self.min_max_R["ring"][4] = self.temp["ring"][2]
-        self.min_max_R["pinky"][4] = self.temp["pinky"][2]
-        self.min_max_R["thumb"][4] = self.temp["thumb"][2]
+        self.user_hand_min_max_right["index"][4] = self.temp["index"][2]
+        self.user_hand_min_max_right["middle"][4] = self.temp["middle"][2]
+        self.user_hand_min_max_right["ring"][4] = self.temp["ring"][2]
+        self.user_hand_min_max_right["pinky"][4] = self.temp["pinky"][2]
+        self.user_hand_min_max_right["thumb"][4] = self.temp["thumb"][2]
 
-        self.min_max_R["thumb"][6] = self.temp["thumb"][3]
+        self.user_hand_min_max_right["thumb"][6] = self.temp["thumb"][3]
 
         print(f"Bend fingers 90 degrees")
         self.get_data("R")
 
-        self.min_max_R["index"][3] = self.temp["index"][1]
-        self.min_max_R["middle"][3] = self.temp["middle"][1]
-        self.min_max_R["ring"][3] = self.temp["ring"][1]
-        self.min_max_R["pinky"][3] = self.temp["pinky"][1]
+        self.user_hand_min_max_right["index"][3] = self.temp["index"][1]
+        self.user_hand_min_max_right["middle"][3] = self.temp["middle"][1]
+        self.user_hand_min_max_right["ring"][3] = self.temp["ring"][1]
+        self.user_hand_min_max_right["pinky"][3] = self.temp["pinky"][1]
 
         print(f"Fully bend four fingers")
         self.get_data("R")
 
-        self.min_max_R["index"][5] = self.temp["index"][2]
-        self.min_max_R["middle"][5] = self.temp["middle"][2]
-        self.min_max_R["ring"][5] = self.temp["ring"][2]
-        self.min_max_R["pinky"][5] = self.temp["pinky"][2]
+        self.user_hand_min_max_right["index"][5] = self.temp["index"][2]
+        self.user_hand_min_max_right["middle"][5] = self.temp["middle"][2]
+        self.user_hand_min_max_right["ring"][5] = self.temp["ring"][2]
+        self.user_hand_min_max_right["pinky"][5] = self.temp["pinky"][2]
 
         ############# Calibrating Thumb Flex ###########################
         print(f"Move thumb to the bottom of pinky")
         self.get_data("R")
 
-        self.min_max_R["thumb"][3] = self.temp["thumb"][1]
+        self.user_hand_min_max_right["thumb"][3] = self.temp["thumb"][1]
 
         print(f"Curl Thumb")
         self.get_data("R")
 
-        self.min_max_R["thumb"][5] = self.temp["thumb"][2]
-        self.min_max_R["thumb"][7] = self.temp["thumb"][3]
+        self.user_hand_min_max_right["thumb"][5] = self.temp["thumb"][2]
+        self.user_hand_min_max_right["thumb"][7] = self.temp["thumb"][3]
 
-        # print(self.min_max_R)
-        return self.min_max_R
+        # print(self.user_hand_min_max_right)
+        return self.user_hand_min_max_right
 
     def use_calibrated_data(self, data, hand):
         if hand == 'L':
-            self.min_max_L = data
+            self.user_hand_min_max_left = data
         else:
-            self.min_max_R = data
+            self.user_hand_min_max_right = data
 
 
 
 def test_hand_tracking_data():
-    hand_tracking_data = ManusGlovesHandTrackingData(port=65432)
+    hand_tracking_data = ManusHandTrackingData(port=65432)
     while True:
         # Receive joint angles from Manus core exe
         joint_angles = hand_tracking_data.receive_joint_angles()
