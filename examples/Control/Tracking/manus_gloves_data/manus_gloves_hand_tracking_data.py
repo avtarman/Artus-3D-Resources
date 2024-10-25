@@ -19,7 +19,8 @@ from Sarcomere_Dynamics_Resources.examples.Control.Tracking.manus_gloves_data.mo
 class ManusHandTrackingData:
 
     def __init__(self,
-                 port="65432"):
+                 port="65432",
+                 calibration=False):
         
         self.port = port
 
@@ -40,11 +41,14 @@ class ManusHandTrackingData:
 
         self._initialize_zmq_subscriber(address="tcp://127.0.0.1:" + port)
 
-        self.joint_angles_left = None
-        self.joint_angles_right = None
-
         self.joint_angles_dict_L = None
         self.joint_angles_dict_R = None
+
+        self.temp = {finger: [0, 0, 0, 0] for finger in self.order_of_joints}
+
+        self.calibration = calibration
+        self.calibrate(self.calibration)
+
 
     # def get_tcp_port_handle(self):
     #     pass
@@ -74,14 +78,8 @@ class ManusHandTrackingData:
     
     def get_right_hand_joint_angles(self):
         return self.joint_angles_right
-    
-    def _joint_angles_manus_to_joint_streamer(self, joint_angles):
-        """
-        Decodes input data from manus core executable to desired format for application
-        """
 
-        # decode received data and split to left and right
-
+    def manus_data_to_dict(self, joint_angles):
         data_L = None
         data_R = None
         pattern_L = r'L\[(.*?)\]'
@@ -125,63 +123,26 @@ class ManusHandTrackingData:
         self.joint_angles_dict_R['pinky'] = data_R[16:20]
         
         self.joint_angles_dict_R['thumb'][1] = (70-self.joint_angles_dict_R['thumb'][1])
+    
+    def _joint_angles_manus_to_joint_streamer(self, joint_angles):
+        """
+        Decodes input data from manus core executable to desired format for application
+        """
+
+        # decode received data and split to left and right
+
+        self.manus_data_to_dict(joint_angles)
 
         self.joint_angles_left, self.joint_angles_right = self.map_user_hand_to_artus_hand("LR")
 
         # Organizing Data
-        # [thumb_1,   thumb_2,   thumb_3,  thumb4, 
+        # [thumb_1,   thumb_2,   thumb_3,  thumb_4, 
         #  index_1,   index_2,   index_3, 
         #  middle_1,  middle_2,  middle_3, 
         #  ring_1,    ring_2,    ring_3,
         #  pinky_1,   pinky_2,   pinky_3]
-
-        # thumb data
-        # for index in range(4):
-        #     self.joint_angles_left[index] = data_L[index]
-        #     self.joint_angles_right[index] = data_R[index]
-
-        # # rest data
-        # shift = 0
-        # for index in range(4,16):
-        #     if(index % 4 != 3):
-        #         self.joint_angles_left[index - shift] = data_L[index]
-        #         self.joint_angles_right[index - shift] = data_R[index]
-        #     else:
-        #         shift += 1
         
         return self.joint_angles_left, self.joint_angles_right
-    
-
-    ## ------------------------------------------------------------------ ##
-    ## ---------------------- User Hand Calibration --------------------- ##
-    ## ------------------------------------------------------------------ ##
-    def calibrate(self, calibrate):
-        if calibrate:
-            # do calibration here
-            print("Calibrating...")
-        else:
-            # load existing calibration
-
-            file_path_L = str(PROJECT_ROOT) + "\\Sarcomere_Dynamics_Resources\\examples\\Control\\Tracking\\manus_gloves_data\\calibration_data_L.txt"
-            file_path_R = str(PROJECT_ROOT) + "\\Sarcomere_Dynamics_Resources\\examples\\Control\\Tracking\\manus_gloves_data\\calibration_data_R.txt"
-
-            with open(file_path_L, 'r') as f:
-                self.user_hand_min_max_left = ast.literal_eval(f.read())
-            with open(file_path_R, 'r') as f:
-                self.user_hand_min_max_right = ast.literal_eval(f.read())
-        
-
-    def get_finger_joint_rotations_dict(self, hand):
-        # time.sleep(0.01)
-        return self.hand_tracking.get_finger_joint_rotations(hand)
-    
-    # def get_finger_joint_rotations_list(self):
-    #     joint_rotations_dict = self.get_finger_joint_rotations_dict()
-    #     joint_rotations_list = []
-    #     for finger in self.order_of_joints:
-    #         joint_rotations_list += joint_rotations_dict[finger]
-    #     return joint_rotations_list
-    
 
     ## ------------------------------------------------------------------ ##
     ## --------------------- Map User Hand to Artus Hand ---------------- ##
@@ -192,35 +153,25 @@ class ManusHandTrackingData:
         """
         # Hand can take these values: L, R, LR
     
-        # joint_rotations_dict_L = []
-        # joint_rotations_dict_R = []
         joint_rotations_list_L = []
         joint_rotations_list_R = []
 
         if hand == "L":
-            # self.joint_angles_dict_L = self.get_finger_joint_rotations_dict(hand)
             self._interpolate_data_L(self.joint_angles_dict_L)
             self._append_list_L(self.joint_angles_dict_L, joint_rotations_list_L)
 
             return joint_rotations_list_L
         
         elif hand == "R":
-            # self.joint_angles_dict_L = self.get_finger_joint_rotations_dict(hand)
             self._interpolate_data_R(self.joint_angles_dict_R)
             self._append_list_R(self.joint_angles_dict_R, joint_rotations_list_R)
 
             return joint_rotations_list_R
         elif hand == "LR":
-            # self.joint_angles_dict_L, self.joint_angles_dict_R = self.get_finger_joint_rotations_dict(hand)
             self._interpolate_data_L(self.joint_angles_dict_L)
             self._interpolate_data_R(self.joint_angles_dict_R)
             self._append_list_L(self.joint_angles_dict_L, joint_rotations_list_L)
             self._append_list_R(self.joint_angles_dict_R, joint_rotations_list_R)
-
-            # joint_rotations_list_L = np.deg2rad(joint_rotations_list_L)
-            # joint_rotations_list_R = np.deg2rad(joint_rotations_list_R)
-
-            # SHOULD WE ADD THIS ^?
             
             print("joint rotations isaac sim: ", joint_rotations_list_L, joint_rotations_list_R)
 
@@ -280,13 +231,6 @@ class ManusHandTrackingData:
         # get the average of the joint positions
         joint_rotations_list = self.moving_average_righthand.get_averages()
     
-    
-    # def get_hand_orientation(self):
-    #     return self.hand_tracking.get_hand_orientation()
-    
-    # def get_hand_position(self):
-    #     return self.hand_tracking.get_hand_position()
-    
     def _scale_value(self, value, min_val, max_val, arm_min_val, arm_max_val):
         # Ensure the value is within the min_max range
         value = max(min_val, min(value, max_val))
@@ -344,43 +288,44 @@ class ManusHandTrackingData:
 
         return joint_rotations_list
     
+    ## ------------------------------------------------------------------ ##
+    ## ---------------------- User Hand Calibration --------------------- ##
+    ## ------------------------------------------------------------------ ##
 
-    ## ------------------------------------------------------------------ ##
-    ## ------------------------------------------------------------------ ##
+    def calibrate(self, calibration):
+
+        file_path_L = str(PROJECT_ROOT) + "\\Sarcomere_Dynamics_Resources\\examples\\Control\\Tracking\\manus_gloves_data\\calibration_data_L.txt"
+        file_path_R = str(PROJECT_ROOT) + "\\Sarcomere_Dynamics_Resources\\examples\\Control\\Tracking\\manus_gloves_data\\calibration_data_R.txt"
+
+        if calibration:
+            self.user_hand_min_max_left = self.calibrate_L()
+            self.user_hand_min_max_right = self.calibrate_R()
+
+            with open(file_path_L, 'w') as f:
+                f.write(str(self.user_hand_min_max_left))
+
+            with open(file_path_R, 'w') as f:
+                f.write(str(self.user_hand_min_max_right))
+        else:
+            # load existing calibration
+            with open(file_path_L, 'r') as f:
+                self.user_hand_min_max_left = ast.literal_eval(f.read())
+            with open(file_path_R, 'r') as f:
+                self.user_hand_min_max_right = ast.literal_eval(f.read())
     
-    def gather_data_L(self):
-        while self.running:
-            current_data = self.get_finger_joint_rotations_dict(hand="L")
-            for finger in self.order_of_joints:
-                self.temp[finger] = current_data[finger]
-            time.sleep(0.1)
-
-    def gather_data_R(self):
-        while self.running:
-            current_data = self.get_finger_joint_rotations_dict(hand="R")
-            # print("Current data: ", current_data)
-            for finger in self.order_of_joints:
-                self.temp[finger] = current_data[finger]
-            time.sleep(0.1)
-
-    def get_data(self, hand):
-        self.running = True
-        if hand == "L":
-            thread = threading.Thread(target=self.gather_data_L)
-        elif hand == "R":
-            thread = threading.Thread(target=self.gather_data_R)            
-        thread.start()
-
-        print()
-        input("Press Enter to record value")
-        print()
-
-        self.running = False
-        thread.join()  # Wait for the thread to finish
+    def receive_joint_angles_for_calibration(self):
+        """
+        Receive joint angles from the hand tracking method
+        """
+        joint_angles = self.zmq_subscriber.receive() # receive encoded data
+        if joint_angles == None:
+            return None
+        self.manus_data_to_dict(joint_angles)
+        return joint_angles
 
     def calibrate_L(self):
 
-        ############# Calibrating Finger Spread ###########################
+        ############# Calibrating Finger Spread (Abduction) ###########################
         for finger in self.order_of_joints:
 
             ###################### MIN ############################
@@ -400,8 +345,6 @@ class ManusHandTrackingData:
         print(f"Put LEFT fingers together flat on table, thumb outwards (Making L shape)")
         self.get_data("L")
 
-        # self.order_of_joints = ['index', 'middle', 'ring', 'pinky', 'thumb']
-
         self.user_hand_min_max_left["index"][2] = self.temp["index"][1]
         self.user_hand_min_max_left["middle"][2] = self.temp["middle"][1]
         self.user_hand_min_max_left["ring"][2] = self.temp["ring"][1]
@@ -418,8 +361,6 @@ class ManusHandTrackingData:
 
         print(f"Bend fingers 90 degrees")
         self.get_data("L")
-
-        # self.order_of_joints = ['index', 'middle', 'ring', 'pinky', 'thumb']
 
         self.user_hand_min_max_left["index"][3] = self.temp["index"][1]
         self.user_hand_min_max_left["middle"][3] = self.temp["middle"][1]
@@ -446,13 +387,12 @@ class ManusHandTrackingData:
         self.user_hand_min_max_left["thumb"][5] = self.temp["thumb"][2]
         self.user_hand_min_max_left["thumb"][7] = self.temp["thumb"][3]
 
-        # print(self.user_hand_min_max_left)
         return self.user_hand_min_max_left
      
 
     def calibrate_R(self):
 
-        ############# Calibrating Finger Spread ###########################
+        ############# Calibrating Finger Spread (Abduction) ###########################
         for finger in self.order_of_joints:
 
             ###################### MIN ############################
@@ -514,15 +454,36 @@ class ManusHandTrackingData:
         self.user_hand_min_max_right["thumb"][5] = self.temp["thumb"][2]
         self.user_hand_min_max_right["thumb"][7] = self.temp["thumb"][3]
 
-        # print(self.user_hand_min_max_right)
         return self.user_hand_min_max_right
+    
+    def gather_data_L(self):
+        while self.running:
+            self.receive_joint_angles_for_calibration()
+            for finger in self.order_of_joints:
+                self.temp[finger] = self.joint_angles_dict_L[finger]
+            time.sleep(0.1)
 
-    def use_calibrated_data(self, data, hand):
-        if hand == 'L':
-            self.user_hand_min_max_left = data
-        else:
-            self.user_hand_min_max_right = data
+    def gather_data_R(self):
+        while self.running:
+            self.receive_joint_angles_for_calibration()
+            for finger in self.order_of_joints:
+                self.temp[finger] = self.joint_angles_dict_R[finger]
+            time.sleep(0.1)
 
+    def get_data(self, hand):
+        self.running = True
+        if hand == "L":
+            thread = threading.Thread(target=self.gather_data_L)
+        elif hand == "R":
+            thread = threading.Thread(target=self.gather_data_R)            
+        thread.start()
+
+        print()
+        input("Press Enter to record value")
+        print()
+
+        self.running = False
+        thread.join()  # Wait for the thread to finish
 
 
 def test_hand_tracking_data():
