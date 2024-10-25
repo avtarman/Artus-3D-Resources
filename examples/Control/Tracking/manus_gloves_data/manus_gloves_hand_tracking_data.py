@@ -7,7 +7,10 @@ from collections import deque
 
 import time
 
-
+import sys
+import os
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))))
+print("Root: ",PROJECT_ROOT)
 
 from pathlib import Path
 import sys
@@ -20,7 +23,7 @@ from RMD_Actuator_Control.RMD_Actuator_Control.Application.helpers.Path_Smoothen
 class ManusHandTrackingData:
 
     def __init__(self,
-                 port=65432):
+                 port="65432"):
         
         self.port = port
 
@@ -41,15 +44,25 @@ class ManusHandTrackingData:
         self.joint_angles_left = None # [thumb_1, thumb_2, thumb_3, thumb4, index_1, index_2, index_3, middle_1, middle_2, middle_3, ring, pinky]
         self.joint_angles_right = None
 
+        self._initialize_zmq_subscriber(address="tcp://127.0.0.1:" + port)
+
+        self.joint_angles_left = None
+        self.joint_angles_right = None
+
     # def get_tcp_port_handle(self):
     #     pass
+
+    def _initialize_zmq_subscriber(self, address="tcp://127.0.0.1:5556"):
+        sys.path.append(str(PROJECT_ROOT))
+        from Sarcomere_Dynamics_Resources.examples.Control.Tracking.zmq_class.zmq_class import ZMQSubscriber
+        self.zmq_subscriber = ZMQSubscriber(address=address)
 
     
     def receive_joint_angles(self):
         """
         Receive joint angles from the hand tracking method
         """
-        joint_angles = self.tcp.receive() # receive encoded data
+        joint_angles = self.zmq_subscriber.receive() # receive encoded data
         if joint_angles == None:
             return None
         self._joint_angles_gui_to_joint_streamer(joint_angles)
