@@ -6,6 +6,7 @@ from collections import deque
 
 
 import time
+import ast
 
 import sys
 import os
@@ -41,6 +42,9 @@ class ManusHandTrackingData:
 
         self.joint_angles_left = None
         self.joint_angles_right = None
+
+        self.joint_angles_dict_L = None
+        self.joint_angles_dict_R = None
 
     # def get_tcp_port_handle(self):
     #     pass
@@ -106,6 +110,24 @@ class ManusHandTrackingData:
             print(f"Error converting data: {e}")
             data_R = []
 
+        self.joint_angles_dict_L['thumb'] = data_L[0:4]
+        self.joint_angles_dict_L['index'] = data_L[4:8]
+        self.joint_angles_dict_L['middle'] = data_L[8:12]
+        self.joint_angles_dict_L['ring'] = data_L[12:16]
+        self.joint_angles_dict_L['pinky'] = data_L[16:20]
+
+        self.joint_angles_dict_L['thumb'][1] = (70-self.joint_angles_dict_L['thumb'][1])
+
+        self.joint_angles_dict_R['thumb'] = data_R[0:4]
+        self.joint_angles_dict_R['index'] = data_R[4:8]
+        self.joint_angles_dict_R['middle'] = data_R[8:12]
+        self.joint_angles_dict_R['ring'] = data_R[12:16]
+        self.joint_angles_dict_R['pinky'] = data_R[16:20]
+        
+        self.joint_angles_dict_R['thumb'][1] = (70-self.joint_angles_dict_R['thumb'][1])
+
+        self.joint_angles_left, self.joint_angles_right = self.map_user_hand_to_artus_hand("LR")
+
         # Organizing Data
         # [thumb_1,   thumb_2,   thumb_3,  thumb4, 
         #  index_1,   index_2,   index_3, 
@@ -114,18 +136,18 @@ class ManusHandTrackingData:
         #  pinky_1,   pinky_2,   pinky_3]
 
         # thumb data
-        for index in range(4):
-            self.joint_angles_left[index] = data_L[index]
-            self.joint_angles_right[index] = data_R[index]
+        # for index in range(4):
+        #     self.joint_angles_left[index] = data_L[index]
+        #     self.joint_angles_right[index] = data_R[index]
 
-        # rest data
-        shift = 0
-        for index in range(4,16):
-            if(index % 4 != 3):
-                self.joint_angles_left[index - shift] = data_L[index]
-                self.joint_angles_right[index - shift] = data_R[index]
-            else:
-                shift += 1
+        # # rest data
+        # shift = 0
+        # for index in range(4,16):
+        #     if(index % 4 != 3):
+        #         self.joint_angles_left[index - shift] = data_L[index]
+        #         self.joint_angles_right[index - shift] = data_R[index]
+        #     else:
+        #         shift += 1
         
         return self.joint_angles_left, self.joint_angles_right
     
@@ -140,7 +162,8 @@ class ManusHandTrackingData:
         else:
             # load existing calibration
 
-            # ASK GAGAN TOMORROW
+            file_path_L = str(PROJECT_ROOT) + "\\Sarcomere_Dynamics_Resources\\examples\\Control\\Tracking\\manus_gloves_data\\calibration_data_L.txt"
+            file_path_R = str(PROJECT_ROOT) + "\\Sarcomere_Dynamics_Resources\\examples\\Control\\Tracking\\manus_gloves_data\\calibration_data_R.txt"
 
             with open(file_path_L, 'r') as f:
                 self.user_hand_min_max_left = ast.literal_eval(f.read())
@@ -169,59 +192,61 @@ class ManusHandTrackingData:
         """
         # Hand can take these values: L, R, LR
     
-        joint_rotations_dict_L = []
-        joint_rotations_dict_R = []
+        # joint_rotations_dict_L = []
+        # joint_rotations_dict_R = []
         joint_rotations_list_L = []
         joint_rotations_list_R = []
 
         if hand == "L":
-            joint_rotations_dict_L = self.get_finger_joint_rotations_dict(hand)
-            self._interpolate_data_L(joint_rotations_dict_L)
-            self._append_list_L(joint_rotations_dict_L, joint_rotations_list_L)
+            # self.joint_angles_dict_L = self.get_finger_joint_rotations_dict(hand)
+            self._interpolate_data_L(self.joint_angles_dict_L)
+            self._append_list_L(self.joint_angles_dict_L, joint_rotations_list_L)
 
             return joint_rotations_list_L
         
         elif hand == "R":
-            joint_rotations_dict_R = self.get_finger_joint_rotations_dict(hand)
-            self.interpolate_data_R(joint_rotations_dict_R)
-            self._append_list_R(joint_rotations_dict_R, joint_rotations_list_R)
+            # self.joint_angles_dict_L = self.get_finger_joint_rotations_dict(hand)
+            self._interpolate_data_R(self.joint_angles_dict_R)
+            self._append_list_R(self.joint_angles_dict_R, joint_rotations_list_R)
 
             return joint_rotations_list_R
         elif hand == "LR":
-            joint_rotations_dict_L, joint_rotations_dict_R = self.get_finger_joint_rotations_dict(hand)
-            self._interpolate_data_L(joint_rotations_dict_L)
-            self._interpolate_data_R(joint_rotations_dict_R)
-            self._append_list_L(joint_rotations_dict_L, joint_rotations_list_L)
-            self._append_list_R(joint_rotations_dict_R, joint_rotations_list_R)
+            # self.joint_angles_dict_L, self.joint_angles_dict_R = self.get_finger_joint_rotations_dict(hand)
+            self._interpolate_data_L(self.joint_angles_dict_L)
+            self._interpolate_data_R(self.joint_angles_dict_R)
+            self._append_list_L(self.joint_angles_dict_L, joint_rotations_list_L)
+            self._append_list_R(self.joint_angles_dict_R, joint_rotations_list_R)
+
+            # joint_rotations_list_L = np.deg2rad(joint_rotations_list_L)
+            # joint_rotations_list_R = np.deg2rad(joint_rotations_list_R)
+
+            # SHOULD WE ADD THIS ^?
             
             print("joint rotations isaac sim: ", joint_rotations_list_L, joint_rotations_list_R)
 
             return joint_rotations_list_L, joint_rotations_list_R
     
     def _append_list_L(self, joint_rotations_dict, joint_rotations_list):
-        joint_rotations_list.append(joint_rotations_dict['index'][0])
-        joint_rotations_list.append(joint_rotations_dict['middle'][0])
-        joint_rotations_list.append(joint_rotations_dict['pinky'][0])
-        joint_rotations_list.append(joint_rotations_dict['ring'][0])
         joint_rotations_list.append(-joint_rotations_dict['thumb'][0])
-
-        joint_rotations_list.append(joint_rotations_dict['index'][1])
-        joint_rotations_list.append(joint_rotations_dict['middle'][1])
-        joint_rotations_list.append(joint_rotations_dict['pinky'][1])
-        joint_rotations_list.append(joint_rotations_dict['ring'][1])
         joint_rotations_list.append(joint_rotations_dict['thumb'][1])
-        
-        joint_rotations_list.append(joint_rotations_dict['index'][2])
-        joint_rotations_list.append(joint_rotations_dict['middle'][2])
-        joint_rotations_list.append(joint_rotations_dict['pinky'][2])
-        joint_rotations_list.append(joint_rotations_dict['ring'][2])
         joint_rotations_list.append(joint_rotations_dict['thumb'][2])
-        
-        joint_rotations_list.append(joint_rotations_dict['index'][2])
-        joint_rotations_list.append(joint_rotations_dict['middle'][2])
-        joint_rotations_list.append(joint_rotations_dict['pinky'][2])
-        joint_rotations_list.append(joint_rotations_dict['ring'][2])
         joint_rotations_list.append(joint_rotations_dict['thumb'][3])
+
+        joint_rotations_list.append(joint_rotations_dict['index'][0])
+        joint_rotations_list.append(joint_rotations_dict['index'][1])
+        joint_rotations_list.append(joint_rotations_dict['index'][2])
+        
+        joint_rotations_list.append(joint_rotations_dict['middle'][0])
+        joint_rotations_list.append(joint_rotations_dict['middle'][1])
+        joint_rotations_list.append(joint_rotations_dict['middle'][2])
+
+        joint_rotations_list.append(joint_rotations_dict['ring'][0])
+        joint_rotations_list.append(joint_rotations_dict['ring'][1])
+        joint_rotations_list.append(joint_rotations_dict['ring'][2])
+
+        joint_rotations_list.append(joint_rotations_dict['pinky'][0])
+        joint_rotations_list.append(joint_rotations_dict['pinky'][1])
+        joint_rotations_list.append(joint_rotations_dict['pinky'][2])
 
         # add joint positions to moving average handler
         self.moving_average_lefthand.add_values(joint_rotations_list.copy())
@@ -229,29 +254,26 @@ class ManusHandTrackingData:
         joint_rotations_list = self.moving_average_lefthand.get_averages()
 
     def _append_list_R(self, joint_rotations_dict, joint_rotations_list):
-        joint_rotations_list.append(joint_rotations_dict['index'][0])
-        joint_rotations_list.append(joint_rotations_dict['middle'][0])
-        joint_rotations_list.append(joint_rotations_dict['pinky'][0])
-        joint_rotations_list.append(joint_rotations_dict['ring'][0])
         joint_rotations_list.append(-joint_rotations_dict['thumb'][0])
-
-        joint_rotations_list.append(joint_rotations_dict['index'][1])
-        joint_rotations_list.append(joint_rotations_dict['middle'][1])
-        joint_rotations_list.append(joint_rotations_dict['pinky'][1])
-        joint_rotations_list.append(joint_rotations_dict['ring'][1])
         joint_rotations_list.append(joint_rotations_dict['thumb'][1])
-        
-        joint_rotations_list.append(joint_rotations_dict['index'][2])
-        joint_rotations_list.append(joint_rotations_dict['middle'][2])
-        joint_rotations_list.append(joint_rotations_dict['pinky'][2])
-        joint_rotations_list.append(joint_rotations_dict['ring'][2])
         joint_rotations_list.append(joint_rotations_dict['thumb'][2])
-        
-        joint_rotations_list.append(joint_rotations_dict['index'][2])
-        joint_rotations_list.append(joint_rotations_dict['middle'][2])
-        joint_rotations_list.append(joint_rotations_dict['pinky'][2])
-        joint_rotations_list.append(joint_rotations_dict['ring'][2])
         joint_rotations_list.append(joint_rotations_dict['thumb'][3])
+
+        joint_rotations_list.append(joint_rotations_dict['index'][0])
+        joint_rotations_list.append(joint_rotations_dict['index'][1])
+        joint_rotations_list.append(joint_rotations_dict['index'][2])
+        
+        joint_rotations_list.append(joint_rotations_dict['middle'][0])
+        joint_rotations_list.append(joint_rotations_dict['middle'][1])
+        joint_rotations_list.append(joint_rotations_dict['middle'][2])
+
+        joint_rotations_list.append(joint_rotations_dict['ring'][0])
+        joint_rotations_list.append(joint_rotations_dict['ring'][1])
+        joint_rotations_list.append(joint_rotations_dict['ring'][2])
+
+        joint_rotations_list.append(joint_rotations_dict['pinky'][0])
+        joint_rotations_list.append(joint_rotations_dict['pinky'][1])
+        joint_rotations_list.append(joint_rotations_dict['pinky'][2])
         
         # add joint positions to moving average handler
         self.moving_average_righthand.add_values(joint_rotations_list.copy())
