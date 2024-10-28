@@ -31,7 +31,7 @@ Before running the GUI, ensure that the configuration file is updated with the c
 
 To start the Manus Glove control for controlling the Artus Lite hand robot, follow these steps:
 
-1. Navigate to the directory containing the `gui.bat` script:
+1. Navigate to the directory containing the python script:
     ```sh
     Sarcomere_Dynamics_Resources/examples/Control/ArtusLiteControl/ManusGloveControl
     ```
