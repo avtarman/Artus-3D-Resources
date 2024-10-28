@@ -9,7 +9,7 @@ This guide provides instructions on how to use the GUI to control the Artus Lite
   - [Requirements](#requirements)
   - [Installation](#installation)
   - [Configuration](#configuration)
-  - [Running the GUI](#running-the-gui)
+  - [Running the Control](#running-the-control)
 
 ## Requirements
 
@@ -27,9 +27,9 @@ This guide provides instructions on how to use the GUI to control the Artus Lite
 
 Before running the GUI, ensure that the configuration file is updated with the correct settings for your Artus Lite hand robot. The configuration file is located at `Sarcomere_Dynamics_Resources/Control/configuration/configuration.py`.
 
-## Running the GUI
+## Running the Control
 
-To start the GUI for controlling the Artus Lite hand robot, follow these steps:
+To start the Manus Glove control for controlling the Artus Lite hand robot, follow these steps:
 
 1. Navigate to the directory containing the `gui.bat` script:
     ```sh
