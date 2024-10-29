@@ -142,6 +142,8 @@ class Communication:
                     # self.logger.warning("No data received")
                     return None,None
             ack,message_received = self._byte_to_list_decode(byte_msg_recv)
+            if ack == 9:
+                self.logger.warning("[E] error ack")
             # print(ack)
         except Exception as e:
             self.logger.warning("unable to receive message")

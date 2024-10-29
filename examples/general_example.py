@@ -61,6 +61,24 @@ def example():
                 artusapi.reset()
             case 'c':
                 artusapi.hard_close()
+            case 's':
+                num = int(input('what index value should this be stored in? (1-6):'))
+                if num == None:
+                    artusapi.save_grasp_onhand()
+                else:
+                    artusapi.save_grasp_onhand(num)
+            case 'g':
+                artusapi.get_saved_grasps_onhand()
+            case 'p':
+                artusapi.update_param()
+            case 'e':
+                data = 0
+                while 1:
+                    data = int(input('enter grasp index to execute from memory (1-6):'))
+                    if data in range(1,7):
+                        break
+
+                artusapi.execute_grasp(data)
 
 
 if __name__ == '__main__':

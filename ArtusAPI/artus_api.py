@@ -277,7 +277,9 @@ class ArtusAPI:
         """
         Parameter update, used to change the communication method
         """
-        com = input('Enter Communication Protocol you would like to change to (default: UART, CAN, RS485): ')
+        com = None
+        while com not in ['UART','CAN','RS485']:
+            com = input('Enter Communication Protocol you would like to change to (default: UART, CAN, RS485): ')
         if com == 'CAN':
             feed = None
             while feed not in ['P','C','ALL']:
@@ -286,6 +288,57 @@ class ArtusAPI:
             feed = None
         command = self._command_handler.update_param_command(com,feed)
         self._communication_handler.send_data(command)
+
+        # wait for data back
+        if self._communication_handler.wait_for_ack():
+            self.logger.info(f'Finished Updating Param')
+        else:
+            self.logger.warning(f'Error in updating Param')
+
+    def save_grasp_onhand(self,index=1):
+        """
+        function to save a grasp on the Artus Hand in non-volatile memory to be called.
+        Defeault index is 1, value can be 1-6
+        """
+        command = [0]*32
+        for joint,data in self._robot_handler.robot.hand_joints.items():
+            command[data.index] = data.target_angle
+            command[data.index+16] = data.velocity
+        
+        self._communication_handler.send_data(self._command_handler.get_save_grasp_command(index,command))
+        feedback = None
+        while not feedback:
+            ack,feedback = self._communication_handler.receive_data()
+
+            if feedback is not None:
+                print(feedback[:33])
+
+    def get_saved_grasps_onhand(self):
+        """
+        Function to print saved grasps on the Artus non-volatile memory. 
+        Prints 6 grasps
+        """
+        self._communication_handler.send_data(self._command_handler.get_return_grasps_command())
+
+        for i in range(6):
+            feedback = None
+            while not feedback:
+                ack,feedback = self._communication_handler.receive_data()
+
+                if feedback is not None:
+                    print(feedback[:33])
+
+    def execute_grasp(self,index=1):
+        """
+        Sends a command to the Artus hand that executes a grasp position from the non-volatile memory grasp array
+        """
+        self._communication_handler.send_data(self._command_handler.get_execute_grasp_command(index))
+        feedback = None
+        while not feedback:
+            ack,feedback = self._communication_handler.receive_data()
+
+            if feedback is not None:
+                print(feedback[:33])
 
 def test_artus_api():
     artus_api = ArtusAPI()

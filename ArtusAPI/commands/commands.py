@@ -36,6 +36,8 @@ class Commands:
         }
         self.reset_on_start = reset_on_start
 
+        self.command_buffer = None
+
     def get_robot_start_command(self,stream:bool,freq:int) -> list:
         """
         Creates a message to start the hand
@@ -149,22 +151,47 @@ class Commands:
         if communication:
             command_list[1] = 1
             if communication == 'UART':
-                command_list[1+16] = 1
+                command_list[17] = 1
             elif communication == 'CAN':
-                command_list[1+16] = 2
+                command_list[17] = 2
             elif communication == 'RS485':
-                command_list[1+16] = 3
+                command_list[17] = 3
 
         if feedback:
             command_list[2] = 1
             if feedback == 'ALL':
-                command_list[2+16] = 2
+                command_list[18] = 2
             elif feedback == 'PC':
-                command_list[2+16] = 1
+                command_list[18] = 1
             elif feedback == 'P':
-                command_list[2+16] = 0
+                command_list[18] = 0
 
         return command_list
+    
+    def get_save_grasp_command(self,grasp_index=1, command=None):
+        """
+        Used to save grasps commands directly to the Artus hand's non-volatile memory.
+        @param: grasp_index - 1-6
+        @param: command should be a 32B integer list, 16 target positions, 16 velocities
+        """
+        command_list = [(self.commands['save_grasp_onboard_command'])+grasp_index] + command
+        if len(command_list) == 33:
+            return command_list
+        else:
+            return None
+        
+    def get_return_grasps_command(self):
+        command_list = [0]*32
+        command_list.insert(0,self.commands['return_grasps_command'])
+
+        return command_list
+    
+    def get_execute_grasp_command(self,index=1):
+        command_list = [0]*32
+        command_list.insert(0,self.commands['execute_grasp_command']+index)
+
+        return command_list
+
 
 
 if __name__ == "__main__":

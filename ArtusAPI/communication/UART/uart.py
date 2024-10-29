@@ -70,7 +70,7 @@ class UART:
                 print(msg_bytes)
                 return msg_bytes
             elif self.esp32.in_waiting > 0: # clear buffer if not correct amount of data
-                msg_bytes = self.esp32.read_all()
+                # msg_bytes = self.esp32.read_all()
                 self.logger.warning(f"Incomplete data received - package size = {(self.esp32.in_waiting)}")
                 return None
             else: # non blocking
