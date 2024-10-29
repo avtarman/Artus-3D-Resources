@@ -8,7 +8,7 @@ import time
 import os
 import sys
 
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 print("Root: ",PROJECT_ROOT)
 # sys.path.append(PROJECT_ROOT)
 # from RMD_Actuator_Control.RMD_Actuator_Control.Application.helpers.Path_Smoothener.moving_average import MultiMovingAverage
@@ -27,13 +27,13 @@ class HandTrackingData:
         """
         if self.hand_tracking_method == 'manus_gloves':
             sys.path.append(PROJECT_ROOT)
-            from Isaac_Sim_Work.Tracking.hand_tracking.manus_gloves_hand_tracking_data.manus_gloves_hand_tracking_data import ManusGlovesHandTrackingData
+            from Sarcomere_Dynamics_Resources.examples.Control.Tracking.manus_gloves_data.manus_gloves_hand_tracking_data import ManusGlovesHandTrackingData
             self.hand_tracking = ManusGlovesHandTrackingData(port=self.port)
 
         elif self.hand_tracking_method == 'gui':
             # print("Root: ",PROJECT_ROOT)
             sys.path.append(PROJECT_ROOT)
-            from Isaac_Sim_Work.GUI.guis.artus_lite_gui_subscriber import ArtusLiteGUISubscriber
+            from Sarcomere_Dynamics_Resources.examples.Control.Tracking.gui_data.artus_lite_gui_subscriber import ArtusLiteGUISubscriber
             self.hand_tracking = ArtusLiteGUISubscriber()
 
         else:

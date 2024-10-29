@@ -5,9 +5,9 @@ import sys
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))))
 print("Project Root", PROJECT_ROOT)
 sys.path.append(PROJECT_ROOT)
-from Sarcomere_Dynamics_Resoruces.Control.configuration.configuration import ArtusLiteConfig
-from Isaac_Sim_Work.Control.ArtusLiteControl.ArtusLiteJointStreamer.artusLite_jointStreamer import ArtusLiteJointStreamer
-from Isaac_Sim_Work.Tracking.hand_tracking.hand_tracking_data import HandTrackingData
+from Sarcomere_Dynamics_Resources.examples.Control.configuration.configuration import ArtusLiteConfig
+from Sarcomere_Dynamics_Resources.examples.Control.ArtusLiteControl.ArtusLiteJointStreamer.artusLite_jointStreamer import ArtusLiteJointStreamer
+from Sarcomere_Dynamics_Resources.examples.Control.Tracking.hand_tracking_data import HandTrackingData
 
 
 class ArtusGUIController:
@@ -24,12 +24,13 @@ class ArtusGUIController:
         self.hand_tracking_data = HandTrackingData(hand_tracking_method='gui')
 
         # run gui executable
-        self._run_gui_executable()
+        # self._run_gui_executable()
 
     def _run_gui_executable(self):
-        # Start GUI executable to receive data
-        os.startfile(r"C:\Users\yizho\Documents\Sarcomere\Artus\ArtusLite\ArtusLite\ArtusLite\bin\Debug\ArtusLite.exe")
-        time.sleep(5)
+        # # Start GUI executable to receive data
+        # os.startfile(r"C:\Users\yizho\Documents\Sarcomere\Artus\ArtusLite\ArtusLite\ArtusLite\bin\Debug\ArtusLite.exe")
+        # time.sleep(5)
+        pass
 
     def _initialize_api(self):
         # Check and print configuration for left hand robot
@@ -59,10 +60,14 @@ class ArtusGUIController:
     def start_streaming(self):
         while True:
             try:
+                print("1")
                 self.hand_tracking_data.receive_joint_angles()
+                print("2")
                 joint_angles_left = self.hand_tracking_data.get_left_hand_joint_angles()
                 joint_angles_right = self.hand_tracking_data.get_right_hand_joint_angles()
+                print("3")
                 self._send_joint_angles(joint_angles_left, joint_angles_right)
+                print("4")
             except Exception as e:
                 print(e)
                 pass

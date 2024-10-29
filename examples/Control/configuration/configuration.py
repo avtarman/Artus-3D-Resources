@@ -4,12 +4,12 @@ from types import SimpleNamespace
 
 import os
 import sys
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 print("Project Root", PROJECT_ROOT)
 sys.path.append(PROJECT_ROOT)
 
 class ArtusLiteConfig:
-    def __init__(self, config_file = PROJECT_ROOT + "//Isaac_Sim_Work//Control//configuration//robot_config.yaml"):
+    def __init__(self, config_file = PROJECT_ROOT + "//Sarcomere_Dynamics_Resources//examples//Control//configuration//robot_config.yaml"):
         self.config = self.load_and_convert_config(config_file)
 
     def load_and_convert_config(self, config_file):

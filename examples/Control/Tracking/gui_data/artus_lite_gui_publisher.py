@@ -8,11 +8,11 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QPalette, QColor, QFont
 from PySide6.QtCore import Qt, QTimer
 
-from pathlib import Path
+import os
 import sys
-current_file_path = Path(__file__).resolve()
-PROJECT_ROOT = current_file_path.parents[3]
-print(PROJECT_ROOT)
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))))
+print("Project Root", PROJECT_ROOT)
+sys.path.append(PROJECT_ROOT)
 
 class ArtusControlGUI(QWidget):
     def __init__(self):
@@ -31,7 +31,7 @@ class ArtusControlGUI(QWidget):
     
     def _setup_zmq_publisher(self, address="tcp://127.0.0.1:5556"):
         sys.path.append(str(PROJECT_ROOT))
-        from Isaac_Sim_Work.Communication.ZMQ.zmq_class import ZMQPublisher
+        from Sarcomere_Dynamics_Resources.examples.Control.Tracking.zmq_class.zmq_class import ZMQPublisher
         self.zmq_publisher = ZMQPublisher(address=address)
 
 
