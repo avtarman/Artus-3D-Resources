@@ -41,6 +41,7 @@ class UART:
         # print(data)
         try:
             self.esp32.write(data)
+            self.esp32.flush()
 
             # required delay
             t = time.perf_counter()
