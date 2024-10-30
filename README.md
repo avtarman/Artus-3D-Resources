@@ -93,7 +93,7 @@ Below are some examples of instantiating the ArtusAPI class to control a single 
 * `__communication_frequency__` : The frequency of the feedback and command communication. Default: `200` Hz
 * `__logger__` : If integrating the API into control code, you may already have a logger. THis will allow for homogeneous logging to the same files as what you currently have. Default: `None`
 * `__reset_on_start__` : If the hand is not in a closed state when last powered off, setting to `1` will open the hand before ready to receive commands. This _MUST_ be set if powered off in a closed state, and a calibrate may need to be run before sending accurate target commands
-* `__baudrate__` : required to differentiate between Serial over USB-C and Serial over RS485, default `921600` for SUBC, `115200` for RS485
+* `__baudrate__` : required to differentiate between Serial over USB-C and Serial over RS485, default `921600`
 * `__awake__` : False by default - if the hand is already in a ready state (LED is green) when starting or restarting a control script, set woken to `True` to bypass resending the `wake_up` function, which could lead to lost calibration.
 
 #### Serial Example
