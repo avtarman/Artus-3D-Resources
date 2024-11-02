@@ -27,6 +27,9 @@ class ArtusControlGUI(QWidget):
         # Setup ZMQ Publisher
         self._setup_zmq_publisher(address="tcp://127.0.0.1:5556")
 
+        # directory path to save the joint positions
+        self.directory = str(PROJECT_ROOT) + "//Sarcomere_Dynamics_Resources//GUI//hyperion_pose_data"
+
 
     
     def _setup_zmq_publisher(self, address="tcp://127.0.0.1:5556"):

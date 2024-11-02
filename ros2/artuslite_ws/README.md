@@ -74,7 +74,13 @@ artuslite_ros_node:
     ros2 launch artuslite_ros_api artuslite_launch.py
     ```
 
-3. To control the hand, publish messages to the `/joint_command` topic (int array of length 16):
+3. To control the hand, publish messages to the `/artuslite_joint_command` topic (int array of length 16):
     ```sh
-    ros2 topic pub /artuslite_joint_command sensor_msgs/JointState "{name: ['thumb1', 'thumb2', 'thumb3', 'thumb4', 'index1', 'index2', 'index3', 'middle1', 'middle2', 'middle3', 'ring1', 'ring2', 'ring3', 'pinky1', 'pinky2', 'pinky3'], position: [10, 20, 15, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85]}"
+    ros2 topic pub /artuslite_joint_command sensor_msgs/JointState "{name: ['thumb1', 'thumb2', 'thumb3', 'thumb4', 'index1', 'index2', 'index3', 'middle1', 'middle2', 'middle3', 'ring1', 'ring2', 'ring3', 'pinky1', 'pinky2', 'pinky3'], position: [10, 20, 15, 40, 10, 35, 45, 10, 50, 55, 10, 65, 70, 10, 50, 55]}"
+    ```
+
+
+4. To receive feedback from the hand, subscribe to the `/artuslite_joint_feedback` topic:
+    ```sh
+    ros2 topic echo /artuslite_joint_feedback
     ```

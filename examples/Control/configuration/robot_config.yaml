@@ -2,7 +2,7 @@ robots:
   left_hand_robot:
     robot_connected: true
     communication_method: 'UART'
-    communication_channel_identifier: 'COM10'
+    communication_channel_identifier: 'COM4'
     hand_type: 'left'
     start_robot: true
     reset_on_start: 0
