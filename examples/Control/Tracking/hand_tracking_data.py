@@ -16,9 +16,12 @@ print("Root: ",PROJECT_ROOT)
 class HandTrackingData:
     def __init__(self,
                  hand_tracking_method='manus_gloves', # 'manus_gloves', 'gui'
-                 port=65432):
+                 port='65432'):
         self.hand_tracking_method = hand_tracking_method
+        self.port = port
         self._setup_hand_tracking()
+
+      
     
     
     def _setup_hand_tracking(self):
@@ -44,7 +47,7 @@ class HandTrackingData:
         """
         Receive joint angles from the hand tracking method
         """
-        return self.hand_tracking.receive_joint_values()
+        return self.hand_tracking.receive_joint_angles()
     
     def get_left_hand_joint_angles(self):
         return self.hand_tracking.get_left_hand_joint_angles()
