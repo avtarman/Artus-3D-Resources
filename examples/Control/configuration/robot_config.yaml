@@ -5,7 +5,7 @@ robots:
     communication_channel_identifier: 'COM4'
     hand_type: 'left'
     start_robot: true
-    reset_on_start: 0
+    reset_on_start: 1
     streaming_frequency: 40  # data/seconds
     calibrate: false
 

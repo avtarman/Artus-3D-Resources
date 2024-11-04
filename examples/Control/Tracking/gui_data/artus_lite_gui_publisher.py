@@ -17,6 +17,9 @@ sys.path.append(PROJECT_ROOT)
 class ArtusControlGUI(QWidget):
     def __init__(self):
         super().__init__()
+        # directory path to save the joint positions
+        self.directory = str(PROJECT_ROOT) + "//Sarcomere_Dynamics_Resources//examples//Control//ArtusLiteControl//GUIControl//hand_pose_data//"
+
         self.joint_values = {}
         self.sliders = {}
         self.streaming = False
@@ -27,11 +30,8 @@ class ArtusControlGUI(QWidget):
         # Setup ZMQ Publisher
         self._setup_zmq_publisher(address="tcp://127.0.0.1:5556")
 
-        # directory path to save the joint positions
-        self.directory = str(PROJECT_ROOT) + "//Sarcomere_Dynamics_Resources//GUI//hyperion_pose_data"
 
 
-    
     def _setup_zmq_publisher(self, address="tcp://127.0.0.1:5556"):
         sys.path.append(str(PROJECT_ROOT))
         from Sarcomere_Dynamics_Resources.examples.Control.Tracking.zmq_class.zmq_class import ZMQPublisher
@@ -223,7 +223,7 @@ class ArtusControlGUI(QWidget):
     # ----------------- Save and Load Joint Positions -----------------
     def save_joint_positions(self):
         # Save current joint positions to a specified file
-        directory = str(PROJECT_ROOT) + "//Isaac_Sim_Work//GUI//hyperion_pose_data"
+        directory = self.directory
         if not os.path.exists(directory):
             os.makedirs(directory)
         
@@ -241,7 +241,7 @@ class ArtusControlGUI(QWidget):
         # Load joint positions from selected file
         filename = self.file_selector.currentText()
         if filename:
-            filepath = str(PROJECT_ROOT) + "//Isaac_Sim_Work//GUI//hyperion_pose_data//"+filename
+            filepath = self.directory + filename
             with open(filepath, 'r') as file:
                 loaded_values = json.load(file)
                 for key, value in loaded_values.items():
@@ -254,7 +254,7 @@ class ArtusControlGUI(QWidget):
 
     def update_file_selector(self):
         # Update the file selector with available files
-        directory = directory = str(PROJECT_ROOT) + "//Isaac_Sim_Work//GUI//hyperion_pose_data"
+        directory = self.directory
         if not os.path.exists(directory):
             os.makedirs(directory)
         files = [f for f in os.listdir(directory) if f.endswith('.json')]
