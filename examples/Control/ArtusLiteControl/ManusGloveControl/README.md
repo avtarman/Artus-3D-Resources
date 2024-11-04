@@ -39,5 +39,5 @@ To start the Manus Glove control for controlling the Artus Lite hand robot, foll
 2. Run python script:
 
     ```sh
-    python manus_glove_control.py
+    python manus_glove_controller.py
     ```
