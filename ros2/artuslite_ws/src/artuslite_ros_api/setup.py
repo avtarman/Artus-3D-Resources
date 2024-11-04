@@ -21,7 +21,10 @@ setup(
                       'ArtusAPI',
                       'pyserial'],
     zip_safe=True,
-    description='ROS2 API for controllign Artus Lite robotic hand',
+    maintainer='gagan',
+    maintainer_email='gagandeep@sarcomeredynamics.com',
+    description='TODO: Package description',
+    license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
