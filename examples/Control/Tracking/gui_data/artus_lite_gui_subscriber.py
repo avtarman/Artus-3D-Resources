@@ -111,7 +111,7 @@ class ArtusLiteGUISubscriber:
 def test_receive_joint_values():
     artus_lite_gui_subscriber = ArtusLiteGUISubscriber()
     while True:
-        joint_values = artus_lite_gui_subscriber.receive_joint_values()
+        joint_values = artus_lite_gui_subscriber.receive_joint_angles()
         if joint_values == None:
             continue
         # print(joint_values)
