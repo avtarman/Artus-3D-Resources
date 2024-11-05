@@ -119,7 +119,7 @@ class ArtusControlGUI(QWidget):
             finger_layout = QVBoxLayout()
             finger_layout.addWidget(self.create_label(f'{finger} Finger', colors[finger.lower()], bold=True))
             for i in range(1, 4):
-                min_val, max_val = (-20, 20) if i == 1 else (0, 90)
+                min_val, max_val = (-15, 15) if i == 1 else (0, 90)
                 finger_layout.addWidget(self.create_label(f'Joint {i}', colors[finger.lower()]))
                 finger_layout.addLayout(self.create_slider_with_value(min_val, max_val, f'{title.lower()}_{finger.lower()}', i))
             fingers_layout.addLayout(finger_layout, 0, idx)
