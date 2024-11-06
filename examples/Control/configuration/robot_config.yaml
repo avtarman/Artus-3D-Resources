@@ -2,20 +2,20 @@ robots:
   left_hand_robot:
     robot_connected: true
     communication_method: 'UART'
-    communication_channel_identifier: 'COM10'
+    communication_channel_identifier: 'COM11'
     hand_type: 'left'
     start_robot: true
     reset_on_start: 0
-    streaming_frequency: 40  # data/seconds
+    streaming_frequency: 20  # data/seconds
     calibrate: false
 
 
   right_hand_robot:
     robot_connected: false
     communication_method: 'UART'
-    communication_channel_identifier: 'COM5'
+    communication_channel_identifier: 'COM8'
     hand_type: 'right'
     start_robot: true
     reset_on_start: 0
-    streaming_frequency: 40  # data/seconds
+    streaming_frequency: 20  # data/seconds
     calibrate: false

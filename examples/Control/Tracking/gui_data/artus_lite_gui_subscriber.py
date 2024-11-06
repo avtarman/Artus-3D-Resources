@@ -23,7 +23,7 @@ class ArtusLiteGUISubscriber:
         self.zmq_subscriber = ZMQSubscriber(address=address)
 
 
-    def receive_joint_values(self):
+    def receive_joint_angles(self):
 
         joint_angles = self.zmq_subscriber.receive()
         if joint_angles == None:
@@ -111,7 +111,7 @@ class ArtusLiteGUISubscriber:
 def test_receive_joint_values():
     artus_lite_gui_subscriber = ArtusLiteGUISubscriber()
     while True:
-        joint_values = artus_lite_gui_subscriber.receive_joint_values()
+        joint_values = artus_lite_gui_subscriber.receive_joint_angles()
         if joint_values == None:
             continue
         # print(joint_values)

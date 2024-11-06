@@ -23,12 +23,16 @@ class ZMQPublisher:
 
 
 class ZMQSubscriber:
-    def __init__(self, address="tcp://127.0.0.1:5556", topics=None):
+    def __init__(self, address="tcp://127.0.0.1:5556", topics=None, connect=True):
         # Initialize ZMQ context and SUB socket
         self.context = zmq.Context()
         self.socket = self.context.socket(zmq.SUB)
         self.socket.setsockopt(zmq.CONFLATE, 1) # Only keep the most recent message
-        self.socket.connect(address)
+        if connect:
+            self.socket.connect(address)
+        else:
+            self.socket.bind(address)
+
         # Subscribe to specific topics or all topics
         if topics is None:
             topics = [""]
@@ -39,8 +43,10 @@ class ZMQSubscriber:
         # Non-blocking receive
         try:
             message = self.socket.recv_string(zmq.NOBLOCK)
+            print("ZMQ receive: ")
             return message
         except zmq.Again:
+            print("ZMQ error")
             return None
 
     def close(self):

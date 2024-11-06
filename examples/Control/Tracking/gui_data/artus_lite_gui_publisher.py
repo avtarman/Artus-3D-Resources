@@ -17,6 +17,9 @@ sys.path.append(PROJECT_ROOT)
 class ArtusControlGUI(QWidget):
     def __init__(self):
         super().__init__()
+        # directory path to save the joint positions
+        self.directory = str(PROJECT_ROOT) + "//Sarcomere_Dynamics_Resources//examples//Control//ArtusLiteControl//GUIControl//hand_pose_data//"
+
         self.joint_values = {}
         self.sliders = {}
         self.streaming = False
@@ -28,7 +31,7 @@ class ArtusControlGUI(QWidget):
         self._setup_zmq_publisher(address="tcp://127.0.0.1:5556")
 
 
-    
+
     def _setup_zmq_publisher(self, address="tcp://127.0.0.1:5556"):
         sys.path.append(str(PROJECT_ROOT))
         from Sarcomere_Dynamics_Resources.examples.Control.Tracking.zmq_class.zmq_class import ZMQPublisher
@@ -116,7 +119,7 @@ class ArtusControlGUI(QWidget):
             finger_layout = QVBoxLayout()
             finger_layout.addWidget(self.create_label(f'{finger} Finger', colors[finger.lower()], bold=True))
             for i in range(1, 4):
-                min_val, max_val = (-20, 20) if i == 1 else (0, 90)
+                min_val, max_val = (-15, 15) if i == 1 else (0, 90)
                 finger_layout.addWidget(self.create_label(f'Joint {i}', colors[finger.lower()]))
                 finger_layout.addLayout(self.create_slider_with_value(min_val, max_val, f'{title.lower()}_{finger.lower()}', i))
             fingers_layout.addLayout(finger_layout, 0, idx)
@@ -220,7 +223,7 @@ class ArtusControlGUI(QWidget):
     # ----------------- Save and Load Joint Positions -----------------
     def save_joint_positions(self):
         # Save current joint positions to a specified file
-        directory = str(PROJECT_ROOT) + "//Isaac_Sim_Work//GUI//hyperion_pose_data"
+        directory = self.directory
         if not os.path.exists(directory):
             os.makedirs(directory)
         
@@ -238,7 +241,7 @@ class ArtusControlGUI(QWidget):
         # Load joint positions from selected file
         filename = self.file_selector.currentText()
         if filename:
-            filepath = str(PROJECT_ROOT) + "//Isaac_Sim_Work//GUI//hyperion_pose_data//"+filename
+            filepath = self.directory + filename
             with open(filepath, 'r') as file:
                 loaded_values = json.load(file)
                 for key, value in loaded_values.items():
@@ -251,7 +254,7 @@ class ArtusControlGUI(QWidget):
 
     def update_file_selector(self):
         # Update the file selector with available files
-        directory = directory = str(PROJECT_ROOT) + "//Isaac_Sim_Work//GUI//hyperion_pose_data"
+        directory = self.directory
         if not os.path.exists(directory):
             os.makedirs(directory)
         files = [f for f in os.listdir(directory) if f.endswith('.json')]

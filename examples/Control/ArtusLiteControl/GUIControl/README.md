@@ -15,7 +15,7 @@ This guide provides instructions on how to use the GUI to control the Artus Lite
 ## Requirements
 
 - Python >= 3.10
-- Required Python packages: `pyzmq`, `PyQt5`
+- Required Python packages: `pyzmq`, `PyQt5`, `PySide6`, `pyyaml`, `psutil`
 - Artus Lite hand robot
 - Windows OS (for running the GUI executable)
 
@@ -30,7 +30,7 @@ This guide provides instructions on how to use the GUI to control the Artus Lite
 
 ## Configuration
 
-Before running the GUI, ensure that the configuration file is updated with the correct settings for your Artus Lite hand robot. The configuration file is located at `Sarcomere_Dynamics_Resources/Control/configuration/configuration.py`.
+Before running the GUI, ensure that the configuration file is updated with the correct settings for your Artus Lite hand robot. The configuration file is located at `Sarcomere_Dynamics_Resources/Control/configuration/robot_config.yaml`.
 
 ## Running the GUI
 

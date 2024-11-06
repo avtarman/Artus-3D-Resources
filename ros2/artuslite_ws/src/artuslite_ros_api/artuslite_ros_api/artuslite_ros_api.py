@@ -4,6 +4,8 @@ from std_srvs.srv import Trigger
 from sensor_msgs.msg import JointState
 from ArtusAPI.artus_api import ArtusAPI  # Import the API
 
+import ast
+
 class ArtusROSNode(Node):
     def __init__(self):
         super().__init__('artuslite_ros_node')
@@ -14,6 +16,14 @@ class ArtusROSNode(Node):
         # Initialize Artus API
         self._initialize_artus_api()
 
+
+
+        # Connect to the Robot on Node Initialization
+        self.artus_api.connect()
+        self.get_logger().info("Connected to Artus Hand.")
+        # import time
+        # time.sleep(5)
+
         # ----------------------- Control -----------------------
         # Create a subscriber to set joint angles (command topic)
         self.joint_sub = self.create_subscription(JointState, 'artuslite_joint_command', self.set_joint_angles, 10)
@@ -21,16 +31,11 @@ class ArtusROSNode(Node):
         # ----------------------- Feedback -----------------------
         # Create a publisher to publish joint angles (feedback topic)
         if self.feedback == True:
+            self.get_logger().info("Publishing joint angles.")
             self.joint_pub = self.create_publisher(JointState, 'artuslite_joint_feedback', 10)
             
             # Setup timer for publishing joint states at the specified communication frequency
             self.create_timer(1.0 / self.communication_frequency, self.publish_joint_angles)
-
-        # Connect to the Robot on Node Initialization
-        # self.artus_api.connect()
-        self.get_logger().info("Connected to Artus Hand.")
-        # import time
-        # time.sleep(5)
 
     def _setup_parameters(self):
         # Declare and initialize parameters
@@ -60,7 +65,8 @@ class ArtusROSNode(Node):
                                   communication_channel_identifier=self.communication_channel_identifier,
                                   communication_frequency=self.communication_frequency,
                                 #   awake=self.wake_up,
-                                  reset_on_start=self.reset)
+                                  reset_on_start=self.reset,
+                                  stream=self.feedback)
 
         # Calibrate the end-effector if specified
         if self.calibrate:
@@ -88,16 +94,37 @@ class ArtusROSNode(Node):
     # ----------------------- Feedback -----------------------
     def publish_joint_angles(self):
         joint_angles = self.artus_api.get_joint_angles()
+        # joint_angles = self.decode_message_from_string(joint_angles)
         if joint_angles is None:
             self.get_logger().warning("No joint angles received.")
             return  # Exit early if there's no data to process
+        
+        position = []
+        current = []
+        temperature = []
+        for name,joint_data in self.artus_api._robot_handler.robot.hand_joints.items():
+            position.append(joint_data.feedback_angle)
+            current.append(joint_data.feedback_current)
+            temperature.append(joint_data.feedback_temperature)
 
+        # conver list elements to float
+        position = [float(i) for i in position]
+        current = [float(i) for i in current]
+        temperature = [float(i) for i in temperature]
+
+        # eg. position feedback: [-1, 0, 0, 0, 0, 0, 0, 16, 0, 0, 15, 0, 0, 0, 0, 0]
+
+        # Publish joint angles
         msg = JointState()
-        msg.header.stamp = self.get_clock().now().to_msg()
-        msg.name = list(joint_angles.keys())
-        msg.position = list(joint_angles.values())
+        msg.name = ['thumb1', 'thumb2', 'thumb3', 'thumb4', 'index1', 'index2', 'index3', 'middle1', 'middle2', 'middle3', 'ring1', 'ring2', 'ring3', 'pinky1', 'pinky2', 'pinky3']
+        msg.position = position
+        # msg.velocity = [0] * 16
+        # msg.effort = [0] * 16
         self.joint_pub.publish(msg)
-        self.get_logger().debug(f"Published joint angles: {joint_angles}")
+     
+        # self.joint_pub.publish(joint_angles)
+        # self.get_logger().info(f"Published joint angles: {position}")
+
 
 
 def main(args=None):
@@ -111,4 +138,5 @@ if __name__ == '__main__':
     main()
 
 # ros2 topic pub /artuslite_joint_command sensor_msgs/JointState "{name: ['thumb1', 'thumb2', 'thumb3', 'thumb4', 'index1', 'index2', 'index3', 'middle1', 'middle2', 'middle3', 'ring1', 'ring2', 'ring3', 'pinky1', 'pinky2', 'pinky3'], position: [10, 20, 15, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85]}"
+# ros2 topic pub /artuslite_joint_command sensor_msgs/JointState "{name: ['thumb1', 'thumb2', 'thumb3', 'thumb4', 'index1', 'index2', 'index3', 'middle1', 'middle2', 'middle3', 'ring1', 'ring2', 'ring3', 'pinky1', 'pinky2', 'pinky3'], position: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}"
 

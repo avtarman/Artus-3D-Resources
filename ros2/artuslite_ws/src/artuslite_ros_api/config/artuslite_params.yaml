@@ -6,6 +6,5 @@ artuslite_ros_node:
     communication_frequency: 50
     wake_up: true
     calibrate: false # Set to true to calibrate the hand
-    reset: false 
-    feedback: false
-
+    reset: false
+    feedback: true
