@@ -339,6 +339,12 @@ class ArtusAPI:
 
             if feedback is not None:
                 print(feedback[:33])
+    
+    def wipe_sd(self):
+        """
+        wipe sd card and reset with factory default settings
+        """
+        self._communication_handler.send_data(self._command_handler.get_wipe_sd_command())
 
 def test_artus_api():
     artus_api = ArtusAPI()

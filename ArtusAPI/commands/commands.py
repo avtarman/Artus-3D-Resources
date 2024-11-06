@@ -18,6 +18,7 @@ class Commands:
     save_grasp_onboard_command = 0xC8,
     return_grasps_command = 0xD2,
     execute_grasp_command = 0xE0,
+    wipe_sd_command = 0x46,
 	reset_on_start = 0):
         
         self.commands = {
@@ -32,7 +33,8 @@ class Commands:
             'save_grasp_onboard_command': save_grasp_onboard_command,
             'return_grasps_command': return_grasps_command,
             'execute_grasp_command': execute_grasp_command,
-            'update_param_command' : update_param_command
+            'update_param_command' : update_param_command,
+            'wipe_sd_command' : wipe_sd_command
         }
         self.reset_on_start = reset_on_start
 
@@ -191,8 +193,12 @@ class Commands:
         command_list.insert(0,self.commands['execute_grasp_command']+index)
 
         return command_list
+    
+    def get_wipe_sd_command(self):
+        command_list = [0]*32
+        command_list.insert(0,self.commands['wipe_sd_command'])
 
-
+        return command_list
 
 if __name__ == "__main__":
     None
