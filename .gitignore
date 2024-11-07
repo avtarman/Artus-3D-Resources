@@ -9,3 +9,5 @@ dist/
 build/
 ArtusAPI.egg-info/
 bins/
+
+**/__pycache__/
