@@ -1,6 +1,6 @@
 <img src='../../../data/images/SarcomereLogoHorizontal.svg'>
 
-# [Artus Lite](/ArtusAPI/robot/artus_lite/data/Artus%20Lite%20Quick%20Start.pdf)
+# [Artus Lite](/ArtusAPI/robot/artus_lite/data/Artus%20Lite.pdf)
 
 see [data>Artus Lite Quick Start PDF](/ArtusAPI/robot/artus_lite/data/Artus%20Lite%20Quick%20Start.pdf).
 
