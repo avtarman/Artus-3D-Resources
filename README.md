@@ -36,6 +36,7 @@ Below are some some notes about some key fields that are required in different s
     * [Serial Example](#serial-example)
     * [Normal Startup Procedure](#normal-startup-procedure)
     * [DIO](#dio)
+    * [Setting Grasps SD Card](#setting-grasps---sd-card)
 * [Interacting with the API](#interacting-with-the-api)
     * [Setting Joints](#setting-joints)
         * [Input Units](#input-units)
@@ -121,10 +122,17 @@ Once these two steps are complete, optionally, you can run `ArtusAPI.calibrate()
 ## DIO
 | DIO | Wire Colour | Function |
 | --- | --- | --- |
-| DI0 | Yellow | Grasp 0 |
-| DI1 | Green | Grasp 1 |
+| DI0 | Yellow | Grasp 1 from SD Card |
+| DI1 | Green | Grasp 2 from SD Card |
 | DO0 | Blue | Status - HIGH = Ready, LOW = Not Ready/Error |
 | DO1 | Pink | Status - HIGH = Idle/in Motion, LOW = Target Achieved |
+
+## Setting Grasps - SD Card
+Before using the Artus Lite's digital IO functionality to communicate with a robotic arm, there are two steps that need to be done. 
+1. Users must set the grasps that they want to call. This is done through the UI, using the `save_grasp_onhand` command. This command will save the last command sent to the hand in the designated position specified (1-6) on the SD card and persist through resets.
+2. Users can use the `execute_grasp` command to call the grasps through the API. 
+
+Each of the above will print the command to the terminal.
 
 ## Interacting with the API
 To get the most out of the Artus hands, the functions that will likely be most interacted with are `set_joint_angles(self, joint_angles:dict)` and `get_joint_angles(self)`. The `set_joint_angles` function allows the user to set 16 independent joint values with a desired velocity/force value in the form of a dictionary. See the [grasp_close file](data/hand_poses/grasp_close.json) for an example of a full 16 joint dictionary for the Artus Lite. See the [Artus Lite README](ArtusAPI/robot/artus_lite/README.md) for joint mapping.

@@ -233,13 +233,13 @@ class ArtusAPI:
             fw_size = self._firmware_updater.get_bin_file_info()
         
         # set which drivers to flash should be 1-8
-		drivers_to_flash = int(input(f'Which drivers would you like to flash? \n0: All Actuators \n1-8 Specific Actuator \n9: Peripheral Controller \nEnter: '))
+        drivers_to_flash = int(input(f'Which drivers would you like to flash? \n0: All Actuators \n1-8 Specific Actuator \n9: Peripheral Controller \nEnter: '))
         if not drivers_to_flash:
             drivers_to_flash = 0
 
         firmware_command = self._command_handler.get_firmware_command(fw_size,upload,drivers_to_flash)
         self._communication_handler.send_data(firmware_command)
-		if upload:
+        if upload:
             self._firmware_updater.update_firmware(fw_size)
 
         print(f'File size = {fw_size}')        
