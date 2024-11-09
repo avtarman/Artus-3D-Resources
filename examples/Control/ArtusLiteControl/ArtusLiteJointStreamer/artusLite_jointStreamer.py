@@ -15,7 +15,7 @@ class ArtusLiteJointStreamer:
 
     def __init__(self,                 
                 communication_method= 'UART',
-                communication_channel_identifier='COM9',
+                communication_channel_identifier='COM7',
                 hand_type = 'left',
                 reset_on_start = 0,
                 
@@ -95,13 +95,13 @@ class ArtusLiteJointStreamer:
 def test_artus_joint_streamer():
     artus_joint_streamer = ArtusLiteJointStreamer()
     joint_angles_1 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-    joint_angles_2 = [30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30]
+    joint_angles_2 = [0, 20, 30, 30, 10, 50, 70, 10, 50, 70, 10, 50, 70, 10, 50, 70]
 
     while True:
         artus_joint_streamer.stream_joint_angles(joint_angles=joint_angles_1)
-        time.sleep(1)
+        time.sleep(3)
         artus_joint_streamer.stream_joint_angles(joint_angles=joint_angles_2)
-        time.sleep(1)
+        time.sleep(3)
 
 
 if __name__ == "__main__":
