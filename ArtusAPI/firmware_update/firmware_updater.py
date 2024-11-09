@@ -1,6 +1,8 @@
 import os
 import time
 import logging
+import platform
+import subprocess
 
 BYTES_CHUNK = 32
 UPLOAD_CHUNKS_COMMAND = 0x30
@@ -117,7 +119,18 @@ class FirmwareUpdater:
                 self.logger.error(f'firmware flash failed')
                 return False
             time.sleep(0.001)
-            
+    
+    def update_master_firmware(self,com:str):
+        os_name = platform.system()
+        script_path = os.getcwd()
+
+        if os_name == 'Linux':
+            script_path += '/scripts/flash_script.sh'
+        else:
+            script_path += '/scripts/flash_script.bat'
+
+        rslt = subprocess.run([script_path,com], check=True, text=True, capture_output=True, shell=True)
+        print("Script output:", rslt.stdout)
 
 
 def test_firmware_updater():
