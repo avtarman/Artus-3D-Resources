@@ -260,16 +260,17 @@ class ArtusAPI:
         reset_command = self._command_handler.get_locked_reset_low_command(j,m)
         self._communication_handler.send_data(reset_command)
     
-    def hard_close(self):
+    def hard_close(self,j=None,m=None):
         """
         drive a joint partially closed - used if finger is "jammed" in open state
         """
         if not self.awake:
             self.logger.warning(f'Hand not ready, send `wake_up` command')
             return
-
-        j = int(input(f'Enter Joint to reset: '))
-        m = int(input(f'Enter Motor to reset: '))
+        if not j and not m:
+            j = int(input(f'Enter Joint to reset: '))
+            m = int(input(f'Enter Motor to reset: '))
+        
         hard_close = self._command_handler.get_hard_close_command(j,m)
         self._communication_handler.send_data(hard_close)
 

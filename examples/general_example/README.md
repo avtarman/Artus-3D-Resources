@@ -8,6 +8,12 @@ The general example demonstrates how to use the Artus API to control the Artus L
 - Artus Lite hand robot
 - Make sure you have installed the requirements for Artus API. Refer to the [README](../../README.md) for more information.
 
+## Finding the USB Device
+* On Windows, find the port name by navigating to "Device Manager">"Ports". It should show up as a COM port. (e.g. COM3)
+* On Linux, use the command `dmesg | grep ttyUSB` to find the usb device. (e.g. /dev/ttyUSB1)
+    * If a permission error is encountered, use the command `sudo chmod 777 /dev/ttyUSB1` 
+
+
 ## Installation
 
 1. Install the required Python packages:
@@ -17,7 +23,7 @@ The general example demonstrates how to use the Artus API to control the Artus L
 
 ## Configuration
 
-Before running the example, ensure that the configuration file is updated with the correct settings for your Artus Lite hand robot. The configuration file is located at `examples/general_example/config/artus_config.yaml`.
+Before running the example, ensure that the configuration file is updated with the correct settings for your Artus Lite hand robot. The configuration file is located at [`examples/general_example/config/artus_config.yaml`](/examples/general_example/config/artus_config.yaml).
 
 ```yaml
 robot:
