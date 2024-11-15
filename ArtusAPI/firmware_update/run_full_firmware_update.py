@@ -17,6 +17,14 @@ import platform
 import subprocess
 
 def example():
+
+    periph = "periph.bin"
+    act = "actuator.bin"
+    fp = PROJECT_ROOT+"/Sarcomere_Dynamics_Resources/ArtusAPI/firmware_update/bins/"
+
+    print(fp+periph)
+    print(fp+act)
+
     input("""
         ╔══════════════════════════════════════════════════════════════════╗
         ║           Make sure ARTUS masterboard is in boot mode            ║
@@ -81,9 +89,6 @@ def example():
 
     artusapi.connect()
 
-    periph = "periph.bin"
-    act = "actuator.bin"
-    fp = PROJECT_ROOT+"/Sarcomere_Dynamics_Resources/ArtusAPI/firmware_update/bins/"
 
     # update firmware for spi first
     artusapi.update_firmware(upload_flag='y', file_location=fp+periph, drivers_to_flash=9)
