@@ -51,33 +51,33 @@ def example():
     # --------------------------------- Example -------------------------------------
     # -------------------------------------------------------------------------------
 
-    # os_type = platform.system()
+    os_type = platform.system()
 
-    # if os_type == "Windows":
-    #     flash_script = os.path.join(PROJECT_ROOT, "Sarcomere_Dynamics_Resources", "ArtusAPI", "firmware_update", "flash_script.bat") 
-    # elif os_type in ["Linux", "Darwin"]:
-    #     flash_script = os.path.join(PROJECT_ROOT, "Sarcomere_Dynamics_Resources", "ArtusAPI", "firmware_update", "flash_script.sh")
-    # else:
-    #     raise OSError(f"Unsupported operating system: {os_type}")
+    if os_type == "Windows":
+        flash_script = os.path.join(PROJECT_ROOT, "Sarcomere_Dynamics_Resources", "ArtusAPI", "firmware_update", "flash_script.bat") 
+    elif os_type in ["Linux", "Darwin"]:
+        flash_script = os.path.join(PROJECT_ROOT, "Sarcomere_Dynamics_Resources", "ArtusAPI", "firmware_update", "flash_script.sh")
+    else:
+        raise OSError(f"Unsupported operating system: {os_type}")
 
-    # print(f"\nRunning firmware update script for {os_type}...")
+    print(f"\nRunning firmware update script for {os_type}...")
 
-    # try:
-    #     # Run the flash script
-    #     subprocess.run([flash_script], check=True, shell=True)
-    #     print("Firmware update completed successfully")
-    # except subprocess.CalledProcessError as e:
-    #     print(f"Error running firmware update script: {e}")
-    # except FileNotFoundError:
-    #     print(f"Flash script not found at: {flash_script}")
+    try:
+        # Run the flash script
+        subprocess.run([flash_script], check=True, shell=True)
+        print("Firmware update completed successfully")
+    except subprocess.CalledProcessError as e:
+        print(f"Error running firmware update script: {e}")
+    except FileNotFoundError:
+        print(f"Flash script not found at: {flash_script}")
 
 
-    # input("""
-    # ╔══════════════════════════════════════════════════════════════════╗
-    # ║           Please restart the ARTUS hand in normal mode           ║
-    # ║                      Press Enter when ready                      ║
-    # ╚══════════════════════════════════════════════════════════════════╝
-    # """)
+    input("""
+    ╔══════════════════════════════════════════════════════════════════╗
+    ║           Please restart the ARTUS hand in normal mode           ║
+    ║                      Press Enter when ready                      ║
+    ╚══════════════════════════════════════════════════════════════════╝
+    """)
 
     artusapi.connect()
 
