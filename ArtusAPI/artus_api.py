@@ -247,16 +247,37 @@ class ArtusAPI:
         self._communication_handler.wait_for_ack()
         print(f'Power Cycle the device to take effect')
 
-    def reset(self):
+
+    def request_joint_and_motor(self):
+        """
+        request joint and motor from user
+        """
+        j,m = None,None
+        while True:
+            j = int(input(f'Enter Joint to reset: '))
+            if 0 <= j <= 15:
+                break
+            else:
+                print(f'Invalid joint number, please try again')
+        while True:
+            m = int(input(f'Enter Motor to reset: '))
+            if 0 <= m <= 2:
+                break
+            else:
+                print(f'Invalid motor number, please try again')
+        return j,m
+    
+
+    def reset(self,j=None,m=None):
         """
         Reset a joint back to it's open state, used if finger is "jammed" in close state
         """
         if not self.awake:
             self.logger.warning(f'Hand not ready, send `wake_up` command')
             return
+        if j is None or m is None:
+            j,m = self.request_joint_and_motor()
         
-        j = int(input(f'Enter Joint to reset: '))
-        m = int(input(f'Enter Motor to reset: '))
         reset_command = self._command_handler.get_locked_reset_low_command(j,m)
         self._communication_handler.send_data(reset_command)
     
@@ -267,9 +288,8 @@ class ArtusAPI:
         if not self.awake:
             self.logger.warning(f'Hand not ready, send `wake_up` command')
             return
-        if not j and not m:
-            j = int(input(f'Enter Joint to reset: '))
-            m = int(input(f'Enter Motor to reset: '))
+        if j is None or m is None:
+            j,m = self.request_joint_and_motor()
         
         hard_close = self._command_handler.get_hard_close_command(j,m)
         self._communication_handler.send_data(hard_close)

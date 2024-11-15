@@ -76,7 +76,7 @@ class FirmwareUpdater:
             # print(f'{chunk} {len(chunk)}')
 
             # send data
-            self._communication_handler.send_data(chunk)
+            self._communication_handler.send_data(chunk,1)
 
             # sleep
             time.sleep(0.008)

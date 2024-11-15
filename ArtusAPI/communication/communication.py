@@ -113,14 +113,15 @@ class Communication:
             self.logger.error("unable to connect to Robot")
             print(e)
 
-    def send_data(self, message:list):
+    def send_data(self, message:list,no_debug=None):
         """
         send message
         """
         try:
             # Test
             self.logger.info(f'data sent to hand {message}')
-            print(f'data sent to hand = {message}')
+            if not no_debug:
+                print(f'data sent to hand = {message}')
             byte_msg = self._list_to_byte_encode(message)
             self.communicator.send(byte_msg)
             return True

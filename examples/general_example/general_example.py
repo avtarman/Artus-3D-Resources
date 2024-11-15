@@ -87,9 +87,13 @@ def example():
             case 'c':
                 artusapi.hard_close()
             case 's':
-                num = int(input('what index value should this be stored in? (1-6):'))
+                while True:
+                    n = input('Enter index value to save grasp in (1-6):')
+                    num = None if not n else int(n) if n.isdigit() and 1 <= int(n) <= 6 else None
+                    if num is not None or num is None and not n:
+                        break
                 if num == None:
-                    artusapi.save_grasp_onhand()
+                    artusapi.save_grasp_onhand() # default save index 1
                 else:
                     artusapi.save_grasp_onhand(num)
             case 'g':
@@ -97,13 +101,13 @@ def example():
             case 'p':
                 artusapi.update_param()
             case 'e':
-                data = 0
-                while 1:
-                    data = int(input('enter grasp index to execute from memory (1-6):'))
-                    if data in range(1,7):
+                while True:
+                    n = input('Enter index value to execute grasp from (1-6):')
+                    num = None if not n else int(n) if n.isdigit() and 1 <= int(n) <= 6 else None
+                    if num is not None:
                         break
 
-                artusapi.execute_grasp(data)
+                artusapi.execute_grasp(num)
 
 # ----------------------------------------------------------------------------------
 # ---------------------------------- Main ------------------------------------------
