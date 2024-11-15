@@ -209,17 +209,19 @@ class ArtusAPI:
         joint_angles = self._robot_handler.get_joint_angles(feedback_command)
         return joint_angles
 
-    def update_firmware(self):
+    def update_firmware(self,upload_flag='y',file_location=None,drivers_to_flash=0):
         """
         send firmware update to the actuators
         """
         file_path = None
         fw_size  = 0
         # input to upload a new file
-        upload_flag = input(f'Uploading a new BIN file? (y/n)  :  ')
+        if upload_flag == None:
+            upload_flag = input(f'Uploading a new BIN file? (y/n)  :  ')
         upload = True
-            
 
+            
+        # Create new firmware updater instance
         self._firmware_updater = FirmwareUpdater(self._communication_handler,
                                         self._command_handler)
         
@@ -227,14 +229,14 @@ class ArtusAPI:
             self._firmware_updater.file_location = 'not empty'
             upload = False
         else:
-
-            self._firmware_updater.file_location = input('Please enter binfile absolute path:  ')
+            if file_location is None: file_location = input('Please enter binfile absolute path:  ')
+            self._firmware_updater.file_location = file_location
 
             fw_size = self._firmware_updater.get_bin_file_info()
         
         # set which drivers to flash should be 1-8
-        drivers_to_flash = int(input(f'Which drivers would you like to flash? \n0: All Actuators \n1-8 Specific Actuator \n9: Peripheral Controller \nEnter: '))
-        if not drivers_to_flash:
+        if drivers_to_flash == None:
+            drivers_to_flash = int(input(f'Which drivers would you like to flash? \n0: All Actuators \n1-8 Specific Actuator \n9: Peripheral Controller \nEnter: '))
             drivers_to_flash = 0
 
         firmware_command = self._command_handler.get_firmware_command(fw_size,upload,drivers_to_flash)
@@ -246,6 +248,8 @@ class ArtusAPI:
         print(f'flashing...')
         self._communication_handler.wait_for_ack()
         print(f'Power Cycle the device to take effect')
+
+        
 
 
     def request_joint_and_motor(self):

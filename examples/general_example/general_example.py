@@ -81,7 +81,7 @@ def example():
                     grasp_dict = json.load(file)
                     artusapi.set_joint_angles(grasp_dict) 
             case 'f':
-                artusapi.update_firmware()  
+                artusapi.update_firmware(upload_flag='y',file_location=None,drivers_to_flash=None)  
             case 'r':
                 artusapi.reset()
             case 'c':

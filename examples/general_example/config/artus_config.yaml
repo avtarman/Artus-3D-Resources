@@ -7,5 +7,5 @@ robot:
     start_robot: true
     reset_on_start: 0
     calibrate: false # calibrate the robot joints
-    awake: false
+    awake: true
     streaming_frequency: 20  # data/seconds
