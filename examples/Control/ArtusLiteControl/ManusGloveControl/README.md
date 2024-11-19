@@ -26,7 +26,7 @@ This guide provides instructions on how to use the GUI to control the Artus Lite
 
 2. Open the solution file in Visual Studio: \MANUS\MANUS_Core_2.3.0.1_SDK\MANUS_Core_2.3.0.1_SDK\ManusSDK_v2.3.0.1\SDKClient\SDKClient.sln
 
-3. Replace the SDKClient.cpp file with the SDKClient.cpp file in this repository
+3. Copy the contents of the SDKClient.cpp  and SDKClient.hpp files with the respective files in this repository
 
 4. Build Solution in Visual Studio
 
