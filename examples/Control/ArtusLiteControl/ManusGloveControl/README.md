@@ -23,6 +23,16 @@ This guide provides instructions on how to use the GUI to control the Artus Lite
 
 1. Download the Manus Glove SDK from the [Manus website](https://docs.manus-meta.com/2.4.0/Plugins/SDK/getting%20started/)
 
+2. Open the following file in Visual Studio: \MANUS\MANUS_Core_2.3.0.1_SDK\MANUS_Core_2.3.0.1_SDK\ManusSDK_v2.3.0.1\SDKClient\SDKClient\SDKClient.cpp
+
+3. Replace the SDKClient.cpp file with the SDKClient.cpp file in this repository
+
+4. Build Solution in Visual Studio
+
+5. An updated exe file should be produced: \MANUS\MANUS_Core_2.3.0.1_SDK\MANUS_Core_2.3.0.1_SDK\ManusSDK_v2.3.0.1\SDKClient\Output\x64\Debug\Client\SDKClient.exe
+
+6. In the manus_glove_controller.py file (\Sarcomere_Dynamics_Resources\examples\Control\ArtusLiteControl\ManusGloveControl\manus_glove_controller.py), change the path in line 36 to the path on your computer for the SDKClient.exe file
+   
 ## Configuration
 
 Before running the GUI, ensure that the configuration file is updated with the correct settings for your Artus Lite hand robot. The configuration file is located at `Sarcomere_Dynamics_Resources/Control/configuration/robot_config.yaml`.
