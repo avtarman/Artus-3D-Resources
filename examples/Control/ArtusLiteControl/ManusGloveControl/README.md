@@ -14,7 +14,7 @@ This guide provides instructions on how to use the GUI to control the Artus Lite
 ## Requirements
 
 - Python >= 3.10
-- Requirements: Manus Glove SDK
+- Requirements: Manus Glove SDK 
 - Artus Lite hand robot
 - Windows OS
 - Visual Studio
@@ -22,9 +22,9 @@ This guide provides instructions on how to use the GUI to control the Artus Lite
 ## Installation
 
 
-1. Download the Manus Glove SDK from the [Manus website](https://docs.manus-meta.com/2.4.0/Plugins/SDK/getting%20started/)
+1. Download the Manus Glove SDK (2.3.0.1) from the [Manus website](https://docs.manus-meta.com/2.4.0/Plugins/SDK/getting%20started/)
 
-2. Open the following file in Visual Studio: \MANUS\MANUS_Core_2.3.0.1_SDK\MANUS_Core_2.3.0.1_SDK\ManusSDK_v2.3.0.1\SDKClient\SDKClient\SDKClient.cpp
+2. Open the solution file in Visual Studio: \MANUS\MANUS_Core_2.3.0.1_SDK\MANUS_Core_2.3.0.1_SDK\ManusSDK_v2.3.0.1\SDKClient\SDKClient.sln
 
 3. Replace the SDKClient.cpp file with the SDKClient.cpp file in this repository
 
