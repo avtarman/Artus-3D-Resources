@@ -17,6 +17,7 @@ This guide provides instructions on how to use the GUI to control the Artus Lite
 - Requirements: Manus Glove SDK
 - Artus Lite hand robot
 - Windows OS
+- Visual Studio
 
 ## Installation
 
