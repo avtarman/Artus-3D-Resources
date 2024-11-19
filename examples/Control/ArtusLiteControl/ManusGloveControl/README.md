@@ -22,7 +22,7 @@ This guide provides instructions on how to use the GUI to control the Artus Lite
 ## Installation
 
 
-1. Download the Manus Glove SDK (2.3.0.1) from the [Manus website](https://docs.manus-meta.com/2.4.0/Plugins/SDK/getting%20started/)
+1. Download the Manus Glove SDK (2.3.0.1) from the [Manus website](https://docs.manus-meta.com/2.4.0/Plugins/SDK/getting%20started/](https://my.manus-meta.com/resources/downloads/quantum-metagloves)
 
 2. Open the solution file in Visual Studio: \MANUS\MANUS_Core_2.3.0.1_SDK\MANUS_Core_2.3.0.1_SDK\ManusSDK_v2.3.0.1\SDKClient\SDKClient.sln
 
