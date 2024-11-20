@@ -26,6 +26,9 @@ This guide provides instructions on how to use the GUI to control the Artus Lite
     ```sh
     pip install pyzmq
     pip install PyQt5
+    pip install PySide6
+    pip install pyyaml
+    pip install psutil
     ```
 
 ## Configuration
