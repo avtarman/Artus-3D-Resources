@@ -24,17 +24,21 @@ This guide provides instructions on how to use the GUI to control the Artus Lite
 
 1. Download the **MANUS Core - SDK (2.3.0.1)** and the **MANUS Core - Installer** from the [Manus website](https://my.manus-meta.com/resources/downloads/quantum-metagloves)
 
-2. Open the solution file in Visual Studio: \MANUS\MANUS_Core_2.3.0.1_SDK\MANUS_Core_2.3.0.1_SDK\ManusSDK_v2.3.0.1\SDKClient\SDKClient.sln
+2. Open the solution file in Visual Studio: `\MANUS\MANUS_Core_2.3.0.1_SDK\MANUS_Core_2.3.0.1_SDK\ManusSDK_v2.3.0.1\SDKClient\SDKClient.sln`
 
 3. Copy the contents of the **SDKClient.cpp** and **SDKClient.hpp** files with the respective files in this repository
 
 4. Build Solution in Visual Studio. There will be an error but you can ignore it. The output terminal should display the following messages:
+
+```
   
    3>Done building project "SDKClient.vcxproj".
 
    ========== Build: 2 succeeded, 1 failed, 0 up-to-date, 0 skipped ==========
 
-5. An updated exe file should be produced at this location: \MANUS\MANUS_Core_2.3.0.1_SDK\MANUS_Core_2.3.0.1_SDK\ManusSDK_v2.3.0.1\SDKClient\Output\x64\Debug\Client\SDKClient.exe
+```
+
+5. An updated exe file should be produced at this location: `\MANUS\MANUS_Core_2.3.0.1_SDK\MANUS_Core_2.3.0.1_SDK\ManusSDK_v2.3.0.1\SDKClient\Output\x64\Debug\Client\SDKClient.exe`
 
    You can now close Visual Studio
 
@@ -44,7 +48,7 @@ This guide provides instructions on how to use the GUI to control the Artus Lite
 
 8. Turn on the glove tracker and make sure it is connected to the MANUS Core
 
-9. In the manus_glove_controller.py file (\Sarcomere_Dynamics_Resources\examples\Control\ArtusLiteControl\ManusGloveControl\manus_glove_controller.py), change the path in line 36 to the path on your computer for the SDKClient.exe file
+9. In the manus_glove_controller.py file (`\Sarcomere_Dynamics_Resources\examples\Control\ArtusLiteControl\ManusGloveControl\manus_glove_controller.py`), change the path in line 36 to the path on your computer for the SDKClient.exe file
 
 10. Install the required Python packages:
     ```sh
