@@ -24,11 +24,13 @@ This guide provides instructions on how to use the GUI to control the Artus Lite
 
 1. Download the **MANUS Core - SDK (2.3.0.1)** and the **MANUS Core - Installer** from the [Manus website](https://my.manus-meta.com/resources/downloads/quantum-metagloves)
 
-2. Open the solution file in Visual Studio: `\MANUS\MANUS_Core_2.3.0.1_SDK\MANUS_Core_2.3.0.1_SDK\ManusSDK_v2.3.0.1\SDKClient\SDKClient.sln`
+2. Extract the zip files
 
-3. Copy the contents of the **SDKClient.cpp** and **SDKClient.hpp** files with the respective files in this repository
+3. In the **MANUS_Core_2.3.0.1_SDK** folder, Open the solution file in Visual Studio: `\MANUS_Core_2.3.0.1_SDK\MANUS_Core_2.3.0.1_SDK\ManusSDK_v2.3.0.1\SDKClient\SDKClient.sln`
 
-4. Build Solution in Visual Studio. There will be an error but you can ignore it. The output terminal should display the following messages:
+4. Copy the contents of the **SDKClient.cpp** and **SDKClient.hpp** files with the respective files in this repository
+
+5. Build Solution in Visual Studio. The output terminal should display the following messages:
 
 ```
   
@@ -38,7 +40,7 @@ This guide provides instructions on how to use the GUI to control the Artus Lite
 
 ```
 
-5. An updated exe file should be produced at this location: `\MANUS\MANUS_Core_2.3.0.1_SDK\MANUS_Core_2.3.0.1_SDK\ManusSDK_v2.3.0.1\SDKClient\Output\x64\Debug\Client\SDKClient.exe`
+5. An updated exe file should be produced at this location: `\MANUS_Core_2.3.0.1_SDK\MANUS_Core_2.3.0.1_SDK\ManusSDK_v2.3.0.1\SDKClient\Output\x64\Debug\Client\SDKClient.exe`
 
    You can now close Visual Studio
 
