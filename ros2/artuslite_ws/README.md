@@ -31,7 +31,7 @@ To install the `artuslite_ros_api` package, follow these steps:
 
 1. Clone the repository:
     ```sh
-    git clone <repository_url>
+    git clone https://github.com/Sarcomere-Dynamics/Sarcomere_Dynamics_Resources.git
     cd artuslite_ws
     ```
 
