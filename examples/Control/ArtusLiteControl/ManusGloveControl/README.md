@@ -31,6 +31,7 @@ This guide provides instructions on how to use the GUI to control the Artus Lite
 4. Build Solution in Visual Studio. There will be an error but you can ignore it. The output terminal should display the following messages:
   
    3>Done building project "SDKClient.vcxproj".
+
    ========== Build: 2 succeeded, 1 failed, 0 up-to-date, 0 skipped ==========
 
 5. An updated exe file should be produced at this location: \MANUS\MANUS_Core_2.3.0.1_SDK\MANUS_Core_2.3.0.1_SDK\ManusSDK_v2.3.0.1\SDKClient\Output\x64\Debug\Client\SDKClient.exe
