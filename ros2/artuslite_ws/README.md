@@ -8,9 +8,6 @@ The `artuslite_ros_api` is a ROS2 package designed to provide an API for interac
 
 ```sh
 artuslite_ws/
-├── build/
-├── install/
-├── log/
 ├── src/
 │   └── artuslite_ros_api/
 │       ├── config/                    
