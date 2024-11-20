@@ -33,6 +33,12 @@ This guide provides instructions on how to use the GUI to control the Artus Lite
 5. An updated exe file should be produced: \MANUS\MANUS_Core_2.3.0.1_SDK\MANUS_Core_2.3.0.1_SDK\ManusSDK_v2.3.0.1\SDKClient\Output\x64\Debug\Client\SDKClient.exe
 
 6. In the manus_glove_controller.py file (\Sarcomere_Dynamics_Resources\examples\Control\ArtusLiteControl\ManusGloveControl\manus_glove_controller.py), change the path in line 36 to the path on your computer for the SDKClient.exe file
+
+7. Install the required Python packages:
+    ```sh
+    pip install pyyaml
+    pip install psutil
+    ```
    
 ## Configuration
 
