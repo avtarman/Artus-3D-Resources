@@ -22,20 +22,20 @@ This guide provides instructions on how to use the GUI to control the Artus Lite
 ## Installation
 
 
-1. Download the *MANUS Core - SDK (2.3.0.1)* and the *MANUS Core - Installer* from the [Manus website](https://my.manus-meta.com/resources/downloads/quantum-metagloves)
+1. Download the **MANUS Core - SDK (2.3.0.1)** and the **MANUS Core - Installer** from the [Manus website](https://my.manus-meta.com/resources/downloads/quantum-metagloves)
 
 2. Open the solution file in Visual Studio: \MANUS\MANUS_Core_2.3.0.1_SDK\MANUS_Core_2.3.0.1_SDK\ManusSDK_v2.3.0.1\SDKClient\SDKClient.sln
 
-3. Copy the contents of the *SDKClient.cpp* and *SDKClient.hpp* files with the respective files in this repository
+3. Copy the contents of the **SDKClient.cpp** and **SDKClient.hpp** files with the respective files in this repository
 
 4. Build Solution in Visual Studio. There will be an error but you can ignore it. The terminal should display the following messages:
 
 5. An updated exe file should be produced at this location: \MANUS\MANUS_Core_2.3.0.1_SDK\MANUS_Core_2.3.0.1_SDK\ManusSDK_v2.3.0.1\SDKClient\Output\x64\Debug\Client\SDKClient.exe
    You can now close Visual Studio
 
-6. Launch the *MANUS Core - Installer* and follow the set up instructions
+6. Launch the **MANUS Core - Installer** and follow the set up instructions
 
-7. Launch the *MANUS Core Application* and connect the dongle to the computer
+7. Launch the **MANUS Core Application** and connect the dongle to the computer
 
 8. Turn on the glove tracker and make sure it is connected to the MANUS Core
 
