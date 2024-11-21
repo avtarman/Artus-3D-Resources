@@ -50,9 +50,11 @@ This guide provides instructions on how to use the GUI to control the Artus Lite
 
 8. Turn on the glove tracker and make sure it is connected to the MANUS Core
 
-9. In the manus_glove_controller.py file (`\Sarcomere_Dynamics_Resources\examples\Control\ArtusLiteControl\ManusGloveControl\manus_glove_controller.py`), change the path in line 36 to the path on your computer for the SDKClient.exe file (P3 Video)
+9. Clone the Sarcomere Dynamics Resources repository and navigate to the manus_glove_controller.py file (P3 Video): (`\Sarcomere_Dynamics_Resources\examples\Control\ArtusLiteControl\ManusGloveControl\manus_glove_controller.py`)
 
-10. Install the required Python packages: (P4 Video)
+10. In the manus_glove_controller.py file, change the path in line 36 to the path on your computer for the SDKClient.exe file (P4 Video)
+
+11. Install the required Python packages: (P5 Video)
     ```sh
     pip install pyyaml
     pip install psutil
