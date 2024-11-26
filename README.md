@@ -64,6 +64,7 @@ Below are some some notes about some key fields that are required in different s
 Requires Python version >= 3.10 installed on the host system. Please visit the [Python website](https://www.python.org/downloads/) to install Python.
 
 #### USB Driver
+>[!NOTE]
 If the host system cannot find the Artus Lite as a USB device once it is connected over USBC, go to [FTDI Driver Download](https://ftdichip.com/drivers/vcp-drivers/) to install the virtual COM port driver (usually only required for Windows). 
 
 ### Installation
