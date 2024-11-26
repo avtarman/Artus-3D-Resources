@@ -129,7 +129,8 @@ Second, the `ArtusAPI.wake_up()` function must be run to allow the hand to load 
 
 Once these two steps are complete, optionally, you can run `ArtusAPI.calibrate()` to calibrate the finger joints. Otherwise, the system is now ready to start sending and receiving data!
 
-**_Note: If running version v1.0.1, `wake_up` is called inside the `connect()` function_**
+>{!NOTE]
+>If running version v1.0.1, `wake_up` is called inside the `connect()` function_
 
 ## DIO
 | DIO | Wire Colour | Function |
