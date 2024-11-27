@@ -7,6 +7,8 @@ This repository contains a Python API for controlling the Artus robotic hands by
 Please contact the team if there are any issues that arise through the use of the API.
 
 ## Introduction
+
+>[!IMPORTANT]
 __Please read through the entire README before using the Artus hand__
 
 Below are some critical information while using the Artus hand.
@@ -25,25 +27,34 @@ Below are some some notes about some key fields that are required in different s
 * Artus Lite specific technical details are available within the [robot folder](/ArtusAPI/robot/artus_lite/)
 
 ## Table of Contents
-* [Getting Started](#getting-started)
-    * [Video Introduction](#video-introduction)
-    * [Requirements](#requirements)
-    * [USB Driver](#usb-driver)
-    * [Installation](#installation)
-* [Usage](#usage)
-    * [Running example.py](#running-examplepy)
-    * [Creating an ArtusAPI Class Object](#creating-an-artusapi-class-object)
-    * [Serial Example](#serial-example)
-    * [Normal Startup Procedure](#normal-startup-procedure)
-    * [DIO](#dio)
-    * [Setting Grasps SD Card](#setting-grasps---sd-card)
-* [Interacting with the API](#interacting-with-the-api)
-    * [Setting Joints](#setting-joints)
-        * [Input Units](#input-units)
-    * [Getting Feedback](#getting-feedback)
-    * [Controlling Multiple Hands](#controlling-multiple-hands)
-    * [Teleoperation Considerations](#teleoperation-considerations)
-* [Directory Structure](#directory-structure)
+- [Python Artus Robotic Hand API](#python-artus-robotic-hand-api)
+  - [Introduction](#introduction)
+    - [Note about Calibration \& Power Cycling](#note-about-calibration--power-cycling)
+  - [Table of Contents](#table-of-contents)
+  - [Getting Started](#getting-started)
+    - [Video Introduction](#video-introduction)
+    - [Requirements](#requirements)
+      - [USB Driver](#usb-driver)
+    - [Installation](#installation)
+  - [Usage](#usage)
+    - [Running example.py](#running-examplepy)
+    - [Creating an ArtusAPI Class Object](#creating-an-artusapi-class-object)
+      - [Serial Example](#serial-example)
+    - [Normal Startup Procedure](#normal-startup-procedure)
+  - [DIO](#dio)
+  - [Setting Grasps - SD Card](#setting-grasps---sd-card)
+  - [Interacting with the API](#interacting-with-the-api)
+    - [Setting Joints](#setting-joints)
+    - [Input Units](#input-units)
+    - [Getting Feedback](#getting-feedback)
+    - [Controlling multiple hands](#controlling-multiple-hands)
+  - [Teleoperation Considerations](#teleoperation-considerations)
+  - [Directory Structure](#directory-structure)
+  - [Artus Lite Control Examples Setup](#artus-lite-control-examples-setup)
+    - [1. GUI Setup](#1-gui-setup)
+    - [2. ROS2 Node Control Setup](#2-ros2-node-control-setup)
+    - [3. Manus Glove Setup](#3-manus-glove-setup)
+  - [Revision Control](#revision-control)
 
 ## Getting Started
 ### Video Introduction
@@ -205,6 +216,30 @@ artus_liteLeft = Artus3DAPI(target_ssid='Artus3DLH',port='COM5',communication_me
 │   │   ├── robot.py # Robot Hand class for the API
 │   ├── artus_api.py # API Core
 ```
+
+## Artus Lite Control Examples Setup
+
+### 1. GUI Setup
+Please check the [Artus GUI](https://github.com/Sarcomere-Dynamics/Sarcomere_Dynamics_Resources/tree/main/examples/Control/ArtusLiteControl/GUIControl) for a GUI setup to control the Artus Lite hand.
+
+Also, check the video below for a demonstration of the GUI setup.
+
+[![Watch the video](/data/images/gui.png)](https://www.youtube.com/watch?v=l_Sl6bAeGuc)
+
+### 2. ROS2 Node Control Setup
+Please check the [Artus ROS2 Node](https://github.com/Sarcomere-Dynamics/Sarcomere_Dynamics_Resources/tree/main/ros2/artuslite_ws) for a ROS2 node setup to control the Artus Lite hand.
+
+Also, check the video below for a demonstration of the ROS2 node setup.
+
+[![Watch the video](/data/images/ros2_logo.jpg)](https://www.youtube.com/watch?v=GHyG1NuuRv4)
+
+### 3. Manus Glove Setup
+
+Please check the [Manus Glove](https://github.com/Sarcomere-Dynamics/Sarcomere_Dynamics_Resources/tree/main/examples/Control/ArtusLiteControl/ManusGloveControl) for a Manus Glove setup to control the Artus Lite hand.
+
+Also, check the video below for a demonstration of the Manus Glove setup.
+
+[![Watch the video](/data/images/manus.jpg)](https://www.youtube.com/watch?v=SPXJlxMaDVQ&list=PLNUrV_GAAyA8HNBAvwBlsmIqoWiJJLRwW&index=2)
 
 ## Revision Control
 | Date  | Revision | Description | Pip Release |
