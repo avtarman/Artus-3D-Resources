@@ -226,14 +226,23 @@ Please check the [Artus GUI](https://github.com/Sarcomere-Dynamics/Sarcomere_Dyn
 
 Also, check the video below for a demonstration of the GUI setup.
 
-[![Watch the video](/data/images/gui.png)](https://www.youtube.com/watch?v=l_Sl6bAeGuc)
+<div align="center">
+  <a href="https://www.youtube.com/watch?v=l_Sl6bAeGuc">
+    <img src="./data/images/gui.png" alt="Watch the video" width="200" />
+  </a>
+</div>
 
 ### 2. ROS2 Node Control Setup
 Please check the [Artus ROS2 Node](https://github.com/Sarcomere-Dynamics/Sarcomere_Dynamics_Resources/tree/main/ros2/artuslite_ws) for a ROS2 node setup to control the Artus Lite hand.
 
 Also, check the video below for a demonstration of the ROS2 node setup.
 
-[![Watch the video](/data/images/ros2_logo.jpg)](https://www.youtube.com/watch?v=GHyG1NuuRv4)
+<div align="center">
+  <a href="https://www.youtube.com/watch?v=GHyG1NuuRv4">
+    <img src="./data/images/ros2_logo.jpg" alt="Watch the video" width="200" />
+  </a>
+</div>
+
 
 ### 3. Manus Glove Setup
 
@@ -241,7 +250,12 @@ Please check the [Manus Glove](https://github.com/Sarcomere-Dynamics/Sarcomere_D
 
 Also, check the video below for a demonstration of the Manus Glove setup.
 
-[![Watch the video](/data/images/manus.jpg)](https://www.youtube.com/watch?v=SPXJlxMaDVQ&list=PLNUrV_GAAyA8HNBAvwBlsmIqoWiJJLRwW&index=2)
+<div align="center">
+  <a href="https://www.youtube.com/watch?v=SPXJlxMaDVQ&list=PLNUrV_GAAyA8HNBAvwBlsmIqoWiJJLRwW&index=2">
+    <img src="./data/images/manus.jpg" alt="Watch the video" width="200" />
+  </a>
+</div>
+
 
 ## Revision Control
 | Date  | Revision | Description | Pip Release |
