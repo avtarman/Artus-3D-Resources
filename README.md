@@ -239,9 +239,10 @@ Also, check the video below for a demonstration of the ROS2 node setup.
 
 <div align="center">
   <a href="https://www.youtube.com/watch?v=GHyG1NuuRv4">
-    <img src="./data/images/ros2_logo.jpg" alt="Watch the video" width="200" />
+    Watch the video
   </a>
 </div>
+
 
 
 ### 3. Manus Glove Setup
@@ -252,9 +253,10 @@ Also, check the video below for a demonstration of the Manus Glove setup.
 
 <div align="center">
   <a href="https://www.youtube.com/watch?v=SPXJlxMaDVQ&list=PLNUrV_GAAyA8HNBAvwBlsmIqoWiJJLRwW&index=2">
-    <img src="./data/images/manus.jpg" alt="Watch the video" width="200" />
+    Watch the video
   </a>
 </div>
+
 
 
 ## Revision Control
