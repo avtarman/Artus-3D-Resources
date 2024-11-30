@@ -10,7 +10,7 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(o
 print("Project Root", PROJECT_ROOT)
 sys.path.append(PROJECT_ROOT)
 # import ArtusAPI
-from Sarcomere_Dynamics_Resources.ArtusAPI.artus_api import ArtusAPI
+from ..ArtusAPI.artus_api import ArtusAPI
 
 # Determine OS and run appropriate flash script
 import platform
@@ -95,11 +95,11 @@ def example():
     artusapi.update_firmware(upload_flag='y', file_location=fp+act, drivers_to_flash=0)
 
     print("""
-╔══════════════════════════════════════════════════════════════════╗
-║             Firmware update completed successfully               ║
-║        Please close this script and restart the ARTUS hand       ║
-╚══════════════════════════════════════════════════════════════════╝
-""")
+    ╔══════════════════════════════════════════════════════════════════╗
+    ║             Firmware update completed successfully               ║
+    ║        Please close this script and restart the ARTUS hand       ║
+    ╚══════════════════════════════════════════════════════════════════╝
+    """)
 
 if __name__ == "__main__":
     example()

@@ -53,7 +53,7 @@ def example():
                         reset_on_start=config.config.robot.artusLite.reset_on_start,
                         awake = config.config.robot.artusLite.awake)
     # Path to the hand poses
-    hand_poses_path = os.path.join(PROJECT_ROOT,'data','hand_poses')
+    hand_poses_path = os.path.join(PROJECT_ROOT,'Sarcomere_Dynamics_Resources','data','hand_poses')
     # Main loop (example)
     while True:
         user_input = main_menu()
@@ -108,6 +108,8 @@ def example():
                         break
 
                 artusapi.execute_grasp(num)
+            case 'w':
+                artusapi.wipe_sd()
 
 # ----------------------------------------------------------------------------------
 # ---------------------------------- Main ------------------------------------------

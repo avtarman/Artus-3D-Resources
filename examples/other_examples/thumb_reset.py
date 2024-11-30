@@ -11,35 +11,54 @@ print("Project Root", PROJECT_ROOT)
 sys.path.append(PROJECT_ROOT)
 # import ArtusAPI
 from Sarcomere_Dynamics_Resources.ArtusAPI.artus_api import ArtusAPI
+comport = input("Please enter the USB Device COM Port: ")
 
-def unjam():
+def main(com):
     # Initialize ArtusAPI with specified parameters
     artus = ArtusAPI(
         communication_method='UART',
-        communication_channel_identifier='/dev/ttyUSB0',
+        communication_channel_identifier=com,
         robot_type='artus_lite',
         hand_type='right',
         reset_on_start=0
     )
     
-    # Connect to the hand
+    # number maps to joint name and joint index and motor`
+    joint_lut_right_hand = {
+        "1" : [0,0],
+        "2" : [2,2],
+        "3" : [3,1],
+        "4" : [4,0],
+        "5" : [6,1],
+        "6" : [7,0],
+        "7" : [9,2],
+        "8" : [10,0],
+        "9" : [12,1],
+        "10": [13,0],
+        "11": [15,2]
+    }
+
+    # get joint
+
+    # start robot
     artus.connect()
-    time.sleep(0.3)  # 100ms delay
 
-    # Hard close sequence for specific joints
-    joints = [0, 2, 4, 6, 7, 10, 13, 15]
-    for j in joints:
-        artus.hard_close(j=j, m=0)
-        time.sleep(0.3)  # Small delay between commands
+    # close d1/d2 for thumb
+    artus.hard_close(2,0)
 
-    print('Unjam complete, starting calibration')
-    time.sleep(3)
+    time.sleep(1)
 
-    artus.calibrate()
+    artus.reset(0,0)
 
-    return artus
+    time.sleep(0.5)
+
+    artus.disconnect()
+
 
 if __name__ == "__main__":
-    if input('Are you sure you want to unjam the hand? ALL JOINTS MUST BE COMPLETELY OPEN (y/n): ') == 'y':
-        unjam()
-
+    # gete com port
+    comport = input("Please enter the USB Device COM Port: ")
+    try:
+        main(comport)
+    except Exception as e:
+        print('Error = '+e)

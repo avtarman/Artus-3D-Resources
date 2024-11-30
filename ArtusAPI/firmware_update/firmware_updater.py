@@ -109,7 +109,6 @@ class FirmwareUpdater:
         while 1:
             tmp,rc_csum = self._communication_handler.receive_data()
             if tmp == 2:           
-                # print(f'{tmp} {rc_csum[0]}')
                 if rc_csum[0] == 1:
                     return True
                 else:
