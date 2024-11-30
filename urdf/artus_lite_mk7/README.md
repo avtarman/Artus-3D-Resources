@@ -1,6 +1,6 @@
 # Mapping URDF Joint Positions to Real Robot Joint Positions
 
-This guide explains the process of mapping URDF joint positions to real robot joint positions for a hand robot.
+This guide explains the process of mapping URDF joint positions to real robot joint positions for Artus Lite hand robot.
 The URDF model contains 20 joints, whereas the real robot has 16 joints.
 URDF joint positions are represented in radians, while real robot joint positions are represented in degrees (as integers).
 
