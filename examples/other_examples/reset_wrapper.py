@@ -62,12 +62,13 @@ def main(com):
     """
 
     # get joint
-    joint_choice,motor_choice = joint_lut_right_hand(input(menu_options))
+    lut = input(menu_options)
+    joints = joint_lut_right_hand[lut]
 
     # start robot
     artus.connect()
 
-    artus.reset(joint_choice,motor_choice)
+    artus.reset(joints[0],joints[1])
 
     time.sleep(1)
 

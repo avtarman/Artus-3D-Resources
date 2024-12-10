@@ -75,13 +75,16 @@ def example():
                     grasp_dict = json.load(file)
                     artusapi.set_joint_angles(grasp_dict)
             case "7":
-                print(artusapi.get_joint_angles())
+                try:
+                    print(artusapi.get_joint_angles())
+                except Exception as e:
+                    print(e)
             case "8":
                 with open(os.path.join(hand_poses_path ,'grasp_open.json'),'r') as file:
                     grasp_dict = json.load(file)
                     artusapi.set_joint_angles(grasp_dict) 
             case 'f':
-                artusapi.update_firmware(upload_flag='y',file_location=None,drivers_to_flash=None)  
+                artusapi.update_firmware(upload_flag=None,file_location=None,drivers_to_flash=None)  
             case 'r':
                 artusapi.reset()
             case 'c':

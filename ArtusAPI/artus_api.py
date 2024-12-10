@@ -237,7 +237,6 @@ class ArtusAPI:
         # set which drivers to flash should be 1-8
         if drivers_to_flash == None:
             drivers_to_flash = int(input(f'Which drivers would you like to flash? \n0: All Actuators \n1-8 Specific Actuator \n9: Peripheral Controller \nEnter: '))
-            drivers_to_flash = 0
 
         firmware_command = self._command_handler.get_firmware_command(fw_size,upload,drivers_to_flash)
         self._communication_handler.send_data(firmware_command)
@@ -370,6 +369,10 @@ class ArtusAPI:
         wipe sd card and reset with factory default settings
         """
         self._communication_handler.send_data(self._command_handler.get_wipe_sd_command())
+        feedback = None
+        while not feedback:
+            ack,feedback = self._communication_handler.receive_data()
+
 
 def test_artus_api():
     artus_api = ArtusAPI()
