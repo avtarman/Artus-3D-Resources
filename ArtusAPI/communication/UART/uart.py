@@ -33,6 +33,7 @@ class UART:
             self.esp32.open()
             self.logger.info(f"Opening {self.port} @ {self.baudrate} baudrate")
             self.esp32.flush()
+            msg_bytes = self.esp32.read_all()
         except Exception as e:
             self.logger.error(f'Error opening port {self.port}')
             self.logger.error(e)

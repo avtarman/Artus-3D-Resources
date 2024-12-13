@@ -53,6 +53,15 @@ def main(triangle_wave,freq,max):
     # Initialize ArtusAPI with specified parameters
     artus = ArtusAPI(
         communication_method='UART',
+        communication_channel_identifier="/dev/ttyUSB0",
+        robot_type='artus_lite',
+        hand_type='right',
+        reset_on_start=0,
+        communication_frequency=freq
+    )
+
+    artus1 = ArtusAPI(
+        communication_method='UART',
         communication_channel_identifier="/dev/ttyUSB1",
         robot_type='artus_lite',
         hand_type='left',
@@ -61,6 +70,7 @@ def main(triangle_wave,freq,max):
     )
     # start robot
     artus.connect()
+    artus1.connect()
 
     time.sleep(1)
 
@@ -68,15 +78,18 @@ def main(triangle_wave,freq,max):
     while True:
         # Update all joint angles in the dictionary
         for joint in grasp_dict:
-            if grasp_dict[joint]["index"] not in [0,1,4,7,10,13]:
-                grasp_dict[joint]["velocity"] = 20
+            if grasp_dict[joint]["index"] in [3,5,8,14,6,9,12,15]:
+                grasp_dict[joint]["velocity"] = 25
                 grasp_dict[joint]["target_angle"] = int(triangle_wave[wave_index])
-            elif grasp_dict[joint]["index"] == 1 and int(triangle_wave[wave_index]) < 30:
-                grasp_dict[joint]["velocity"] = 20
-                grasp_dict[joint]["target_angle"] = int(triangle_wave[wave_index])
+            # elif grasp_dict[joint]["index"] == 1 and int(triangle_wave[wave_index]) < 30:
+            #     grasp_dict[joint]["velocity"] = 50
+            #     grasp_dict[joint]["target_angle"] = int(triangle_wave[wave_index])
+            # if grasp_dict[joint]["index"] == 8:
+            #     grasp_dict[joint]["velocity"] = 20
+            #     grasp_dict[joint]["target_angle"] = int(triangle_wave[wave_index])
         
         # Send updated positions to the robot
-        if artus.set_joint_angles(grasp_dict):
+        if artus.set_joint_angles(grasp_dict) and artus1.set_joint_angles(grasp_dict):
             if triangle_wave[wave_index] == max or triangle_wave[wave_index] == 0:
                 time.sleep(1)
             # Increment wave index and loop back to start if needed
@@ -86,13 +99,16 @@ def main(triangle_wave,freq,max):
 
     artus.disconnect()
 
+    artus1.disconnect()
+
 
 if __name__ == "__main__":
     # gete com port
     while True:
         try:
             freq = 25
-            triangle_wave = generate_triangle_wave(0.8,freq,90)
-            main(triangle_wave,freq,90)
+            max_val = 80
+            triangle_wave = generate_triangle_wave(0.8,freq,max_val)
+            main(triangle_wave,freq,max_val)
         except Exception as e:
             print('E::'+e)
