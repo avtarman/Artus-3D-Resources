@@ -15,7 +15,7 @@ This guide provides instructions on how to use the GUI to control the Artus Lite
 ## Requirements
 
 - Python >= 3.10
-- Required Python packages: `pyzmq`, `PyQt5`, `PySide6`, `pyyaml`, `psutil`
+- Required Python packages: `pyzmq`, `PyQt5`, `PySide6`, `pyyaml`, `psutil`, `pyserial`
 - Artus Lite hand robot
 - Windows OS (for running the GUI executable)
 
@@ -24,8 +24,7 @@ This guide provides instructions on how to use the GUI to control the Artus Lite
 
 1. Install the required Python packages:
     ```sh
-    pip install pyzmq
-    pip install PyQt5
+    pip install pyzmq PyQt5 PySide6 pyyaml psutil pyserial
     ```
 
 ## Configuration

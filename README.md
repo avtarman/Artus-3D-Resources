@@ -7,6 +7,7 @@ This repository contains a Python API for controlling the ARTUS robotic hands by
 Please contact the team if there are any issues that arise through the use of the API.
 
 ## Introduction
+>[!IMPORTANT]
 __Please read through the entire README and the _User Manual_ before using the ARTUS hand__
 
 The user manual contains in-depth operational and troubleshooting guidelines for the device. 
@@ -54,6 +55,7 @@ Below is a list of the ARTUS hands that are compatible with the API:
 Requires Python version >= 3.10 installed on the host system. Please visit the [Python website](https://www.python.org/downloads/) to install Python.
 
 #### USB Driver
+>[!NOTE]
 If the host system cannot find the Artus Lite as a USB device once it is connected over USBC, go to [FTDI Driver Download](https://ftdichip.com/drivers/vcp-drivers/) to install the virtual COM port driver (usually only required for Windows). 
 
 ### Installation
@@ -108,7 +110,8 @@ Second, the `ArtusAPI.wake_up()` function must be run to allow the hand to load 
 
 Once these two steps are complete, optionally, you can run `ArtusAPI.calibrate()` to calibrate the finger joints. Otherwise, the system is now ready to start sending and receiving data!
 
-**_Note: If running version v1.0.1, `wake_up` is called inside the `connect()` function_**
+>[!NOTE]
+>If running version v1.0.1, `wake_up` is called inside the `connect()` function_
 
 ## Interacting with the API
 To get the most out of the Artus hands, the functions that will likely be most interacted with are `set_joint_angles(self, joint_angles:dict)` and `get_joint_angles(self)`. The `set_joint_angles` function allows the user to set 16 independent joint values with a desired velocity/force value in the form of a dictionary. See the [grasp_close file](data/hand_poses/grasp_close.json) for an example of a full 16 joint dictionary for the Artus Lite. See the [Artus Lite README](ArtusAPI/robot/artus_lite/README.md) for joint mapping.
@@ -206,6 +209,46 @@ artus_liteLeft = Artus3DAPI(target_ssid='Artus3DLH',port='COM5',communication_me
 │   │   ├── robot.py # Robot Hand class for the API
 │   ├── artus_api.py # API Core
 ```
+
+## Artus Lite Control Examples Setup
+
+### 1. GUI Setup
+Please check the [Artus GUI](https://github.com/Sarcomere-Dynamics/Sarcomere_Dynamics_Resources/tree/main/examples/Control/ArtusLiteControl/GUIControl) for a GUI setup to control the Artus Lite hand.
+
+Also, check the video below for a demonstration of the GUI setup.
+
+<div align="center">
+  <a href="https://www.youtube.com/watch?v=l_Sl6bAeGuc">
+    <img src="./data/images/gui.png" alt="Watch the video" width="200" />
+  </a>
+</div>
+
+### 2. ROS2 Node Control Setup
+Please check the [Artus ROS2 Node](https://github.com/Sarcomere-Dynamics/Sarcomere_Dynamics_Resources/tree/main/ros2/artuslite_ws) for a ROS2 node setup to control the Artus Lite hand.
+
+Also, check the video below for a demonstration of the ROS2 node setup.
+
+<div align="center">
+  <a href="https://www.youtube.com/watch?v=GHyG1NuuRv4">
+    Watch the video
+  </a>
+</div>
+
+
+
+### 3. Manus Glove Setup
+
+Please check the [Manus Glove](https://github.com/Sarcomere-Dynamics/Sarcomere_Dynamics_Resources/tree/main/examples/Control/ArtusLiteControl/ManusGloveControl) for a Manus Glove setup to control the Artus Lite hand.
+
+Also, check the video below for a demonstration of the Manus Glove setup.
+
+<div align="center">
+  <a href="https://www.youtube.com/watch?v=SPXJlxMaDVQ&list=PLNUrV_GAAyA8HNBAvwBlsmIqoWiJJLRwW&index=2">
+    Watch the video
+  </a>
+</div>
+
+
 
 ## Revision Control
 | Date  | Revision | Description | Pip Release |

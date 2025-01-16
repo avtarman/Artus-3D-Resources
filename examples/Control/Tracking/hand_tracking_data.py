@@ -58,11 +58,16 @@ class HandTrackingData:
 
 
 def test_hand_tracking_data():
-    hand_tracking_data = HandTrackingData(hand_tracking_method='gui')
+    # hand_tracking_data = HandTrackingData(hand_tracking_method='gui')
+    hand_tracking_data = HandTrackingData(hand_tracking_method='manus_gloves',
+                                      port='65432')
     while True:
-        joint_angles = hand_tracking_data.receive_joint_angles()
-        print(joint_angles)
-        time.sleep(0.5)
+        try:
+            joint_angles = hand_tracking_data.receive_joint_angles()
+            print(joint_angles)
+            time.sleep(0.5)
+        except:
+            pass
 
 if __name__ == "__main__":
     test_hand_tracking_data()

@@ -32,8 +32,8 @@ class ManusGlovesHandTrackingData:
         self.user_hand_min_max_right = {'index': [-15,15,0,90,0,90], 'middle': [-15,15,0,90,0,90], 'ring': [-15,15,0,90,0,90], 'pinky': [-15,15,0,90,0,90], 'thumb': [-25,25,0,90,0,90,0,90]}
         self.artus_min_max = {'index': [-15,15,0,90,0,90], 'middle': [-15,15,0,90,0,90], 'ring': [-15,15,0,90,0,90], 'pinky': [-15,15,0,90,0,90], 'thumb': [-25,25,0,90,0,90,0,90]}
 
-        self.moving_average_lefthand = MultiMovingAverage(window_size=10, num_windows=20)
-        self.moving_average_righthand = MultiMovingAverage(window_size=10, num_windows=20)
+        self.moving_average_lefthand = MultiMovingAverage(window_size=30, num_windows=20)
+        self.moving_average_righthand = MultiMovingAverage(window_size=30, num_windows=20)
 
 
         self.joint_angles_left = None # [thumb_1, thumb_2, thumb_3, thumb4, index_1, index_2, index_3, middle_1, middle_2, middle_3, ring, pinky]
@@ -153,7 +153,8 @@ class ManusGlovesHandTrackingData:
         self.joint_angles_dict_L['ring'] = data_L[12:16]
         self.joint_angles_dict_L['pinky'] = data_L[16:20]
 
-        self.joint_angles_dict_L['thumb'][1] = (70-self.joint_angles_dict_L['thumb'][1])
+        # self.joint_angles_dict_L['thumb'][0] = (self.joint_angles_dict_L['thumb'][0] - 10)
+        self.joint_angles_dict_L['thumb'][1] = (70 - self.joint_angles_dict_L['thumb'][1])
 
         self.joint_angles_dict_R['thumb'] = data_R[0:4]
         self.joint_angles_dict_R['index'] = data_R[4:8]
@@ -161,6 +162,7 @@ class ManusGlovesHandTrackingData:
         self.joint_angles_dict_R['ring'] = data_R[12:16]
         self.joint_angles_dict_R['pinky'] = data_R[16:20]
         
+        # self.joint_angles_dict_R['thumb'][0] = (self.joint_angles_dict_R['thumb'][0] - 20)
         self.joint_angles_dict_R['thumb'][1] = (70-self.joint_angles_dict_R['thumb'][1])
     
     def _joint_angles_manus_to_joint_streamer(self, joint_angles):
@@ -184,17 +186,29 @@ class ManusGlovesHandTrackingData:
         #  ring_1,    ring_2,    ring_3,
         #  pinky_1,   pinky_2,   pinky_3]
 
+        # self.joint_angles_left = [-joint_angles_L[4],joint_angles_L[9],joint_angles_L[14], joint_angles_L[19], # thumb
+        #                       -joint_angles_L[0], joint_angles_L[5], joint_angles_L[10], # index
+        #                       -joint_angles_L[1], joint_angles_L[6], joint_angles_L[11], # middle
+        #                       -joint_angles_L[3], joint_angles_L[8], joint_angles_L[13], # ring
+        #                       -joint_angles_L[2], joint_angles_L[7], joint_angles_L[12]] # pinky
+
         self.joint_angles_left = [-joint_angles_L[4],joint_angles_L[9],joint_angles_L[14], joint_angles_L[19], # thumb
                               -joint_angles_L[0], joint_angles_L[5], joint_angles_L[10], # index
-                              -joint_angles_L[1], joint_angles_L[6], joint_angles_L[11], # middle
-                              -joint_angles_L[3], joint_angles_L[8], joint_angles_L[13], # ring
-                              -joint_angles_L[2], joint_angles_L[7], joint_angles_L[12]] # pinky
+                              0, 0, 0, # middle
+                              0, 0, 0, # ring
+                              0, 0, 0] # pinky
         
         self.joint_angles_right = [-joint_angles_R[4],joint_angles_R[9],joint_angles_R[14], joint_angles_R[19], # thumb
                               -joint_angles_R[0], joint_angles_R[5], joint_angles_R[10], # index
                               -joint_angles_R[1], joint_angles_R[6], joint_angles_R[11], # middle
                               -joint_angles_R[3], joint_angles_R[8], joint_angles_R[13], # ring
                               -joint_angles_R[2], joint_angles_R[7], joint_angles_R[12]] # pinky
+        
+        # self.joint_angles_right = [-joint_angles_R[4],joint_angles_R[9],joint_angles_R[14], joint_angles_R[19], # thumb
+        #                       -joint_angles_R[0], joint_angles_R[5], joint_angles_R[10], # index
+        #                       -joint_angles_R[1], joint_angles_R[6], joint_angles_R[11], # middle
+                            #   0, 0, 0, # ring
+                            #   0, 0, 0] # pinky
         
         print("4. Joint angles sent to hand: ", self.joint_angles_left, self.joint_angles_right)
         
@@ -224,8 +238,8 @@ class ManusGlovesHandTrackingData:
 
             return joint_rotations_list_R
         elif hand == "LR":
-            # self._interpolate_data_L(self.joint_angles_dict_L)
-            # self._interpolate_data_R(self.joint_angles_dict_R)
+            self._interpolate_data_L(self.joint_angles_dict_L)
+            self._interpolate_data_R(self.joint_angles_dict_R)
             self._append_list_L(self.joint_angles_dict_L, joint_rotations_list_L)
             self._append_list_R(self.joint_angles_dict_R, joint_rotations_list_R)
 
