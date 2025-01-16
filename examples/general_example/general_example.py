@@ -51,7 +51,8 @@ def example():
                         communication_method=config.config.robot.artusLite.communication_method,
                         communication_channel_identifier=config.config.robot.artusLite.communication_channel_identifier,
                         reset_on_start=config.config.robot.artusLite.reset_on_start,
-                        awake = config.config.robot.artusLite.awake)
+                        awake = config.config.robot.artusLite.awake,
+                        communication_frequency=33)
     # Path to the hand poses
     hand_poses_path = os.path.join(PROJECT_ROOT,'Sarcomere_Dynamics_Resources','data','hand_poses')
     # Main loop (example)

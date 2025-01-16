@@ -60,22 +60,23 @@ class UART:
         #     pass
         try:
             x = time.perf_counter()
-            # print(f'time start: {x}')
+            # # print(f'time start: {x}')
             while self.esp32.in_waiting < 65:
-                if time.perf_counter() - x > 0.02:
+                if time.perf_counter() - x > 0.001:
                     break
             # print(f'elapsed time: {time.perf_counter() - x}')
             # time.sleep(0.03)
             # check data
             if self.esp32.in_waiting >= 65: # get data if greater or equal to 65
                 msg_bytes = self.esp32.read(65)
-                print(msg_bytes)
+                # print(msg_bytes)
                 return msg_bytes
-            elif self.esp32.in_waiting > 0: # clear buffer if not correct amount of data
+            elif self.esp32.in_waiting > 0:
                 # msg_bytes = self.esp32.read_all()
-                self.logger.warning(f"Incomplete data received - package size = {(self.esp32.in_waiting)}")
+                # self.logger.warning(f"Incomplete data received - package size = {(self.esp32.in_waiting)}")
                 return None
             else: # non blocking
+                # self.logger.warning(f"No data available to receive")
                 return None
         except Exception as e:
             self.logger.warning(f"No data available to receive {e}")

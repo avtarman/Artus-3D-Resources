@@ -180,13 +180,20 @@ class ArtusLite:
         Get the joint angles and feedback list data
         and populate the feedback fields in the hand_joints dictionary
         """
-        print(f'FB PACKAGE = {feedback_package}')
-        for name,joint_data in self.hand_joints.items():
-            joint_data.feedback_angle = feedback_package[1][joint_data.index]
-            joint_data.feedback_current = feedback_package[1][joint_data.index+15]
-            joint_data.feedback_temperature = feedback_package[1][joint_data.index+31]
+        # print(f'FB PACKAGE = {feedback_package}')
+        try:
+            for name,joint_data in self.hand_joints.items():
+                joint_data.feedback_angle = feedback_package[1][joint_data.index]
+                joint_data.feedback_current = feedback_package[1][joint_data.index+15]
+                joint_data.feedback_temperature = feedback_package[1][joint_data.index+31]
 
-        return feedback_package
+            return feedback_package
+        except TypeError:
+            # print(f'feedback_package is None')
+            return None
+        except Exception as e:
+            print(e)
+            return None
 
 
 def main():

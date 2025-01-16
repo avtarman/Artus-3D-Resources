@@ -54,10 +54,14 @@ class ArtusAPI:
                                    hand_type = hand_type)
         
         self._last_command_sent_time = time.perf_counter()
-        self._communication_frequency = 1 / communication_frequency
-        self._communication_frequency_us = int(self._communication_frequency * 1000000)
+        self._communication_frequency = communication_frequency
+        self._communication_period = 1 / self._communication_frequency
+        self._communication_period_ms = self._communication_period * 1000
         self.stream = stream
         self.awake = awake
+
+        # only used during streaming
+        self.last_command_recv_time = time.perf_counter()
 
         if not logger:
             self.logger = logging.getLogger(__name__)
@@ -89,8 +93,8 @@ class ArtusAPI:
         """
         Wake-up the Artus Hand
         """
-        print(f"communication frequency in useconds = {self._communication_frequency_us}")
-        robot_wake_up_command = self._command_handler.get_robot_start_command(self.stream,self._communication_frequency_us) # to ms for masterboard
+        print(f"communication period = {self._communication_period_ms} ms")
+        robot_wake_up_command = self._command_handler.get_robot_start_command(self.stream,int(self._communication_period_ms)) # to ms for masterboard
         self._communication_handler.send_data(robot_wake_up_command)
 
         # wait for data back
@@ -134,7 +138,7 @@ class ArtusAPI:
         self._robot_handler.set_joint_angles(joint_angles=joint_angles,name=False)
         robot_set_joint_angles_command = self._command_handler.get_target_position_command(self._robot_handler.robot.hand_joints)
         # check communication frequency
-        if not self._check_communication_frequency():
+        if not self._check_communication_frequency(self._last_command_sent_time):
             return False
         return self._communication_handler.send_data(robot_set_joint_angles_command)
     
@@ -149,19 +153,19 @@ class ArtusAPI:
         self._robot_handler.set_home_position()
         robot_set_home_position_command = self._command_handler.get_target_position_command(hand_joints=self._robot_handler.robot.hand_joints)
         # check communication frequency
-        if not self._check_communication_frequency():
+        if not self._check_communication_frequency(self._last_command_sent_time):
             return False
         return self._communication_handler.send_data(robot_set_home_position_command)
 
-    def _check_communication_frequency(self):
+    def _check_communication_frequency(self,last_command_time):
         """
         check if the communication frequency is too high
         """
         current_time = time.perf_counter()
-        if current_time - self._last_command_sent_time < self._communication_frequency:
+        if current_time - last_command_time < self._communication_period:
             self.logger.warning("Command not sent. Communication frequency is too high.")
             return False
-        self._last_command_sent_time = current_time
+        last_command_time = current_time
         return True
 
     # robot feedback
@@ -176,7 +180,7 @@ class ArtusAPI:
         feedback_command = self._command_handler.get_states_command()
         self._communication_handler.send_data(feedback_command)
         # test
-        time.sleep(0.005)
+        time.sleep(0.001)
         return self._communication_handler.receive_data()
     
     def get_joint_angles(self):
@@ -189,7 +193,7 @@ class ArtusAPI:
         
         feedback_command = self._receive_feedback()
         joint_angles = self._robot_handler.get_joint_angles(feedback_command)
-        print(joint_angles)
+        # print(joint_angles)
         return joint_angles
     
     # robot feedback stream
@@ -201,12 +205,14 @@ class ArtusAPI:
             self.logger.warning(f'Hand not ready, send `wake_up` command')
             return
         
-        if not self._check_communication_frequency():
-            return False
-        feedback_command = self._communication_handler.receive_data()
-        if not feedback_command:
+        if not self._check_communication_frequency(self.last_command_recv_time):
             return None
-        joint_angles = self._robot_handler.get_joint_angles(feedback_command)
+        else:
+            feedback_command = self._communication_handler.receive_data()
+            if not feedback_command:
+                print(f'feedback is none')
+                return None
+            joint_angles = self._robot_handler.get_joint_angles(feedback_command)
         return joint_angles
 
     def update_firmware(self,upload_flag='y',file_location=None,drivers_to_flash=0):
