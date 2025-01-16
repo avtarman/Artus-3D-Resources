@@ -76,7 +76,7 @@ class FirmwareUpdater:
             # print(f'{chunk} {len(chunk)}')
 
             # send data
-            self._communication_handler.send_data(chunk)
+            self._communication_handler.send_data(chunk,1)
 
             # sleep
             time.sleep(0.008)
@@ -109,7 +109,6 @@ class FirmwareUpdater:
         while 1:
             tmp,rc_csum = self._communication_handler.receive_data()
             if tmp == 2:           
-                # print(f'{tmp} {rc_csum[0]}')
                 if rc_csum[0] == 1:
                     return True
                 else:
@@ -119,18 +118,6 @@ class FirmwareUpdater:
                 self.logger.error(f'firmware flash failed')
                 return False
             time.sleep(0.001)
-    
-    def update_master_firmware(self,com:str):
-        os_name = platform.system()
-        script_path = os.getcwd()
-
-        if os_name == 'Linux':
-            script_path += '/scripts/flash_script.sh'
-        else:
-            script_path += '/scripts/flash_script.bat'
-
-        rslt = subprocess.run([script_path,com], check=True, text=True, capture_output=True, shell=True)
-        print("Script output:", rslt.stdout)
 
 
 def test_firmware_updater():

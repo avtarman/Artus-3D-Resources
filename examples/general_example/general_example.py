@@ -51,9 +51,10 @@ def example():
                         communication_method=config.config.robot.artusLite.communication_method,
                         communication_channel_identifier=config.config.robot.artusLite.communication_channel_identifier,
                         reset_on_start=config.config.robot.artusLite.reset_on_start,
-                        awake = config.config.robot.artusLite.awake)
+                        awake = config.config.robot.artusLite.awake,
+                        communication_frequency=33)
     # Path to the hand poses
-    hand_poses_path = os.path.join(PROJECT_ROOT,'data','hand_poses')
+    hand_poses_path = os.path.join(PROJECT_ROOT,'Sarcomere_Dynamics_Resources','data','hand_poses')
     # Main loop (example)
     while True:
         user_input = main_menu()
@@ -75,21 +76,28 @@ def example():
                     grasp_dict = json.load(file)
                     artusapi.set_joint_angles(grasp_dict)
             case "7":
-                print(artusapi.get_joint_angles())
+                try:
+                    print(artusapi.get_joint_angles())
+                except Exception as e:
+                    print(e)
             case "8":
                 with open(os.path.join(hand_poses_path ,'grasp_open.json'),'r') as file:
                     grasp_dict = json.load(file)
                     artusapi.set_joint_angles(grasp_dict) 
             case 'f':
-                artusapi.update_firmware()  
+                artusapi.update_firmware(upload_flag=None,file_location=None,drivers_to_flash=None)  
             case 'r':
                 artusapi.reset()
             case 'c':
                 artusapi.hard_close()
             case 's':
-                num = int(input('what index value should this be stored in? (1-6):'))
+                while True:
+                    n = input('Enter index value to save grasp in (1-6):')
+                    num = None if not n else int(n) if n.isdigit() and 1 <= int(n) <= 6 else None
+                    if num is not None or num is None and not n:
+                        break
                 if num == None:
-                    artusapi.save_grasp_onhand()
+                    artusapi.save_grasp_onhand() # default save index 1
                 else:
                     artusapi.save_grasp_onhand(num)
             case 'g':
@@ -97,13 +105,15 @@ def example():
             case 'p':
                 artusapi.update_param()
             case 'e':
-                data = 0
-                while 1:
-                    data = int(input('enter grasp index to execute from memory (1-6):'))
-                    if data in range(1,7):
+                while True:
+                    n = input('Enter index value to execute grasp from (1-6):')
+                    num = None if not n else int(n) if n.isdigit() and 1 <= int(n) <= 6 else None
+                    if num is not None:
                         break
 
-                artusapi.execute_grasp(data)
+                artusapi.execute_grasp(num)
+            case 'w':
+                artusapi.wipe_sd()
 
 # ----------------------------------------------------------------------------------
 # ---------------------------------- Main ------------------------------------------

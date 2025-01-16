@@ -113,14 +113,15 @@ class Communication:
             self.logger.error("unable to connect to Robot")
             print(e)
 
-    def send_data(self, message:list):
+    def send_data(self, message:list,no_debug=1):
         """
         send message
         """
         try:
             # Test
             self.logger.info(f'data sent to hand {message}')
-            print(f'data sent to hand = {message}')
+            if not no_debug:
+                print(f'data sent to hand = {message}')
             byte_msg = self._list_to_byte_encode(message)
             self.communicator.send(byte_msg)
             return True
@@ -136,11 +137,10 @@ class Communication:
         """
         byte_msg_recv = None
         try:    
-            while byte_msg_recv is None:
-                byte_msg_recv = self.communicator.receive()
-                if not byte_msg_recv:
-                    # self.logger.warning("No data received")
-                    return None,None
+            byte_msg_recv = self.communicator.receive()
+            if not byte_msg_recv:
+                # self.logger.warning("No data received")
+                return None,None
             ack,message_received = self._byte_to_list_decode(byte_msg_recv)
             if ack == 9:
                 self.logger.warning("[E] error ack")
@@ -156,9 +156,11 @@ class Communication:
 
 
     def wait_for_ack(self):
+        start_time = time.perf_counter()
         while 1:
             tmp,rc_csum = self.receive_data()
             if tmp is not None:
+                print(f'ack received in {time.perf_counter() - start_time} seconds')
                 return 1
             time.sleep(0.001)
 

@@ -2,16 +2,16 @@
 class ArtusLite:
 
     def __init__(self,
-                joint_max_angles=[25, 90, 90, 90, # thumb
-                                12, 90, 90, # index
-                                12, 90, 90, # middle
-                                12, 90, 90, # ring
-                                12, 90, 90], # pinky
-                joint_min_angles=[-25, 0, 0, 0, # thumb
-                                -12, 0, 0, # index
-                                -12, 0, 0, # middle
-                                -12, 0, 0, # ring
-                                -12, 0, 0], # pinky
+                joint_max_angles=[35, 90, 90, 90, # thumb
+                                15, 90, 90, # index
+                                15, 90, 90, # middle
+                                15, 90, 90, # ring
+                                15, 90, 90], # pinky
+                joint_min_angles=[-35, 0, 0, 0, # thumb
+                                -15, 0, 0, # index
+                                -15, 0, 0, # middle
+                                -15, 0, 0, # ring
+                                -15, 0, 0], # pinky
 
                 joint_default_angles=[0, 0, 0, 0, # thumb
                                     0, 0, 0, # index
@@ -180,13 +180,20 @@ class ArtusLite:
         Get the joint angles and feedback list data
         and populate the feedback fields in the hand_joints dictionary
         """
-        print(f'FB PACKAGE = {feedback_package}')
-        for name,joint_data in self.hand_joints.items():
-            joint_data.feedback_angle = feedback_package[1][joint_data.index]
-            joint_data.feedback_current = feedback_package[1][joint_data.index+15]
-            joint_data.feedback_temperature = feedback_package[1][joint_data.index+31]
+        # print(f'FB PACKAGE = {feedback_package}')
+        try:
+            for name,joint_data in self.hand_joints.items():
+                joint_data.feedback_angle = feedback_package[1][joint_data.index]
+                joint_data.feedback_current = feedback_package[1][joint_data.index+15]
+                joint_data.feedback_temperature = feedback_package[1][joint_data.index+31]
 
-        return feedback_package
+            return feedback_package
+        except TypeError:
+            # print(f'feedback_package is None')
+            return None
+        except Exception as e:
+            print(e)
+            return None
 
 
 def main():

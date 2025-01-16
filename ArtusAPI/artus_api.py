@@ -54,10 +54,14 @@ class ArtusAPI:
                                    hand_type = hand_type)
         
         self._last_command_sent_time = time.perf_counter()
-        self._communication_frequency = 1 / communication_frequency
-        self._communication_frequency_us = int(self._communication_frequency * 1000000)
+        self._communication_frequency = communication_frequency
+        self._communication_period = 1 / self._communication_frequency
+        self._communication_period_ms = self._communication_period * 1000
         self.stream = stream
         self.awake = awake
+
+        # only used during streaming
+        self.last_command_recv_time = time.perf_counter()
 
         if not logger:
             self.logger = logging.getLogger(__name__)
@@ -89,8 +93,8 @@ class ArtusAPI:
         """
         Wake-up the Artus Hand
         """
-        print(f"communication frequency in useconds = {self._communication_frequency_us}")
-        robot_wake_up_command = self._command_handler.get_robot_start_command(self.stream,self._communication_frequency_us) # to ms for masterboard
+        print(f"communication period = {self._communication_period_ms} ms")
+        robot_wake_up_command = self._command_handler.get_robot_start_command(self.stream,int(self._communication_period_ms)) # to ms for masterboard
         self._communication_handler.send_data(robot_wake_up_command)
 
         # wait for data back
@@ -134,7 +138,7 @@ class ArtusAPI:
         self._robot_handler.set_joint_angles(joint_angles=joint_angles,name=False)
         robot_set_joint_angles_command = self._command_handler.get_target_position_command(self._robot_handler.robot.hand_joints)
         # check communication frequency
-        if not self._check_communication_frequency():
+        if not self._check_communication_frequency(self._last_command_sent_time):
             return False
         return self._communication_handler.send_data(robot_set_joint_angles_command)
     
@@ -149,19 +153,19 @@ class ArtusAPI:
         self._robot_handler.set_home_position()
         robot_set_home_position_command = self._command_handler.get_target_position_command(hand_joints=self._robot_handler.robot.hand_joints)
         # check communication frequency
-        if not self._check_communication_frequency():
+        if not self._check_communication_frequency(self._last_command_sent_time):
             return False
         return self._communication_handler.send_data(robot_set_home_position_command)
 
-    def _check_communication_frequency(self):
+    def _check_communication_frequency(self,last_command_time):
         """
         check if the communication frequency is too high
         """
         current_time = time.perf_counter()
-        if current_time - self._last_command_sent_time < self._communication_frequency:
+        if current_time - last_command_time < self._communication_period:
             self.logger.warning("Command not sent. Communication frequency is too high.")
             return False
-        self._last_command_sent_time = current_time
+        last_command_time = current_time
         return True
 
     # robot feedback
@@ -176,7 +180,7 @@ class ArtusAPI:
         feedback_command = self._command_handler.get_states_command()
         self._communication_handler.send_data(feedback_command)
         # test
-        time.sleep(0.005)
+        time.sleep(0.001)
         return self._communication_handler.receive_data()
     
     def get_joint_angles(self):
@@ -189,7 +193,7 @@ class ArtusAPI:
         
         feedback_command = self._receive_feedback()
         joint_angles = self._robot_handler.get_joint_angles(feedback_command)
-        print(joint_angles)
+        # print(joint_angles)
         return joint_angles
     
     # robot feedback stream
@@ -201,25 +205,29 @@ class ArtusAPI:
             self.logger.warning(f'Hand not ready, send `wake_up` command')
             return
         
-        if not self._check_communication_frequency():
-            return False
-        feedback_command = self._communication_handler.receive_data()
-        if not feedback_command:
+        if not self._check_communication_frequency(self.last_command_recv_time):
             return None
-        joint_angles = self._robot_handler.get_joint_angles(feedback_command)
+        else:
+            feedback_command = self._communication_handler.receive_data()
+            if not feedback_command:
+                print(f'feedback is none')
+                return None
+            joint_angles = self._robot_handler.get_joint_angles(feedback_command)
         return joint_angles
 
-    def update_firmware(self):
+    def update_firmware(self,upload_flag='y',file_location=None,drivers_to_flash=0):
         """
         send firmware update to the actuators
         """
         file_path = None
         fw_size  = 0
         # input to upload a new file
-        upload_flag = input(f'Uploading a new BIN file? (y/n)  :  ')
+        if upload_flag == None:
+            upload_flag = input(f'Uploading a new BIN file? (y/n)  :  ')
         upload = True
-            
 
+            
+        # Create new firmware updater instance
         self._firmware_updater = FirmwareUpdater(self._communication_handler,
                                         self._command_handler)
         
@@ -227,15 +235,14 @@ class ArtusAPI:
             self._firmware_updater.file_location = 'not empty'
             upload = False
         else:
-
-            self._firmware_updater.file_location = input('Please enter binfile absolute path:  ')
+            if file_location is None: file_location = input('Please enter binfile absolute path:  ')
+            self._firmware_updater.file_location = file_location
 
             fw_size = self._firmware_updater.get_bin_file_info()
         
         # set which drivers to flash should be 1-8
-        drivers_to_flash = int(input(f'Which drivers would you like to flash? \n0: All Actuators \n1-8 Specific Actuator \n9: Peripheral Controller \nEnter: '))
-        if not drivers_to_flash:
-            drivers_to_flash = 0
+        if drivers_to_flash == None:
+            drivers_to_flash = int(input(f'Which drivers would you like to flash? \n0: All Actuators \n1-8 Specific Actuator \n9: Peripheral Controller \nEnter: '))
 
         firmware_command = self._command_handler.get_firmware_command(fw_size,upload,drivers_to_flash)
         self._communication_handler.send_data(firmware_command)
@@ -247,29 +254,52 @@ class ArtusAPI:
         self._communication_handler.wait_for_ack()
         print(f'Power Cycle the device to take effect')
 
-    def reset(self):
+        
+
+
+    def request_joint_and_motor(self):
+        """
+        request joint and motor from user
+        """
+        j,m = None,None
+        while True:
+            j = int(input(f'Enter Joint to reset: '))
+            if 0 <= j <= 15:
+                break
+            else:
+                print(f'Invalid joint number, please try again')
+        while True:
+            m = int(input(f'Enter Motor to reset: '))
+            if 0 <= m <= 2:
+                break
+            else:
+                print(f'Invalid motor number, please try again')
+        return j,m
+    
+
+    def reset(self,j=None,m=None):
         """
         Reset a joint back to it's open state, used if finger is "jammed" in close state
         """
         if not self.awake:
             self.logger.warning(f'Hand not ready, send `wake_up` command')
             return
+        if j is None or m is None:
+            j,m = self.request_joint_and_motor()
         
-        j = int(input(f'Enter Joint to reset: '))
-        m = int(input(f'Enter Motor to reset: '))
         reset_command = self._command_handler.get_locked_reset_low_command(j,m)
         self._communication_handler.send_data(reset_command)
     
-    def hard_close(self):
+    def hard_close(self,j=None,m=None):
         """
         drive a joint partially closed - used if finger is "jammed" in open state
         """
         if not self.awake:
             self.logger.warning(f'Hand not ready, send `wake_up` command')
             return
-
-        j = int(input(f'Enter Joint to reset: '))
-        m = int(input(f'Enter Motor to reset: '))
+        if j is None or m is None:
+            j,m = self.request_joint_and_motor()
+        
         hard_close = self._command_handler.get_hard_close_command(j,m)
         self._communication_handler.send_data(hard_close)
 
@@ -345,6 +375,10 @@ class ArtusAPI:
         wipe sd card and reset with factory default settings
         """
         self._communication_handler.send_data(self._command_handler.get_wipe_sd_command())
+        feedback = None
+        while not feedback:
+            ack,feedback = self._communication_handler.receive_data()
+
 
 def test_artus_api():
     artus_api = ArtusAPI()
